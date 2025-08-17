@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmLink - Solutions et Panneau de Contrôle</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Fichier CSS personnalisé -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- En-tête du site web -->
+    <header class="sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="#home">
+                    <img src="image/logo.png" alt="Logo FarmLink" class="h-12 w-auto">
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link" data-translate="nav_about">À propos</a>
+                <a href="#how-it-works" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
+                <a href="#solutions" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
+                <a href="#ai-advisor" class="nav-link" data-translate="nav_ai_advisor">✨ Conseiller IA</a>
+                <a href="#control-panel" class="nav-link" data-translate="nav_control_panel">Panneau de Contrôle</a>
+                <a href="#contact" class="cta-button" data-translate="nav_get_quote">Obtenir un devis</a>
+            </div>
+            <div class="flex items-center">
+                <select id="language-switcher" class="mr-4 p-2 rounded-md">
+                    <option value="fr">FR</option>
+                    <option value="en">EN</option>
+                    <option value="ar">AR</option>
+                </select>
+                <div class="flex items-center cursor-pointer" id="theme-toggle">
+                    <svg id="theme-icon-light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="theme-icon-dark" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </div>
+                <div class="md:hidden ml-4">
+                    <button id="menu-btn" class="focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm" data-translate="nav_about_mobile">À propos</a>
+            <a href="#how-it-works" class="block py-2 px-4 text-sm" data-translate="nav_how_it_works_mobile">Comment ça marche</a>
+            <a href="#solutions" class="block py-2 px-4 text-sm" data-translate="nav_solutions_mobile">Nos Solutions</a>
+            <a href="#ai-advisor" class="block py-2 px-4 text-sm" data-translate="nav_ai_advisor_mobile">✨ Conseiller IA</a>
+            <a href="#control-panel" class="block py-2 px-4 text-sm" data-translate="nav_control_panel_mobile">Panneau de Contrôle</a>
+            <a href="#contact" class="block py-2 px-4 text-sm" data-translate="nav_get_quote_mobile">Obtenir un devis</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section Accueil -->
+        <section id="home" class="hero-bg text-white h-screen flex items-center">
+            <div class="container mx-auto px-6 text-left md:w-1/2">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4" data-translate="hero_title">Du traditionnel au smart - connectez votre ferme à l'avenir.</h1>
+                <p class="text-xl mb-8" data-translate="hero_subtitle">Solutions de modernisation abordables pour une agriculture plus efficace.</p>
+                <a href="#solutions" class="cta-button-white" data-translate="hero_button">Découvrir nos solutions</a>
+            </div>
+        </section>
+
+        <!-- Section À propos -->
+        <section id="about" class="py-20 animated-section">
+            <div class="container mx-auto px-6">
+                 <h2 class="section-title" data-translate="about_main_title">L'Agriculture de Demain, Une Récolte à la Fois.</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <img src="image/about_us_im2.jpg" alt="Ferme Intelligente avec IoT" class="rounded-lg shadow-lg w-full">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-4" data-translate="about_vision_title">Notre Vision : Un futur où chaque ferme est intelligente.</h3>
+                        <p class="text-lg" data-translate="about_intro_text">Chez FarmLink, nous voyons l'agriculture non pas comme une industrie du passé, mais comme la technologie la plus essentielle de l'avenir...</p>
+                        <button id="read-more-btn" class="mt-6 cta-button" data-translate="read_more">Lire la suite</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Comment ça marche -->
+        <section id="how-it-works" class="py-20 animated-section">
+             <div class="container mx-auto px-6 text-center">
+                <h2 class="section-title" data-translate="how_it_works_title">Comment ça marche ?</h2>
+                <div class="grid md:grid-cols-3 gap-12 mt-12">
+                    <div class="how-it-works-card animated-section" style="transition-delay: 100ms;">
+                        <div class="card-icon">1</div>
+                        <h3 class="text-xl font-bold my-4" data-translate="step1_title">Installation "Retrofit"</h3>
+                        <p data-translate="step1_desc">Nous installons nos modules sur votre équipement existant, sans remplacement coûteux.</p>
+                    </div>
+                    <div class="how-it-works-card animated-section" style="transition-delay: 200ms;">
+                        <div class="card-icon">2</div>
+                        <h3 class="text-xl font-bold my-4" data-translate="step2_title">Connexion au Cloud</h3>
+                        <p data-translate="step2_desc">Les capteurs envoient les données en temps réel à notre plateforme sécurisée.</p>
+                    </div>
+                    <div class="how-it-works-card animated-section" style="transition-delay: 300ms;">
+                        <div class="card-icon">3</div>
+                        <h3 class="text-xl font-bold my-4" data-translate="step3_title">Contrôle & Optimisation</h3>
+                        <p data-translate="step3_desc">Vous gérez tout depuis le panneau de contrôle et recevez des recommandations de l'IA.</p>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- Section Solutions -->
+        <section id="solutions" class="py-20 animated-section">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title" data-translate="solutions_title">Nos Solutions Modulaires</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="solution-card animated-section" style="transition-delay: 100ms;">
+                        <h3 class="text-2xl font-bold mb-4" data-translate="solution_irrigation_title">Irrigation Intelligente</h3>
+                        <p data-translate="solution_irrigation_desc">Optimisez votre consommation d'eau avec des vannes intelligentes et une planification automatisée.</p>
+                    </div>
+                    <div class="solution-card animated-section" style="transition-delay: 200ms;">
+                        <h3 class="text-2xl font-bold mb-4" data-translate="solution_pump_title">Contrôle des Pompes</h3>
+                        <p data-translate="solution_pump_desc">Gérez vos pompes à distance et surveillez le débit et la pression en temps réel.</p>
+                    </div>
+                    <div class="solution-card animated-section" style="transition-delay: 300ms;">
+                        <h3 class="text-2xl font-bold mb-4" data-translate="solution_env_title">Surveillance Environnementale</h3>
+                        <p data-translate="solution_env_desc">Prenez des décisions éclairées grâce aux données des capteurs de température, d'humidité et de sol.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Conseiller IA -->
+        <section id="ai-advisor" class="py-20 animated-section">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title" data-translate="ai_advisor_title">✨ Conseiller Agricole IA</h2>
+                <div class="max-w-2xl mx-auto control-card">
+                    <p class="mb-4" data-translate="ai_advisor_intro">Un problème avec vos cultures ? Décrivez-le et obtenez une analyse instantanée.</p>
+                    <form id="ai-advisor-form">
+                        <div class="mb-4">
+                            <label for="crop-issue" class="block font-bold mb-2 text-left" data-translate="ai_advisor_label">Description du problème</label>
+                            <textarea id="crop-issue" class="form-input" rows="4" placeholder="Ex: Mes plants de tomates ont des taches jaunes sur les feuilles..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full cta-button" data-translate="ai_advisor_button">Obtenir une analyse IA</button>
+                    </form>
+                    <div id="ai-advisor-response-container" class="mt-6 text-left hidden">
+                        <div id="ai-advisor-spinner" class="spinner mx-auto"></div>
+                        <div id="ai-advisor-response" class="prose"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Panneau de Contrôle Simple -->
+        <section id="control-panel" class="py-20 animated-section">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title" data-translate="control_panel_title">Panneau de Contrôle Intelligent</h2>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 mt-12">
+                    <div class="control-card animated-section" style="transition-delay: 100ms;">
+                        <h3 class="text-xl font-bold mb-4" data-translate="valve_control_title">Contrôle de la vanne</h3>
+                        <p><span data-translate="status">Statut</span>: <span id="valveStateText" data-translate-dynamic="valve_status_closed">Fermée</span></p>
+                        <div class="mt-4">
+                            <button onclick="openValve()" class="cta-button-small">Ouvrir</button>
+                            <button onclick="closeValve()" class="cta-button-small-gray">Fermer</button>
+                            <button onclick="stopValve()" class="cta-button-small-red">Arrêter</button>
+                        </div>
+                        <p class="mt-4"><span data-translate="current_angle">Angle actuel</span>: <span id="valveAngle">0</span>°</p>
+                    </div>
+                    <div class="control-card animated-section" style="transition-delay: 200ms; grid grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-bold">🌡️ <span data-translate="sensor_temp">Température</span></h4>
+                            <p class="text-2xl font-bold"><span id="tempValue">--</span> °C</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">💧 <span data-translate="sensor_humidity">Humidité</span></h4>
+                            <p class="text-2xl font-bold"><span id="humidityValue">--</span> %</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">🌱 <span data-translate="sensor_soil">Humidité du sol</span></h4>
+                            <p class="text-2xl font-bold"><span id="soilValue">--</span> %</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">🌧️ <span data-translate="sensor_rain">Pluie</span></h4>
+                            <p class="text-2xl font-bold" id="rainValue" data-translate-dynamic="rain_no">--</p>
+                        </div>
+                    </div>
+                    <div class="control-card md:col-span-2 animated-section" style="transition-delay: 300ms;">
+                        <button id="generate-report-btn" class="w-full cta-button" data-translate="generate_report">✨ Générer le Rapport du Jour</button>
+                        <div id="report-response-container" class="mt-6 text-left hidden">
+                            <div id="report-spinner" class="spinner mx-auto"></div>
+                            <div id="report-response" class="prose"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Contact -->
+        <section id="contact" class="py-20 animated-section">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title" data-translate="contact_title">Contactez-nous</h2>
+                <div class="max-w-lg mx-auto">
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="block font-bold mb-2" data-translate="contact_name">Nom</label>
+                            <input type="text" id="name" class="form-input">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block font-bold mb-2" data-translate="contact_email">Email</label>
+                            <input type="email" id="email" class="form-input">
+                        </div>
+                        <button type="submit" class="w-full cta-button" data-translate="contact_send">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="container mx-auto px-6 text-center py-8">
+            <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Fenêtre Modale pour "À propos de nous" -->
+    <div id="about-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="modal-close-btn">&times;</button>
+            <h2 class="text-3xl font-bold text-blue-800 mb-4" data-translate="about_main_title">À Propos de FarmLink : L'Agriculture de Demain, Une Récolte à la Fois.</h2>
+            <div class="space-y-6 text-lg">
+                <div>
+                    <h4 class="text-2xl font-bold text-green-600 mb-2" data-translate="about_vision_title_full">Notre Vision : Un futur où chaque ferme est intelligente.</h4>
+                    <p data-translate="about_vision_text">Chez FarmLink, nous voyons l'agriculture non pas comme une industrie du passé, mais comme la technologie la plus essentielle de l'avenir...</p>
+                </div>
+                <div>
+                    <h4 class="text-2xl font-bold text-green-600 mb-2" data-translate="about_commitment_title">Notre Engagement : Affronter les défis mondiaux avec l'innovation "retrofit".</h4>
+                    <p data-translate="about_commitment_text">Dans un monde où les ressources sont limitées et les défis climatiques s'intensifient, la mission de FarmLink est plus vitale que jamais...</p>
+                </div>
+                <div>
+                    <h4 class="text-2xl font-bold text-green-600 mb-2" data-translate="about_invest_title">Pourquoi investir dans FarmLink ?</h4>
+                    <p data-translate="about_invest_text">Nous ne vendons pas seulement des produits ; nous offrons un avenir durable...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
