@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmLink - Conseiller IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+
+    <header class="sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html">
+                    <img src="image/logo.png" alt="Logo FarmLink" class="h-14 w-auto">
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="about.html" class="nav-link" data-translate="nav_about">À propos</a>
+                <a href="how-it-works.html" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
+                <a href="solutions.html" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
+                <a href="ai-advisor.html" class="nav-link active" data-translate="nav_ai_advisor">✨ Conseiller IA</a>
+                <a href="contact.html" class="cta-button" data-translate="nav_get_quote">Obtenir un devis</a>
+            </div>
+            <div class="flex items-center">
+                 <select id="language-switcher" class="mr-4 p-2 rounded-md">
+                    <option value="fr">FR</option>
+                    <option value="en">EN</option>
+                    <option value="ar">AR</option>
+                </select>
+                <div class="flex items-center cursor-pointer" id="theme-toggle">
+                    <svg id="theme-icon-light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="theme-icon-dark" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </div>
+                <div class="md:hidden ml-4">
+                    <button id="menu-btn" class="focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="about.html" class="block py-2 px-4 text-sm" data-translate="nav_about_mobile">À propos</a>
+            <a href="how-it-works.html" class="block py-2 px-4 text-sm" data-translate="nav_how_it_works_mobile">Comment ça marche</a>
+            <a href="solutions.html" class="block py-2 px-4 text-sm" data-translate="nav_solutions_mobile">Nos Solutions</a>
+            <a href="ai-advisor.html" class="block py-2 px-4 text-sm" data-translate="nav_ai_advisor_mobile">✨ Conseiller IA</a>
+            <a href="contact.html" class="block py-2 px-4 text-sm" data-translate="nav_get_quote_mobile">Obtenir un devis</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="ai-advisor" class="py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="section-title" data-translate="ai_advisor_title" data-aos="fade-up">✨ Conseiller Agricole IA</h2>
+
+                <!-- Section pour l'analyse par image -->
+                <div class="max-w-2xl mx-auto control-card mt-12" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-2xl font-bold mb-4" data-translate="ai_advisor_image_title">Analyse par Image</h3>
+                    <p class="mb-6" data-translate="ai_advisor_image_intro">Téléversez une photo d'une feuille de culture pour un diagnostic instantané.</p>
+                    
+                    <div id="image-analyzer">
+                        <div id="image-preview-container" class="mb-4 hidden">
+                            <img id="image-preview" src="#" alt="Aperçu de l'image" class="image-preview-style"/>
+                        </div>
+
+                        <label for="image-upload" class="cta-button cursor-pointer">
+                            <span data-translate="ai_advisor_upload_btn">Choisir une image</span>
+                        </label>
+                        <input type="file" id="image-upload" class="hidden" accept="image/*">
+
+                        <div id="image-result-container" class="mt-6 text-left hidden">
+                            <div id="image-spinner" class="spinner mx-auto"></div>
+                            <div id="image-result-text" class="prose dark:prose-invert max-w-none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section pour l'analyse par texte -->
+                <div class="max-w-2xl mx-auto control-card mt-12" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="text-2xl font-bold mb-4" data-translate="ai_advisor_text_title">Analyse par Texte</h3>
+                    <p class="mb-4" data-translate="ai_advisor_intro">Un problème avec vos cultures ? Décrivez-le et obtenez une analyse instantanée.</p>
+                    <form id="ai-advisor-form">
+                        <div class="mb-4">
+                            <label for="crop-issue" class="block font-bold mb-2 text-left" data-translate="ai_advisor_label">Description du problème</label>
+                            <textarea id="crop-issue" class="form-input" rows="4" placeholder="Ex: Mes plants de tomates ont des taches jaunes sur les feuilles..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full cta-button" data-translate="ai_advisor_button">Obtenir une analyse IA</button>
+                    </form>
+                    <div id="ai-advisor-response-container" class="mt-6 text-left hidden">
+                        <div id="ai-advisor-spinner" class="spinner mx-auto"></div>
+                        <div id="ai-advisor-response" class="prose dark:prose-invert max-w-none"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-6">
+            <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
