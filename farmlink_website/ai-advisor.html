@@ -7,9 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
+<body>
 
     <header class="sticky top-0 z-50 shadow-md">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -56,45 +57,43 @@
             <div class="container mx-auto px-6 text-center">
                 <h2 class="section-title" data-translate="ai_advisor_title" data-aos="fade-up">✨ Conseiller Agricole IA</h2>
 
-                <!-- Section pour l'analyse par image -->
-                <div class="max-w-2xl mx-auto control-card mt-12" data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="text-2xl font-bold mb-4" data-translate="ai_advisor_image_title">Analyse par Image</h3>
-                    <p class="mb-6" data-translate="ai_advisor_image_intro">Téléversez une photo d'une feuille de culture pour un diagnostic instantané.</p>
+                <div class="max-w-3xl mx-auto control-card mt-12" data-aos="fade-up" data-aos-delay="200">
+                    <!-- Zone d'affichage des résultats -->
+                    <div id="ai-results-container" class="ai-results-container mb-4">
+                        <div id="image-preview-wrapper" class="hidden">
+                            <img id="previewImg" alt="Aperçu de l'image">
+                            <video id="cam" autoplay playsinline muted hidden></video>
+                            <!-- Bouton de capture qui apparaît sur la vidéo -->
+                            <button id="captureBtn" class="capture-button hidden" title="Prendre une photo"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div id="ai-response-text" class="ai-response-text">
+                            <p data-translate="ai_welcome">Bonjour ! Posez-moi une question sur vos cultures ou envoyez-moi une photo.</p>
+                        </div>
+                         <div id="ai-spinner" class="spinner mx-auto hidden"></div>
+                    </div>
                     
-                    <div id="image-analyzer">
-                        <div id="image-preview-container" class="mb-4 hidden">
-                            <img id="image-preview" src="#" alt="Aperçu de l'image" class="image-preview-style"/>
-                        </div>
+                    <!-- Barre de progression -->
+                    <div class="progress-bar-container my-2" id="progress-container" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
 
-                        <label for="image-upload" class="cta-button cursor-pointer">
-                            <span data-translate="ai_advisor_upload_btn">Choisir une image</span>
+                    <!-- Zone de saisie unifiée -->
+                    <form id="ai-input-form" class="ai-input-form">
+                        <label for="fileInput" class="ai-action-button" title="Téléverser une image">
+                            <i class="fas fa-paperclip"></i>
                         </label>
-                        <input type="file" id="image-upload" class="hidden" accept="image/*">
-
-                        <div id="image-result-container" class="mt-6 text-left hidden">
-                            <div id="image-spinner" class="spinner mx-auto"></div>
-                            <div id="image-result-text" class="prose dark:prose-invert max-w-none"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section pour l'analyse par texte -->
-                <div class="max-w-2xl mx-auto control-card mt-12" data-aos="fade-up" data-aos-delay="400">
-                    <h3 class="text-2xl font-bold mb-4" data-translate="ai_advisor_text_title">Analyse par Texte</h3>
-                    <p class="mb-4" data-translate="ai_advisor_intro">Un problème avec vos cultures ? Décrivez-le et obtenez une analyse instantanée.</p>
-                    <form id="ai-advisor-form">
-                        <div class="mb-4">
-                            <label for="crop-issue" class="block font-bold mb-2 text-left" data-translate="ai_advisor_label">Description du problème</label>
-                            <textarea id="crop-issue" class="form-input" rows="4" placeholder="Ex: Mes plants de tomates ont des taches jaunes sur les feuilles..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full cta-button" data-translate="ai_advisor_button">Obtenir une analyse IA</button>
+                        <input id="fileInput" type="file" class="hidden" accept="image/*" />
+                        
+                        <button type="button" id="webcamBtn" class="ai-action-button" title="Utiliser la caméra">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        
+                        <textarea id="text-input" class="form-input flex-grow" rows="1" placeholder="Posez votre question ici..."></textarea>
+                        
+                        <button type="submit" class="cta-button icon-button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
                     </form>
-                    <div id="ai-advisor-response-container" class="mt-6 text-left hidden">
-                        <div id="ai-advisor-spinner" class="spinner mx-auto"></div>
-                        <div id="ai-advisor-response" class="prose dark:prose-invert max-w-none"></div>
-                    </div>
+                     <p class="text-sm mt-4 text-gray-500" data-translate="privacyNote">Confidentialité garantie : Toute l'analyse est effectuée sur votre appareil.</p>
                 </div>
-
             </div>
         </section>
     </main>
@@ -105,6 +104,14 @@
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- BIBLIOTHÈQUES IA (TensorFlow.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.21.0/dist/tf-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@4.21.0/dist/tf-converter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@4.21.0/dist/tf-backend-webgl.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna@1.7.1/dist/qna.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>

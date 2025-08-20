@@ -1,8 +1,35 @@
 /* style.css */
 
-/* Creative & Modern Styles for FarmLink - Revised */
+/* Styles Créatifs et Modernes pour FarmLink v2 */
 
 :root {
+    --background-primary: #0b1220; /* Bleu marine très sombre */
+    --background-secondary: rgba(15, 23, 48, 0.6); /* Bleu marine semi-transparent pour l'effet verre */
+    --text-primary: #e6ebff; /* Blanc cassé doux */
+    --text-secondary: #96a0c6; /* Ardoise doux */
+    --border-color: rgba(43, 59, 117, 0.5);
+    --green: #8affc1; /* Vert menthe vif */
+    --blue: #66e3ff; /* Cyan vif */
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --font-family-main: 'Poppins', sans-serif;
+}
+
+/* Le mode sombre est maintenant le style par défaut, le mode clair est une variation */
+body {
+    font-family: var(--font-family-main);
+    color: var(--text-primary);
+    background-color: var(--background-primary);
+    background-image: 
+        radial-gradient(at 10% 10%, hsla(220, 60%, 25%, 0.3) 0px, transparent 50%),
+        radial-gradient(at 80% 20%, hsla(190, 60%, 30%, 0.25) 0px, transparent 50%),
+        radial-gradient(at 20% 90%, hsla(160, 50%, 20%, 0.3) 0px, transparent 50%),
+        radial-gradient(at 90% 85%, hsla(240, 40%, 25%, 0.2) 0px, transparent 50%);
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body:not(.dark) {
     --background-primary: #f8f9fa;
     --background-secondary: #ffffff;
     --text-primary: #212529;
@@ -11,31 +38,14 @@
     --green: #28a745;
     --blue: #007bff;
     --shadow-color: rgba(0, 0, 0, 0.1);
-    --font-family-main: 'Poppins', sans-serif;
 }
 
-body.dark {
-    --background-primary: #010A1A; /* Deep ocean blue base */
-    --background-secondary: #021838; /* Richer blue for cards */
-    --text-primary: #E0F4FF; /* Soft blue-white text */
-    --text-secondary: #89A4B5; /* Muted cyan/grey text */
-    --border-color: #102A4C; /* Subtle blue border */
-    --shadow-color: rgba(0, 0, 0, 0.6);
-    --blue: #36A2EB; /* Brighter blue for dark mode accents */
-}
-
-body {
-    font-family: var(--font-family-main);
-    color: var(--text-primary);
-    background-color: var(--background-primary);
-    transition: background-color 0.3s, color 0.3s;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* Header */
+/* En-tête avec effet verre */
 header {
     background-color: var(--background-secondary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
     transition: background-color 0.3s ease-in-out;
 }
 
@@ -54,23 +64,26 @@ header {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--green);
+    background-image: linear-gradient(to right, var(--green), var(--blue));
     transition: all 0.3s ease-in-out;
 }
 .nav-link:hover::after, .nav-link.active::after {
     width: 100%;
 }
 .nav-link:hover, .nav-link.active {
-    color: var(--green);
+    color: var(--blue);
 }
 
 #language-switcher {
-    background-color: var(--background-secondary);
+    background-color: transparent;
     color: var(--text-primary);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease-in-out;
     border-radius: 6px;
     padding: 0.5rem;
+}
+body:not(.dark) #language-switcher {
+    background-color: var(--background-secondary);
 }
 
 #theme-toggle svg {
@@ -80,35 +93,48 @@ header {
 
 #mobile-menu {
     background-color: var(--background-secondary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 #mobile-menu a {
     color: var(--text-primary);
 }
 #mobile-menu a:hover {
-    background-color: var(--background-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+body:not(.dark) #mobile-menu a:hover {
+     background-color: var(--background-primary);
 }
 
-/* Buttons */
+
+/* Boutons améliorés */
 .cta-button, .summary-button-alt {
     background-image: linear-gradient(to right, var(--green), var(--blue));
-    color: white;
-    padding: 14px 28px;
+    color: #0b1220;
+    padding: 14px 32px;
     border-radius: 50px;
     font-weight: bold;
     transition: all 0.4s ease;
     background-size: 200% auto;
     border: none;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    box-shadow: 0 6px 25px rgba(102, 227, 255, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 .cta-button:hover, .summary-button-alt:hover {
     background-position: right center;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(138, 255, 193, 0.3);
+}
+body:not(.dark) .cta-button {
+    color: white;
 }
 
 .cta-button-white {
     background-color: rgba(255, 255, 255, 0.9);
-    color: var(--blue);
+    color: #007bff;
     padding: 14px 28px;
     border-radius: 50px;
     font-weight: bold;
@@ -120,7 +146,7 @@ header {
     transform: scale(1.05);
 }
 
-/* Hero Section */
+/* Section Héros */
 .hero-bg {
     background-image: url('image/background_im2.png');
     background-size: cover;
@@ -128,11 +154,11 @@ header {
     background-attachment: fixed;
 }
 
-/* Sections */
+/* Titres de section */
 .section-title {
     font-size: 3rem;
     font-weight: 700;
-    color: var(--blue);
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 4rem;
     position: relative;
@@ -140,134 +166,70 @@ header {
 .section-title::after {
     content: '';
     position: absolute;
-    width: 80px;
+    width: 100px;
     height: 4px;
     bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--green);
+    background-image: linear-gradient(to right, var(--green), var(--blue));
     border-radius: 2px;
 }
 
-/* Cards */
-.how-it-works-card, .solution-card, .control-card, .testimonial-card {
+/* Cartes avec effet verre */
+.control-card, .testimonial-card, .solution-card {
     background-color: var(--background-secondary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px var(--shadow-color);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px var(--shadow-color);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-.how-it-works-card, .solution-card, .control-card {
-    border-bottom: 4px solid var(--green);
-}
-.testimonial-card {
-     border-top: 4px solid var(--green);
+    border: 1px solid var(--border-color);
 }
 
-.testimonial-card .italic {
-    color: var(--text-secondary);
-}
-.testimonial-card .font-bold {
-    color: var(--text-primary);
-}
-
-.how-it-works-card:hover, .solution-card:hover, .control-card:hover, .testimonial-card:hover {
+.testimonial-card:hover, .control-card:hover, .solution-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px var(--shadow-color);
+    box-shadow: 0 20px 50px var(--shadow-color);
+    border-color: rgba(102, 227, 255, 0.7);
 }
 
-.card-icon {
-    background-image: linear-gradient(to right, var(--green), var(--blue));
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0 auto 1.5rem auto;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-}
-
-/* Forms */
+/* Formulaires */
 .form-input {
     width: 100%;
     padding: 14px;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
-    background-color: var(--background-secondary);
+    background-color: rgba(0,0,0,0.1);
     color: var(--text-primary);
+}
+body:not(.dark) .form-input {
+    background-color: var(--background-secondary);
 }
 .form-input:focus {
     outline: none;
     border-color: var(--blue);
-    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(102, 227, 255, 0.2);
 }
 
-/* AI Response */
-.prose {
-    line-height: 1.7;
-    color: var(--text-secondary);
-}
+/* Spinner */
 .spinner {
-    border: 4px solid rgba(255,255,255,0.1);
+    border: 4px solid var(--border-color);
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    border-left-color: var(--green);
+    border-left-color: var(--blue);
     animation: spin 1s linear infinite;
 }
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
-/* Footer */
-footer {
-    background-color: #010A1A; /* Match deep ocean primary */
-    color: #89A4B5; /* Match deep ocean secondary text */
-}
-body:not(.dark) footer {
-    color: var(--text-primary);
-    background-color: var(--background-secondary);
-}
-
-/* RTL Styles */
-[dir="rtl"] .space-x-8 > * + * {
-    margin-right: 2rem;
-    margin-left: 0;
-}
-[dir="rtl"] .text-left {
-    text-align: right;
-}
-
-/* Summary Section */
-.summary-section {
-    padding: 6rem 0;
-    background-color: var(--background-primary);
-    transition: background-color 0.3s ease-in-out;
-}
-.summary-section.bg-alt {
-    background-color: var(--background-secondary);
-}
-
-.summary-title {
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--blue);
-    margin-bottom: 1.5rem;
-}
-
-.summary-desc {
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    margin-bottom: 2.5rem;
-}
-
+/* Sections Résumé (Homepage) */
+.summary-section { padding: 6rem 0; }
+.summary-title { font-size: 2.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; }
+.summary-desc { font-size: 1.125rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 2.5rem; }
 .testimonial-img {
     width: 120px;
     height: 120px;
@@ -279,74 +241,117 @@ body:not(.dark) footer {
     transition: border-color 0.3s ease-in-out;
 }
 
-/* =================================== */
-/* Explicit Dark Mode Overrides */
-/* =================================== */
-
-body.dark .section-title {
-    color: var(--blue);
+/* Nouvelle Interface Conseiller IA */
+.ai-results-container {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    border: 1px solid var(--border-color);
+}
+body:not(.dark) .ai-results-container {
+    background-color: rgba(0,0,0,0.05);
 }
 
-body.dark .summary-title {
-    color: var(--blue);
+#image-preview-wrapper {
+    width: 100%;
+    max-height: 300px;
+    margin-bottom: 1rem;
+    position: relative;
+}
+#image-preview-wrapper img, #image-preview-wrapper video {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
 }
 
-body.dark .summary-desc {
-    color: var(--text-secondary);
-}
+.ai-response-text { width: 100%; line-height: 1.6; }
 
-body.dark .summary-section {
-    background-color: var(--background-primary);
+.ai-input-form {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: rgba(0,0,0,0.2);
+    padding: 0.5rem;
+    border-radius: 50px;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
 }
-
-body.dark .summary-section.bg-alt {
+body:not(.dark) .ai-input-form {
     background-color: var(--background-secondary);
 }
 
-body.dark .testimonial-img {
-    border-color: var(--background-primary);
-}
-/* Copiez et collez ceci à la fin de votre fichier style.css */
-
-/* Spinner pour le chargement de l'IA */
-.spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border-left-color: var(--green);
-    animation: spin 1s ease infinite;
-}
-
-body.dark .spinner {
-    border-left-color: var(--blue);
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Styles pour les résultats de l'IA */
-.prose {
+.ai-input-form textarea {
+    background: transparent;
+    border: none;
+    resize: none;
     color: var(--text-primary);
-    line-height: 1.7;
+    padding: 0.5rem;
+    height: 40px;
+    flex-grow: 1;
 }
+.ai-input-form textarea:focus { outline: none; box-shadow: none; }
 
-.prose h4 {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.prose strong {
-    color: var(--text-primary);
-}
-
-/* Assurer que le curseur est correct sur le label du bouton */
-.cta-button.cursor-pointer {
+.ai-action-button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
     cursor: pointer;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: color 0.2s, background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
+.ai-action-button:hover {
+    color: var(--text-primary);
+    background-color: rgba(255,255,255,0.1);
+}
+.ai-action-button.active { color: var(--blue); }
+
+.progress-bar-container {
+    width: 100%;
+    height: 4px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 999px;
+    overflow: hidden;
+    transition: opacity 0.3s;
+}
+.progress-bar-container.hidden { opacity: 0; }
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-image: linear-gradient(to right, var(--green), var(--blue));
+    transition: width 0.3s ease;
+}
+
+.capture-button {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+.capture-button:hover { background-color: rgba(0, 0, 0, 0.7); }
