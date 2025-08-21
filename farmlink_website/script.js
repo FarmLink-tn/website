@@ -5,12 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
             nav_about: "À propos",
             nav_how_it_works: "Comment ça marche",
             nav_solutions: "Nos Solutions",
-            nav_ai_advisor: "Conseiller IA",
+            nav_ai_advisor: "✨ Conseiller IA",
             nav_get_quote: "Obtenir un devis",
             nav_about_mobile: "À propos",
             nav_how_it_works_mobile: "Comment ça marche",
             nav_solutions_mobile: "Nos Solutions",
-            nav_ai_advisor_mobile: "Conseiller IA",
+            nav_ai_advisor_mobile: "✨ Conseiller IA",
             nav_get_quote_mobile: "Obtenir un devis",
             hero_title: "Du traditionnel au smart - connectez votre ferme à l'avenir.",
             hero_subtitle: "Solutions de modernisation abordables pour une agriculture plus efficace.",
@@ -18,15 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
             summary_about_title: "Notre Vision : Un Futur Intelligent",
             summary_about_desc: "Nous démocratisons l'agriculture intelligente. Découvrez comment notre engagement envers l'innovation \"retrofit\" relève les défis mondiaux et crée un avenir durable pour tous.",
             learn_more_about_us: "En savoir plus sur nous",
-            summary_how_it_works_title: "Simple, Efficace, Connecté",
-            summary_how_it_works_desc: "De l'installation \"retrofit\" sur votre équipement existant à la gestion via notre cloud sécurisé, découvrez notre processus simple en trois étapes pour optimiser votre ferme.",
-            see_the_process: "Voir le processus",
             summary_solutions_title: "Solutions Modulaires Puissantes",
             summary_solutions_desc: "Irrigation intelligente, contrôle des pompes, surveillance environnementale. Explorez nos solutions conçues pour optimiser vos ressources et maximiser vos rendements.",
             explore_solutions: "Explorer nos solutions",
             summary_ai_advisor_title: "Votre Agronome Personnel",
             summary_ai_advisor_desc: "Un problème avec vos cultures ? Décrivez-le à notre Conseiller IA et recevez une analyse et des recommandations instantanées pour protéger votre récolte.",
             try_ai_advisor: "Essayer le conseiller IA",
+            summary_contact_title: "Prêt à moderniser votre ferme ?",
+            summary_contact_desc: "Discutons de vos besoins. Contactez-nous dès aujourd'hui pour obtenir un devis personnalisé et découvrir comment FarmLink peut transformer votre exploitation.",
+            contact_us_button: "Contactez-nous",
             testimonials_title: "Ce que disent nos agriculteurs",
             testimonial_1_text: "\"FarmLink a transformé ma gestion de l'eau. J'économise du temps et de l'argent, et mes rendements n'ont jamais été aussi bons.\"",
             testimonial_1_name: "Karim A.",
@@ -37,65 +37,76 @@ document.addEventListener('DOMContentLoaded', () => {
             testimonial_3_text: "\"Le conseiller IA est un véritable plus. Il m'a aidé à identifier un problème de ravageurs avant qu'il ne se propage. C'est l'avenir !\"",
             testimonial_3_name: "Youssef B.",
             testimonial_3_location: "Serriste, Kairouan",
-            ai_advisor_title: "Conseiller Agricole IA",
-            ai_advisor_image_title: "Analyse par Image (Démo)",
-            ai_advisor_image_intro_demo: "Identifiez des objets dans vos photos. Cette démo utilise le modèle MobileNet v2 qui s'exécute entièrement dans votre navigateur.",
-            uploadImage: "Choisir une image…",
-            toggleCam: "Activer la caméra",
-            classify: "Analyser l'image",
-            resultHint: "Chargez une image pour commencer.",
-            privacyNote: "Confidentialité garantie : Toute l'analyse est effectuée sur votre appareil, aucune image n'est envoyée sur un serveur.",
-            ai_advisor_text_title: "Analyse par Texte",
-            ai_advisor_intro: "Un problème avec vos cultures ? Décrivez-le et obtenez une analyse instantanée.",
-            ai_advisor_label: "Description du problème",
-            ai_advisor_button: "Obtenir une analyse IA",
-            ai_error_message: "Désolé, une erreur est survenue lors de l'analyse. Veuillez réessayer.",
+            footer_copyright: "&copy; 2025 FarmLink. Tous droits réservés.",
+            about_main_title: "L'Agriculture de Demain, Une Récolte à la Fois.",
+            about_vision_title: "Notre Vision : Un futur où chaque ferme est intelligente.",
+            about_intro_text: "Chez FarmLink, nous voyons l'agriculture non pas comme une industrie du passé, mais comme la technologie la plus essentielle de l'avenir. Notre mission est de démocratiser l'agriculture intelligente.",
+            about_commitment_title: "Notre Engagement : Affronter les défis mondiaux avec l'innovation \"retrofit\".",
+            about_commitment_text: "Dans un monde où les ressources sont limitées et les défis climatiques s'intensifient, la mission de FarmLink est plus vitale que jamais.",
+            how_it_works_title: "Comment ça marche ?",
+            step1_title: "Installation \"Retrofit\"",
+            step1_desc: "Nous installons nos modules sur votre équipement existant, sans remplacement coûteux.",
+            step2_title: "Connexion au Cloud",
+            step2_desc: "Les capteurs envoient les données en temps réel à notre plateforme sécurisée.",
+            step3_title: "Contrôle & Optimisation",
+            step3_desc: "Vous gérez tout depuis le panneau de contrôle et recevez des recommandations de l'IA.",
+            solutions_title: "Nos Solutions Modulaires",
+            solution_irrigation_title: "Irrigation Intelligente",
+            solution_irrigation_desc: "Optimisez votre consommation d'eau avec des vannes intelligentes et une planification automatisée.",
+            solution_pump_title: "Contrôle des Pompes",
+            solution_pump_desc: "Gérez vos pompes à distance et surveillez le débit et la pression en temps réel.",
+            solution_env_title: "Surveillance Environnementale",
+            solution_env_desc: "Prenez des décisions éclairées grâce aux données des capteurs de température, d'humidité et de sol.",
+            ai_advisor_title: "✨ Conseiller Agricole IA",
+            ai_welcome: "Bonjour ! Posez-moi une question sur vos cultures ou envoyez-moi une photo.",
+            privacyNote: "Confidentialité garantie : Toute l'analyse est effectuée sur votre appareil.",
+            contact_title: "Contactez-nous",
+            contact_intro: "Une question ? Un projet ? N'hésitez pas à nous contacter. Notre équipe est prête à vous aider à franchir le pas vers l'agriculture intelligente.",
+            contact_name: "Nom",
+            contact_email: "Email",
+            contact_phone: "Numéro de téléphone",
+            contact_message: "Message",
+            contact_send: "<i class='fas fa-paper-plane mr-2'></i> Envoyer le Message",
             context_agricole: `
                 ### SUJET: AGRICULTURE EN TUNISIE ###
                 L'agriculture en Tunisie fait face à des défis comme la sécheresse et la salinité des sols. Les cultures principales sont les olives, les céréales, les dattes et les agrumes. La bonne gestion de l'eau est cruciale.
-
                 ### PROBLÈME: FEUILLES JAUNES (CHLOROSE) ###
                 Les feuilles jaunes sur une plante sont souvent un signe de carence en nutriments ou de maladie.
                 - Sur les tomates, des taches jaunes peuvent indiquer le mildiou, surtout si le temps est humide. Une autre cause est la carence en azote, qui fait jaunir les vieilles feuilles en premier.
                 - Sur les oliviers, le jaunissement peut être causé par un manque d'eau, un sol trop calcaire, ou une maladie comme la verticilliose.
                 - Sur les agrumes (citronniers, orangers), des feuilles jaunes avec des nervures vertes indiquent souvent une carence en fer (chlorose ferrique), fréquente dans les sols calcaires tunisiens. Solution : apport de chélate de fer.
-
                 ### PROBLÈME: PARASITES COMMUNS ###
                 - Les pucerons sont de petits insectes verts ou noirs qui sucent la sève, affaiblissant la plante et transmettant des maladies. Solution : savon noir dilué ou insecticide naturel.
                 - La mouche de l'olivier pond ses œufs dans les olives, provoquant leur chute. Solution : surveillance avec des pièges (phéromones) et traitement si nécessaire.
                 - L'araignée rouge se développe par temps chaud et sec et crée de fines toiles sous les feuilles. Solution : pulvérisation d'eau sur le feuillage pour augmenter l'humidité.
-                
-                ### PROBLÈME: TACHES NOIRES SUR LES FEUILLES ###
-                Des taches noires sur les feuilles de tomate ou de pomme de terre peuvent être un signe d'alternariose, une maladie fongique. Solution : retirer les feuilles infectées, améliorer la circulation de l'air et appliquer un traitement à base de cuivre si l'attaque est sévère.
             `,
-            footer_copyright: "&copy; 2025 FarmLink. Tous droits réservés."
         },
         en: {
             nav_about: "About",
             nav_how_it_works: "How It Works",
-            nav_solutions: "Our Solutions",
-            nav_ai_advisor: "AI Advisor",
+            nav_solutions: "Solutions",
+            nav_ai_advisor: "✨ AI Advisor",
             nav_get_quote: "Get a Quote",
             nav_about_mobile: "About",
             nav_how_it_works_mobile: "How It Works",
-            nav_solutions_mobile: "Our Solutions",
-            nav_ai_advisor_mobile: "AI Advisor",
+            nav_solutions_mobile: "Solutions",
+            nav_ai_advisor_mobile: "✨ AI Advisor",
             nav_get_quote_mobile: "Get a Quote",
             hero_title: "From traditional to smart – connect your farm to the future.",
             hero_subtitle: "Affordable retrofit solutions for more efficient farming.",
             hero_button: "Discover our solutions",
             summary_about_title: "Our Vision: A Smart Future",
             summary_about_desc: "We are democratizing smart agriculture. Discover how our commitment to 'retrofit' innovation addresses global challenges and creates a sustainable future for all.",
-            learn_more_about_us: "Learn more about us",
-            summary_how_it_works_title: "Simple, Efficient, Connected",
-            summary_how_it_works_desc: "From 'retrofit' installation on your existing equipment to management via our secure cloud, discover our simple three-step process to optimize your farm.",
-            see_the_process: "See the process",
+            learn_more_about_us: "Learn More About Us",
             summary_solutions_title: "Powerful Modular Solutions",
             summary_solutions_desc: "Smart irrigation, pump control, environmental monitoring. Explore our solutions designed to optimize your resources and maximize your yields.",
-            explore_solutions: "Explore our solutions",
+            explore_solutions: "Explore Our Solutions",
             summary_ai_advisor_title: "Your Personal Agronomist",
             summary_ai_advisor_desc: "Have a problem with your crops? Describe it to our AI Advisor and receive an instant analysis and recommendations to protect your harvest.",
-            try_ai_advisor: "Try the AI advisor",
+            try_ai_advisor: "Try the AI Advisor",
+            summary_contact_title: "Ready to upgrade your farm?",
+            summary_contact_desc: "Let's discuss your needs. Contact us today for a personalized quote and find out how FarmLink can transform your operation.",
+            contact_us_button: "Contact Us",
             testimonials_title: "What Our Farmers Say",
             testimonial_1_text: "\"FarmLink has transformed my water management. I save time and money, and my yields have never been better.\"",
             testimonial_1_name: "Karim A.",
@@ -106,65 +117,72 @@ document.addEventListener('DOMContentLoaded', () => {
             testimonial_3_text: "\"The AI advisor is a real game-changer. It helped me identify a pest problem before it spread. This is the future!\"",
             testimonial_3_name: "Youssef B.",
             testimonial_3_location: "Greenhouse farmer, Kairouan",
-            ai_advisor_title: "AI Farming Advisor",
-            ai_advisor_image_title: "Image Analysis (Demo)",
-            ai_advisor_image_intro_demo: "Identify objects in your photos. This demo uses the MobileNet v2 model, which runs entirely in your browser.",
-            uploadImage: "Choose an image…",
-            toggleCam: "Enable camera",
-            classify: "Analyze Image",
-            resultHint: "Upload an image to start.",
-            privacyNote: "Privacy guaranteed: All analysis is done on your device; no images are sent to a server.",
-            ai_advisor_text_title: "Text Analysis",
-            ai_advisor_intro: "Having an issue with your crops? Describe it and get an instant analysis.",
-            ai_advisor_label: "Problem Description",
-            ai_advisor_button: "Get AI Analysis",
-            ai_error_message: "Sorry, an error occurred during the analysis. Please try again.",
+            footer_copyright: "&copy; 2025 FarmLink. All rights reserved.",
+            about_main_title: "The Future of Farming, One Harvest at a Time.",
+            about_vision_title: "Our Vision: A future where every farm is smart.",
+            about_intro_text: "At FarmLink, we see agriculture not as an industry of the past, but as the most essential technology of the future. Our mission is to democratize smart farming.",
+            about_commitment_title: "Our Commitment: Tackling global challenges with 'retrofit' innovation.",
+            about_commitment_text: "In a world of limited resources and intensifying climate challenges, FarmLink's mission is more vital than ever.",
+            how_it_works_title: "How It Works?",
+            step1_title: "\"Retrofit\" Installation",
+            step1_desc: "We install our modules on your existing equipment, without costly replacements.",
+            step2_title: "Cloud Connection",
+            step2_desc: "Sensors send real-time data to our secure platform.",
+            step3_title: "Control & Optimization",
+            step3_desc: "You manage everything from the control panel and receive AI-powered recommendations.",
+            solutions_title: "Our Modular Solutions",
+            solution_irrigation_title: "Smart Irrigation",
+            solution_irrigation_desc: "Optimize your water consumption with smart valves and automated scheduling.",
+            solution_pump_title: "Pump Control",
+            solution_pump_desc: "Manage your pumps remotely and monitor flow and pressure in real time.",
+            solution_env_title: "Environmental Monitoring",
+            solution_env_desc: "Make informed decisions with data from temperature, humidity, and soil sensors.",
+            ai_advisor_title: "✨ AI Farming Advisor",
+            ai_welcome: "Hello! Ask me a question about your crops or send me a photo.",
+            privacyNote: "Privacy guaranteed: All analysis is performed on your device.",
+            contact_title: "Contact Us",
+            contact_intro: "A question? A project? Don't hesitate to contact us. Our team is ready to help you take the step towards smart agriculture.",
+            contact_name: "Name",
+            contact_email: "Email",
+            contact_phone: "Phone Number",
+            contact_message: "Message",
+            contact_send: "<i class='fas fa-paper-plane mr-2'></i> Send Message",
             context_agricole: `
                 ### SUBJECT: AGRICULTURE IN TUNISIA ###
                 Agriculture in Tunisia faces challenges like drought and soil salinity. Main crops include olives, cereals, dates, and citrus fruits. Good water management is crucial.
-
                 ### PROBLEM: YELLOW LEAVES (CHLOROSIS) ###
                 Yellow leaves on a plant are often a sign of nutrient deficiency or disease.
                 - On tomatoes, yellow spots can indicate downy mildew, especially in humid weather. Another cause is nitrogen deficiency, which yellows older leaves first.
                 - On olive trees, yellowing can be caused by lack of water, soil that is too calcareous, or a disease like Verticillium wilt.
                 - On citrus trees (lemon, orange), yellow leaves with green veins often indicate an iron deficiency (iron chlorosis), common in Tunisian calcareous soils. Solution: apply iron chelate.
-
-                ### PROBLEM: COMMON PESTS ###
-                - Aphids are small green or black insects that suck sap, weakening the plant and transmitting diseases. Solution: diluted black soap or a natural insecticide.
-                - The olive fruit fly lays its eggs in olives, causing them to drop. Solution: monitoring with traps (pheromones) and treatment if necessary.
-                - The red spider mite thrives in hot, dry weather and creates fine webs under the leaves. Solution: spray water on the foliage to increase humidity.
-
-                ### PROBLEM: BLACK SPOTS ON LEAVES ###
-                Black spots on tomato or potato leaves can be a sign of early blight (Alternaria), a fungal disease. Solution: remove infected leaves, improve air circulation, and apply a copper-based treatment if the attack is severe.
             `,
-            footer_copyright: "&copy; 2025 FarmLink. All rights reserved."
         },
         ar: {
-            nav_about: "حول",
-            nav_how_it_works: "كيف تعمل",
+            nav_about: "نبذة عنا",
+            nav_how_it_works: "كيف نعمل",
             nav_solutions: "حلولنا",
-            nav_ai_advisor: "المستشار الذكي",
-            nav_get_quote: "احصل على عرض",
-            nav_about_mobile: "حول",
-            nav_how_it_works_mobile: "كيف تعمل",
+            nav_ai_advisor: "✨ المستشار الذكي",
+            nav_get_quote: "اطلب عرض سعر",
+            nav_about_mobile: "نبذة عنا",
+            nav_how_it_works_mobile: "كيف نعمل",
             nav_solutions_mobile: "حلولنا",
-            nav_ai_advisor_mobile: "المستشار الذكي",
-            nav_get_quote_mobile: "احصل على عرض",
+            nav_ai_advisor_mobile: "✨ المستشار الذكي",
+            nav_get_quote_mobile: "اطلب عرض سعر",
             hero_title: "من الزراعة التقليدية إلى الذكية – اربط مزرعتك بالمستقبل.",
             hero_subtitle: "حلول تحديث بأسعار معقولة لزراعة أكثر كفاءة.",
             hero_button: "اكتشف حلولنا",
             summary_about_title: "رؤيتنا: مستقبل ذكي",
             summary_about_desc: "نحن نعمل على نشر الزراعة الذكية. اكتشف كيف يواجه التزامنا بالابتكار \"التحديثي\" التحديات العالمية ويخلق مستقبلًا مستدامًا للجميع.",
             learn_more_about_us: "اعرف المزيد عنا",
-            summary_how_it_works_title: "بسيط، فعال، متصل",
-            summary_how_it_works_desc: "من التركيب \"التحديثي\" على معداتك الحالية إلى الإدارة عبر السحابة الآمنة، اكتشف عمليتنا البسيطة المكونة من ثلاث خطوات لتحسين مزرعتك.",
-            see_the_process: "شاهد العملية",
             summary_solutions_title: "حلول معيارية قوية",
             summary_solutions_desc: "الري الذكي، التحكم في المضخات، المراقبة البيئية. استكشف حلولنا المصممة لتحسين مواردك وزيادة غلتك.",
             explore_solutions: "استكشف حلولنا",
             summary_ai_advisor_title: "مهندسك الزراعي الشخصي",
             summary_ai_advisor_desc: "هل لديك مشكلة في محاصيلك؟ صفها لمستشارنا الذكي واحصل على تحليل وتوصيات فورية لحماية محصولك.",
             try_ai_advisor: "جرب المستشار الذكي",
+            summary_contact_title: "هل أنت مستعد لتحديث مزرعتك؟",
+            summary_contact_desc: "دعنا نناقش احتياجاتك. اتصل بنا اليوم للحصول على عرض أسعار شخصي واكتشف كيف يمكن لـ FarmLink تحويل عملياتك الزراعية.",
+            contact_us_button: "اتصل بنا",
             testimonials_title: "ماذا يقول مزارعونا",
             testimonial_1_text: "\"لقد غيرت FarmLink إدارة المياه لدي. أوفر الوقت والمال، ومحاصيلي لم تكن أفضل من أي وقت مضى.\"",
             testimonial_1_name: "كريم أ.",
@@ -175,41 +193,51 @@ document.addEventListener('DOMContentLoaded', () => {
             testimonial_3_text: "\"المستشار الذكي هو إضافة حقيقية. لقد ساعدني في تحديد مشكلة الآفات قبل انتشارها. هذا هو المستقبل!\"",
             testimonial_3_name: "يوسف ب.",
             testimonial_3_location: "مزارع صوبات، القيروان",
-            ai_advisor_title: "المستشار الزراعي الذكي",
-            ai_advisor_image_title: "تحليل الصور (تجريبي)",
-            ai_advisor_image_intro_demo: "تعرف على الأشياء في صورك. هذا العرض يستخدم نموذج MobileNet v2 الذي يعمل بالكامل في متصفحك.",
-            uploadImage: "اختر صورة…",
-            toggleCam: "تشغيل الكاميرا",
-            classify: "تحليل الصورة",
-            resultHint: "حمّل صورة للبدء.",
-            privacyNote: "الخصوصية مضمونة: تتم جميع التحليلات على جهازك، ولا يتم إرسال أي صور إلى خادم.",
-            ai_advisor_text_title: "تحليل النصوص",
-            ai_advisor_intro: "هل لديك مشكلة في محاصيلك؟ صفها واحصل على تحليل فوري.",
-            ai_advisor_label: "وصف المشكلة",
-            ai_advisor_button: "احصل على تحليل بالذكاء الاصطناعي",
-            ai_error_message: "عذراً، حدث خطأ أثناء التحليل. يرجى المحاولة مرة أخرى.",
+            footer_copyright: "&copy; 2025 FarmLink. جميع الحقوق محفوظة.",
+            about_main_title: "زراعة الغد، حصادًا بعد حصاد.",
+            about_vision_title: "رؤيتنا: مستقبل تكون فيه كل مزرعة ذكية.",
+            about_intro_text: "في FarmLink، مهمتنا هي جعل الزراعة الذكية في متناول الجميع.",
+            about_commitment_title: "التزامنا: مواجهة التحديات العالمية بابتكار \"التحديث\".",
+            about_commitment_text: "في عالم تتزايد فيه ندرة الموارد وتتفاقم التحديات المناخية، أصبحت مهمة FarmLink أكثر أهمية من أي وقت مضى.",
+            how_it_works_title: "كيف نعمل؟",
+            step1_title: "تركيب \"تحديثي\"",
+            step1_desc: "نقوم بتركيب وحداتنا على معداتك الحالية، دون الحاجة إلى استبدالها بالكامل.",
+            step2_title: "الاتصال السحابي",
+            step2_desc: "ترسل المستشعرات البيانات في الوقت الفعلي إلى منصتنا الآمنة.",
+            step3_title: "التحكم والتحسين",
+            step3_desc: "يمكنك إدارة كل شيء من لوحة التحكم وتلقي توصيات مدعومة بالذكاء الاصطناعي.",
+            solutions_title: "حلولنا المعيارية",
+            solution_irrigation_title: "الري الذكي",
+            solution_irrigation_desc: "حسّن استهلاكك للمياه باستخدام الصمامات الذكية والجدولة الآلية.",
+            solution_pump_title: "التحكم في المضخات",
+            solution_pump_desc: "أدر مضخاتك عن بعد وراقب التدفق والضغط في الوقت الفعلي.",
+            solution_env_title: "المراقبة البيئية",
+            solution_env_desc: "اتخذ قرارات مستنيرة بفضل بيانات مستشعرات درجة الحرارة والرطوبة والتربة.",
+            ai_advisor_title: "✨ المستشار الزراعي الذكي",
+            ai_welcome: "مرحباً! اسألني سؤالاً عن محاصيلك أو أرسل لي صورة.",
+            privacyNote: "الخصوصية مضمونة: يتم إجراء جميع التحليلات على جهازك.",
+            contact_title: "اتصل بنا",
+            contact_intro: "سؤال؟ مشروع؟ لا تتردد في الاتصال بنا. فريقنا مستعد لمساعدتك على اتخاذ الخطوة نحو الزراعة الذكية.",
+            contact_name: "الاسم",
+            contact_email: "البريد الإلكتروني",
+            contact_phone: "رقم الهاتف",
+            contact_message: "الرسالة",
+            contact_send: "<i class='fas fa-paper-plane ml-2'></i> إرسال الرسالة",
             context_agricole: `
                 ### الموضوع: الزراعة في تونس ###
-                تواجه الزراعة في تونس تحديات مثل الجفاف وملوحة التربة. المحاصيل الرئيسية تشمل الزيتون والحبوب والتمور والحمضيات. الإدارة الجيدة للمياه أمر بالغ الأهمSية.
-
-                ### المشكلة: الأوراق الصفراء (الكلوروسيس) ###
-                الأوراق الصفراء على النبات غالبًا ما تكون علامة على نقص المغذيات أو المرض.
-                - على الطماطم، يمكن أن تشير البقع الصفراء إلى مرض الميلديو، خاصة في الطقس الرطب. سبب آخر هو نقص النيتروجين، الذي يجعل الأوراق القديمة تصفر أولاً.
-                - على أشجار الزيتون، قد يكون الاصفرار ناتجًا عن نقص المياه، أو التربة الكلسية جدًا، أو مرض مثل ذبول الفرتيسيليوم.
-                - على أشجار الحمضيات (الليمون والبرتقال)، الأوراق الصفراء ذات العروق الخضراء غالبًا ما تشير إلى نقص الحديد، وهو شائع في التربة الكلسية التونسية. الحل: استخدام مخلّبات الحديد.
-
-                ### المشكلة: الآفات الشائعة ###
-                - حشرات المن هي حشرات صغيرة خضراء أو سوداء تمتص عصارة النبات، مما يضعفه وينقل الأمراض. الحل: صابون أسود مخفف أو مبيد حشري طبيعي.
-                - ذبابة ثمار الزيتون تضع بيضها في ثمار الزيتون، مما يؤدي إلى تساقطها. الحل: المراقبة بالفخاخ (الفيرومونات) والمعالجة إذا لزم الأمر.
-                - سوس العنكبوت الأحمر يزدهر في الطقس الحار والجاف وينسج شبكات دقيقة تحت الأوراق. الحل: رش الماء على الأوراق لزيادة الرطوبة.
-
-                ### المشكلة: بقع سوداء على الأوراق ###
-                البقع السوداء على أوراق الطماطم أو البطاطس يمكن أن تكون علامة على مرض اللفحة المبكرة (Alternaria)، وهو مرض فطري. الحل: إزالة الأوراق المصابة، وتحسين دوران الهواء، واستخدام علاج قائم على النحاس إذا كانت الإصابة شديدة.
+                تواجه الزراعة في تونس تحديات مثل الجفاف وملوحة التربة. المحاصيل الرئيسية تشمل الزيتون والحبوب والتمور والحمضيات. الإدارة الجيدة للمياه أمر بالغ الأهمية.
             `,
-            footer_copyright: "&copy; 2025 FarmLink. جميع الحقوق محفوظة."
         }
     };
     
+             document.addEventListener('DOMContentLoaded', () => {
+             // Mise à jour du dictionnaire de traductions
+             if (typeof updateTranslations === 'function') {
+                 updateTranslations(translations);
+             }
+             translatePage(); // Si la traduction automatique est en place
+         });
+
     // --- SÉLECTEURS D'ÉLÉMENTS ---
    let currentLang = 'fr';
     const htmlElement = document.documentElement;
@@ -244,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(themeIconDark) themeIconDark.classList.add('hidden');
         }
     };
-    
+
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     document.querySelectorAll('.nav-link').forEach(link => {
         if (link.getAttribute('href') === currentPage) link.classList.add('active');
@@ -272,19 +300,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileInput = document.getElementById('fileInput');
         const webcamBtn = document.getElementById('webcamBtn');
         const captureBtn = document.getElementById('captureBtn');
-        
+
         const imagePreviewWrapper = document.getElementById('image-preview-wrapper');
         const previewImg = document.getElementById('previewImg');
         const cam = document.getElementById('cam');
         const aiResponseText = document.getElementById('ai-response-text');
         const aiSpinner = document.getElementById('ai-spinner');
-        
+
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progressBar');
 
         function showSpinner(show) { aiSpinner.classList.toggle('hidden', !show); }
         function updateProgressBar(p) { if(progressBar) progressBar.style.width = `${p}%`; }
-        
+
         function setInputEnabled(enabled) {
             textInput.disabled = !enabled;
             aiInputForm.querySelector('button[type="submit"]').disabled = !enabled;
@@ -328,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showSpinner(true);
             aiResponseText.textContent = '';
             imagePreviewWrapper.classList.add('hidden');
-            
+
             try {
                 const context = translations[currentLang].context_agricole;
                 const answers = await models.qna.findAnswers(question, context);
@@ -354,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             showSpinner(true);
             aiResponseText.textContent = "Analyse de l'image en cours...";
-            
+
             try {
                 const predictions = await models.image.classify(imageElement);
                 if (predictions && predictions.length > 0) {
@@ -373,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showSpinner(false);
             }
         }
-        
+
         function displayImage(src) {
             imagePreviewWrapper.classList.remove('hidden');
             previewImg.src = src;
@@ -413,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("Impossible d'accéder à la caméra.");
             }
         }
-        
+
         function captureImageFromCam() {
             if (!stream) return;
             const canvas = document.createElement('canvas');
@@ -442,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         webcamBtn.addEventListener('click', toggleCam);
         captureBtn.addEventListener('click', captureImageFromCam);
-        
+
         textInput.addEventListener('input', () => {
             textInput.style.height = 'auto';
             textInput.style.height = textInput.scrollHeight + 'px';

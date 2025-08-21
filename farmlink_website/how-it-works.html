@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmLink - Comment ça marche</title>
+    <title>FarmLink - Contact</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +20,7 @@
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="about.html" class="nav-link" data-translate="nav_about">À propos</a>
-                <a href="how-it-works.html" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
+                <a href="how-it-works.html" class="nav-link active" data-translate="nav_how_it_works">Comment ça marche</a>
                 <a href="solutions.html" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
                 <a href="ai-advisor.html" class="nav-link" data-translate="nav_ai_advisor">Conseiller IA</a>
                 <a href="contact.html" class="cta-button" data-translate="nav_get_quote">Obtenir un devis</a>
@@ -55,17 +56,17 @@
              <div class="container mx-auto px-6 text-center">
                 <h2 class="section-title" data-translate="how_it_works_title">Comment ça marche ?</h2>
                 <div class="grid md:grid-cols-3 gap-12 mt-12">
-                    <div class="how-it-works-card">
+                    <div class="how-it-works-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="card-icon">1</div>
                         <h3 class="text-xl font-bold my-4" data-translate="step1_title">Installation "Retrofit"</h3>
                         <p data-translate="step1_desc">Nous installons nos modules sur votre équipement existant, sans remplacement coûteux.</p>
                     </div>
-                    <div class="how-it-works-card">
+                    <div class="how-it-works-card" data-aos="fade-up" data-aos-delay="200">
                         <div class="card-icon">2</div>
                         <h3 class="text-xl font-bold my-4" data-translate="step2_title">Connexion au Cloud</h3>
                         <p data-translate="step2_desc">Les capteurs envoient les données en temps réel à notre plateforme sécurisée.</p>
                     </div>
-                    <div class="how-it-works-card">
+                    <div class="how-it-works-card" data-aos="fade-up" data-aos-delay="300">
                         <div class="card-icon">3</div>
                         <h3 class="text-xl font-bold my-4" data-translate="step3_title">Contrôle & Optimisation</h3>
                         <p data-translate="step3_desc">Vous gérez tout depuis le panneau de contrôle et recevez des recommandations de l'IA.</p>
@@ -81,6 +82,7 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

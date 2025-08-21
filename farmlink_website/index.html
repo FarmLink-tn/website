@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarmLink - Accueil</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
+<body class="dark">
 
-    <header class="sticky top-0 z-50 shadow-md">
+    <header class="sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="index.html">
@@ -23,10 +23,10 @@
                 <a href="how-it-works.html" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
                 <a href="solutions.html" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
                 <a href="ai-advisor.html" class="nav-link" data-translate="nav_ai_advisor">Conseiller IA</a>
-                <a href="contact.html" class="cta-button" data-translate="nav_get_quote">Obtenir un devis</a>
+                <a href="contact.html" class="button" data-translate="nav_get_quote">Obtenir un devis</a>
             </div>
             <div class="flex items-center">
-                <select id="language-switcher" class="mr-4 p-2 rounded-md bg-transparent border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200">
+                <select id="language-switcher" class="mr-4">
                     <option value="fr">FR</option>
                     <option value="en">EN</option>
                     <option value="ar">AR</option>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
+        <div id="mobile-menu" class="hidden md:hidden p-4 mt-2 mx-4">
             <a href="about.html" class="block py-2 px-4 text-sm" data-translate="nav_about_mobile">À propos</a>
             <a href="how-it-works.html" class="block py-2 px-4 text-sm" data-translate="nav_how_it_works_mobile">Comment ça marche</a>
             <a href="solutions.html" class="block py-2 px-4 text-sm" data-translate="nav_solutions_mobile">Nos Solutions</a>
@@ -53,110 +53,107 @@
 
     <main>
         <section id="home" class="hero-bg text-white min-h-screen flex items-center relative overflow-hidden">
-            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="absolute inset-0 bg-black bg-opacity-60"></div>
             <div class="container mx-auto px-6 text-left md:w-1/2 relative z-10" data-aos="fade-right">
                 <h1 class="text-5xl md:text-7xl font-bold mb-4 leading-tight" data-translate="hero_title">Du traditionnel au smart - connectez votre ferme à l'avenir.</h1>
                 <p class="text-xl mb-8" data-translate="hero_subtitle">Solutions de modernisation abordables pour une agriculture plus efficace.</p>
-                <a href="solutions.html" class="cta-button-white" data-translate="hero_button">Découvrir nos solutions</a>
+                <a href="solutions.html" class="button button--glass" data-translate="hero_button">Découvrir nos solutions</a>
             </div>
         </section>
 
-        <section class="summary-section py-24">
+        <section class="summary-section py-24" data-aos="fade-up">
             <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-                <div class="summary-image" data-aos="fade-up-right">
-                    <img src="image/about_us_im1.png" alt="Notre vision pour l'agriculture" class="rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                <div class="summary-image">
+                    <img src="image/about_us_im1.png" alt="Notre vision pour l'agriculture" class="rounded-lg shadow-2xl">
                 </div>
-                <div class="summary-text text-left" data-aos="fade-up-left">
-                    <h2 class="summary-title" data-translate="summary_about_title">Notre Vision : Un Futur Intelligent</h2>
+                <div class="summary-text text-left">
+                    <h2 class="section-title" data-translate="summary_about_title">Notre Vision : Un Futur Intelligent</h2>
                     <p class="summary-desc" data-translate="summary_about_desc">Nous démocratisons l'agriculture intelligente. Découvrez comment notre engagement envers l'innovation "retrofit" relève les défis mondiaux et crée un avenir durable pour tous.</p>
-                    <a href="about.html" class="summary-button-alt" data-translate="learn_more_about_us">En savoir plus sur nous</a>
+                    <a href="about.html" class="button button--glass" data-translate="learn_more_about_us">En savoir plus sur nous</a>
                 </div>
             </div>
         </section>
 
-        <section class="summary-section bg-white dark:bg-gray-800 py-24">
+        <section class="summary-section bg-bg-850 py-24" data-aos="fade-up">
             <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-                <div class="summary-text text-left md:order-2" data-aos="fade-up-left">
-                    <h2 class="summary-title" data-translate="summary_how_it_works_title">Simple, Efficace, Connecté</h2>
-                    <p class="summary-desc" data-translate="summary_how_it_works_desc">De l'installation "retrofit" sur votre équipement existant à la gestion via notre cloud sécurisé, découvrez notre processus simple en trois étapes pour optimiser votre ferme.</p>
-                    <a href="how-it-works.html" class="summary-button-alt" data-translate="see_the_process">Voir le processus</a>
-                </div>
-                <div class="summary-image md:order-1" data-aos="fade-up-right">
-                    <img src="image/background_im1.png" alt="Processus de modernisation" class="rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                </div>
-            </div>
-        </section>
-
-        <section class="summary-section py-24">
-            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-                <div class="summary-image" data-aos="fade-up-right">
-                    <img src="image/background_im2.png" alt="Solutions d'irrigation intelligente" class="rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                </div>
-                <div class="summary-text text-left" data-aos="fade-up-left">
-                    <h2 class="summary-title" data-translate="summary_solutions_title">Solutions Modulaires Puissantes</h2>
+                <div class="summary-text text-left">
+                    <h2 class="section-title" data-translate="summary_solutions_title">Solutions Modulaires Puissantes</h2>
                     <p class="summary-desc" data-translate="summary_solutions_desc">Irrigation intelligente, contrôle des pompes, surveillance environnementale. Explorez nos solutions conçues pour optimiser vos ressources et maximiser vos rendements.</p>
-                    <a href="solutions.html" class="summary-button-alt" data-translate="explore_solutions">Explorer nos solutions</a>
+                    <a href="solutions.html" class="button button--glass" data-translate="explore_solutions">Explorer nos solutions</a>
+                </div>                
+                <div class="summary-image">
+                    <img src="image/background_im1.png" alt="Processus de modernisation" class="rounded-lg shadow-2xl">
                 </div>
             </div>
         </section>
 
-        <section class="summary-section bg-white dark:bg-gray-800 py-24">
+        <section class="summary-section py-24" data-aos="fade-up">
             <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-                 <div class="summary-text text-left md:order-2" data-aos="fade-up-left">
-                    <h2 class="summary-title" data-translate="summary_ai_advisor_title">Votre Agronome Personnel</h2>
+                 <div class="summary-text text-left md:order-2">
+                    <h2 class="section-title" data-translate="summary_ai_advisor_title">Votre Agronome Personnel</h2>
                     <p class="summary-desc" data-translate="summary_ai_advisor_desc">Un problème avec vos cultures ? Décrivez-le à notre Conseiller IA et recevez une analyse et des recommandations instantanées pour protéger votre récolte.</p>
-                    <a href="ai-advisor.html" class="summary-button-alt" data-translate="try_ai_advisor">Essayer le conseiller IA</a>
+                    <a href="ai-advisor.html" class="button button--glass" data-translate="try_ai_advisor">Essayer le conseiller IA</a>
                 </div>
-                <div class="summary-image md:order-1" data-aos="fade-up-right">
-                    <img src="image/about_us_im2.jpg" alt="Conseiller agricole IA" class="rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                <div class="summary-image md:order-1">
+                    <img src="image/about_us_im2.jpg" alt="Conseiller agricole IA" class="rounded-lg shadow-2xl">
                 </div>
             </div>
         </section>
 
-    </main>
-
-    <footer class="bg-gray-800 dark:bg-black text-white">
-        <section id="testimonials" class="py-20">
+        <section class="summary-section bg-bg-850 py-24" data-aos="fade-up">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="section-title text-white" data-translate="testimonials_title">Ce que disent nos agriculteurs</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-                    
-                    <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                        <img src="image/Karim A.png" alt="Photo de Karim A." class="testimonial-img">
-                        <p class="text-lg italic mt-4" data-translate="testimonial_1_text">"FarmLink a transformé ma gestion de l'eau. J'économise du temps et de l'argent, et mes rendements n'ont jamais été aussi bons."</p>
-                        <div class="mt-4">
-                            <p class="font-bold" data-translate="testimonial_1_name">Karim A.</p>
-                            <p class="text-sm text-gray-400" data-translate="testimonial_1_location">Agriculteur, Sidi Bouzid</p>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-                        <img src="image/fatma.png" alt="Photo de Fatma M." class="testimonial-img">
-                        <p class="text-lg italic mt-4" data-translate="testimonial_2_text">"L'installation a été incroyablement simple sur mon équipement existant. Le panneau de contrôle est très intuitif."</p>
-                        <div class="mt-4">
-                            <p class="font-bold" data-translate="testimonial_2_name">Fatma M.</p>
-                            <p class="text-sm text-gray-400" data-translate="testimonial_2_location">Exploitante d'oliveraie, Sfax</p>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
-                        <img src="image/yousef.png" alt="Photo de Youssef B." class="testimonial-img">
-                        <p class="text-lg italic mt-4" data-translate="testimonial_3_text">"Le conseiller IA est un véritable plus. Il m'a aidé à identifier un problème de ravageurs avant qu'il ne se propage. C'est l'avenir !"</p>
-                        <div class="mt-4">
-                            <p class="font-bold" data-translate="testimonial_3_name">Youssef B.</p>
-                            <p class="text-sm text-gray-400" data-translate="testimonial_3_location">Serriste, Kairouan</p>
-                        </div>
-                    </div>
-
-                </div>
+                <h2 class="section-title" data-translate="summary_contact_title">Prêt à moderniser votre ferme ?</h2>
+                <p class="summary-desc max-w-2xl mx-auto" data-translate="summary_contact_desc">Discutons de vos besoins. Contactez-nous dès aujourd'hui pour obtenir un devis personnalisé et découvrir comment FarmLink peut transformer votre exploitation.</p>
+                <a href="contact.html" class="button" data-translate="contact_us_button">Contactez-nous</a>
             </div>
         </section>
-        <div class="text-center py-8 border-t border-gray-700">
-            <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
-        </div>
+
+        <footer class="bg-bg-950 text-white">
+            <section id="testimonials" class="py-20" data-aos="fade-up">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="section-title" data-translate="testimonials_title">Ce que disent nos agriculteurs</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+                        <div class="testimonial-card">
+                            <img src="image/Karim A.png" alt="Photo de Karim A." class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-border-soft">
+                            <p class="text-lg italic mt-4" data-translate="testimonial_1_text">"FarmLink a transformé ma gestion de l'eau. J'économise du temps et de l'argent, et mes rendements n'ont jamais été aussi bons."</p>
+                            <div class="mt-4">
+                                <p class="font-bold" data-translate="testimonial_1_name">Karim A.</p>
+                                <p class="text-sm text-text-500" data-translate="testimonial_1_location">Agriculteur, Sidi Bouzid</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <img src="image/fatma.png" alt="Photo de Fatma M." class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-border-soft">
+                            <p class="text-lg italic mt-4" data-translate="testimonial_2_text">"L'installation a été incroyablement simple sur mon équipement existant. Le panneau de contrôle est très intuitif."</p>
+                            <div class="mt-4">
+                                <p class="font-bold" data-translate="testimonial_2_name">Fatma M.</p>
+                                <p class="text-sm text-text-500" data-translate="testimonial_2_location">Exploitante d'oliveraie, Sfax</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <img src="image/yousef.png" alt="Photo de Youssef B." class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-border-soft">
+                            <p class="text-lg italic mt-4" data-translate="testimonial_3_text">"Le conseiller IA est un véritable plus. Il m'a aidé à identifier un problème de ravageurs avant qu'il ne se propage. C'est l'avenir !"</p>
+                            <div class="mt-4">
+                                <p class="font-bold" data-translate="testimonial_3_name">Youssef B.</p>
+                                <p class="text-sm text-text-500" data-translate="testimonial_3_location">Serriste, Kairouan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </footer>
+    </section>    
+    </main>
+    <footer class="text-center py-8 border-t border-border-soft">
+        <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="script.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50
+        });
+    </script>
 </body>
 </html>

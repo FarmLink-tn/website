@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarmLink - À propos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark">
 
     <header class="sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="index.html">
-                    <img src="image/logo.png" alt="Logo FarmLink" class="h-12 w-auto">
+                    <img src="image/logo.png" alt="Logo FarmLink" class="h-14 w-auto">
                 </a>
             </div>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="about.html" class="nav-link" data-translate="nav_about">À propos</a>
+                <a href="about.html" class="nav-link active" data-translate="nav_about">À propos</a>
                 <a href="how-it-works.html" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
                 <a href="solutions.html" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
                 <a href="ai-advisor.html" class="nav-link" data-translate="nav_ai_advisor">Conseiller IA</a>
-                <a href="contact.html" class="cta-button" data-translate="nav_get_quote">Obtenir un devis</a>
+                <a href="contact.html" class="button" data-translate="nav_get_quote">Obtenir un devis</a>
             </div>
             <div class="flex items-center">
-                <select id="language-switcher" class="mr-4 p-2 rounded-md">
+                <select id="language-switcher" class="mr-4">
                     <option value="fr">FR</option>
                     <option value="en">EN</option>
                     <option value="ar">AR</option>
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden">
+        <div id="mobile-menu" class="hidden md:hidden p-4 mt-2 mx-4">
             <a href="about.html" class="block py-2 px-4 text-sm" data-translate="nav_about_mobile">À propos</a>
             <a href="how-it-works.html" class="block py-2 px-4 text-sm" data-translate="nav_how_it_works_mobile">Comment ça marche</a>
             <a href="solutions.html" class="block py-2 px-4 text-sm" data-translate="nav_solutions_mobile">Nos Solutions</a>
@@ -50,31 +50,25 @@
         </div>
     </header>
 
-    <main>
-        <section id="about" class="py-20">
-            <div class="container mx-auto px-6">
-                 <h2 class="section-title" data-translate="about_main_title">L'Agriculture de Demain, Une Récolte à la Fois.</h2>
-                <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/2">
-                        <img src="image/about_us_im2.jpg" alt="Ferme Intelligente avec IoT" class="rounded-lg shadow-lg w-full">
-                    </div>
-                    <div class="md:w-1/2">
-                        <h3 class="text-2xl font-bold text-blue-800 mb-4" data-translate="about_vision_title">Notre Vision : Un futur où chaque ferme est intelligente.</h3>
-                        <p class="text-lg" data-translate="about_intro_text">Chez FarmLink, nous voyons l'agriculture non pas comme une industrie du passé, mais comme la technologie la plus essentielle de l'avenir. Nous croyons que la sagesse des pratiques traditionnelles et la puissance des innovations de pointe peuvent coexister pour créer quelque chose de véritablement révolutionnaire. Notre mission est de démocratiser l'agriculture intelligente.</p>
-                        <h4 class="text-2xl font-bold text-green-600 mt-6 mb-2" data-translate="about_commitment_title">Notre Engagement : Affronter les défis mondiaux avec l'innovation "retrofit".</h4>
-                        <p class="text-lg" data-translate="about_commitment_text">Dans un monde où les ressources sont limitées et les défis climatiques s'intensifient, la mission de FarmLink est plus vitale que jamais.</p>
-                        <h4 class="text-2xl font-bold text-green-600 mt-6 mb-2" data-translate="about_invest_title">Pourquoi investir dans FarmLink ?</h4>
-                        <p class="text-lg" data-translate="about_invest_text">Nous ne vendons pas seulement des produits ; nous offrons un avenir durable.</p>
-                    </div>
+    <main class="py-20">
+        <section id="about" class="container mx-auto px-6">
+            <h2 class="section-title" data-translate="about_main_title">L'Agriculture de Demain, Une Récolte à la Fois.</h2>
+            <div class="grid md:grid-cols-2 gap-16 items-center mt-20">
+                <div>
+                    <img src="image/about_us_im2.jpg" alt="Ferme Intelligente avec IoT" class="rounded-lg shadow-2xl w-full">
+                </div>
+                <div class="text-left">
+                    <h3 class="text-2xl font-bold text-brand-blue-500 mb-4" data-translate="about_vision_title">Notre Vision : Un futur où chaque ferme est intelligente.</h3>
+                    <p class="text-lg text-text-300" data-translate="about_intro_text">Chez FarmLink, nous voyons l'agriculture non pas comme une industrie du passé, mais comme la technologie la plus essentielle de l'avenir. Nous croyons que la sagesse des pratiques traditionnelles et la puissance des innovations de pointe peuvent coexister pour créer quelque chose de véritablement révolutionnaire. Notre mission est de démocratiser l'agriculture intelligente.</p>
+                    <h4 class="text-xl font-bold text-brand-green-400 mt-6 mb-2" data-translate="about_commitment_title">Notre Engagement : Affronter les défis mondiaux avec l'innovation "retrofit".</h4>
+                    <p class="text-lg text-text-300" data-translate="about_commitment_text">Dans un monde où les ressources sont limitées et les défis climatiques s'intensifient, la mission de FarmLink est plus vitale que jamais.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container mx-auto px-6 text-center py-8">
-            <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
-        </div>
+    <footer class="text-center py-8 border-t border-border-soft">
+        <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
     </footer>
 
     <script src="script.js"></script>
