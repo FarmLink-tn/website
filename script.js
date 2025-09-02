@@ -519,6 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    
     // --- NOUVELLE LOGIQUE POUR LA PAGE 'ACCOUNT.HTML' ---
     if (document.getElementById('account')) {
         console.log("Script for account page is running."); // Ligne de débogage
@@ -533,6 +534,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const addProductForm = document.getElementById('add-product-form');
         const productList = document.getElementById('product-list');
         const logoutBtn = document.getElementById('logout-btn');
+        const loginMessage = document.getElementById('login-message');
+        const registerMessage = document.getElementById('register-message');
+        let currentUser = null;
 
         // Gère le passage entre les formulaires de connexion et d'inscription
         if (showRegisterBtn) showRegisterBtn.addEventListener('click', (e) => {
@@ -540,12 +544,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Creating an account button clicked."); // Ligne de débogage
             authSection.classList.add('hidden');
             registerSection.classList.remove('hidden');
+            if (loginMessage) loginMessage.textContent = '';
         });
 
         if (showLoginBtn) showLoginBtn.addEventListener('click', (e) => {
             e.preventDefault();
             authSection.classList.remove('hidden');
             registerSection.classList.add('hidden');
+            if (registerMessage) registerMessage.textContent = '';
         });
 
         // Gère la soumission du formulaire d'inscription
@@ -553,10 +559,24 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
-            localStorage.setItem('user', JSON.stringify({ username, password }));
-            alert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
-            authSection.classList.remove('hidden');
-            registerSection.classList.add('hidden');
+            fetch('/server/auth.php?action=register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (registerMessage) registerMessage.textContent = 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.';
+                    authSection.classList.remove('hidden');
+                    registerSection.classList.add('hidden');
+                } else {
+                    if (registerMessage) registerMessage.textContent = data.message || 'Erreur lors de la création du compte.';
+                }
+            })
+            .catch(() => {
+                if (registerMessage) registerMessage.textContent = 'Erreur réseau.';
+            });
         });
 
         // Gère la soumission du formulaire de connexion
@@ -564,13 +584,24 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-            const storedUser = JSON.parse(localStorage.getItem('user'));
-            if (storedUser && storedUser.username === username && storedUser.password === password) {
-                localStorage.setItem('loggedInUser', username);
-                checkAuth();
-            } else {
-                alert('Nom d\'utilisateur ou mot de passe incorrect.');
-            }
+            fetch('/server/auth.php?action=login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    currentUser = data.username;
+                    if (loginMessage) loginMessage.textContent = '';
+                    checkAuth();
+                } else {
+                    if (loginMessage) loginMessage.textContent = data.message || "Nom d'utilisateur ou mot de passe incorrect.";
+                }
+            })
+            .catch(() => {
+                if (loginMessage) loginMessage.textContent = 'Erreur réseau.';
+            });
         });
 
         // Gère la soumission du formulaire d'ajout de produit
@@ -578,11 +609,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const productName = document.getElementById('product-name').value;
             const productQuantity = document.getElementById('product-quantity').value;
-            const loggedInUser = localStorage.getItem('loggedInUser');
-            if (loggedInUser) {
-                const userProducts = JSON.parse(localStorage.getItem(`products_${loggedInUser}`)) || [];
+            if (currentUser) {
+                const userProducts = JSON.parse(localStorage.getItem(`products_${currentUser}`)) || [];
                 userProducts.push({ name: productName, quantity: productQuantity });
-                localStorage.setItem(`products_${loggedInUser}`, JSON.stringify(userProducts));
+                localStorage.setItem(`products_${currentUser}`, JSON.stringify(userProducts));
                 displayProducts();
                 addProductForm.reset();
             }
@@ -590,17 +620,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Gère la déconnexion
         if (logoutBtn) logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('loggedInUser');
-            checkAuth();
+            fetch('/server/auth.php?action=logout', { method: 'POST' })
+                .then(() => { currentUser = null; checkAuth(); });
         });
 
         // Affiche la liste des produits de l'utilisateur
         const displayProducts = () => {
-            const loggedInUser = localStorage.getItem('loggedInUser');
             if (!productList) return;
             productList.innerHTML = '';
-            if (loggedInUser) {
-                const userProducts = JSON.parse(localStorage.getItem(`products_${loggedInUser}`)) || [];
+            if (currentUser) {
+                const userProducts = JSON.parse(localStorage.getItem(`products_${currentUser}`)) || [];
                 if (userProducts.length > 0) {
                     userProducts.forEach(product => {
                         const li = document.createElement('li');
@@ -615,18 +644,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Vérifie l'état de l'authentification au chargement de la page
         const checkAuth = () => {
-            const loggedInUser = localStorage.getItem('loggedInUser');
-            if (loggedInUser) {
-                authSection.classList.add('hidden');
-                registerSection.classList.add('hidden');
-                userDashboard.classList.remove('hidden');
-                welcomeMessage.textContent = `Bienvenue, ${loggedInUser}!`;
-                displayProducts();
-            } else {
-                authSection.classList.remove('hidden');
-                registerSection.classList.add('hidden');
-                userDashboard.classList.add('hidden');
-            }
+            fetch('/server/auth.php?action=check')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.loggedIn) {
+                        currentUser = data.username;
+                        authSection.classList.add('hidden');
+                        registerSection.classList.add('hidden');
+                        userDashboard.classList.remove('hidden');
+                        welcomeMessage.textContent = `Bienvenue, ${currentUser}!`;
+                        displayProducts();
+                    } else {
+                        currentUser = null;
+                        authSection.classList.remove('hidden');
+                        registerSection.classList.add('hidden');
+                        userDashboard.classList.add('hidden');
+                    }
+                });
         };
         checkAuth();
     }
@@ -639,3 +673,4 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(savedTheme);
     if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 50 });
 });
+
