@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmLink - Conseiller IA</title>
+    <title>FarmLink - Mon Compte</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -22,8 +22,8 @@
                 <a href="about.html" class="nav-link" data-translate="nav_about">À propos</a>
                 <a href="how-it-works.html" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
                 <a href="solutions.html" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
-                <a href="ai-advisor.html" class="nav-link active" data-translate="nav_ai_advisor">Conseiller IA</a>
-                <a href="account.html" class="nav-link" data-translate="nav_account">Mon Compte</a>
+                <a href="ai-advisor.html" class="nav-link" data-translate="nav_ai_advisor">Conseiller IA</a>
+                <a href="account.html" class="nav-link active" data-translate="nav_account">Mon Compte</a>
                 <a href="contact.html" class="button" data-translate="nav_get_quote">Obtenir un devis</a>
             </div>
             <div class="flex items-center">
@@ -54,42 +54,52 @@
     </header>
 
     <main>
-        <section id="ai-advisor" class="py-20">
+        <section id="account" class="py-20">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="section-title" data-translate="ai_advisor_title">Conseiller Agricole IA</h2>
-
-                <div class="max-w-3xl mx-auto control-card mt-12">
-                    <div id="ai-results-container" class="ai-results-container mb-4">
-                        <div id="image-preview-wrapper" class="hidden">
-                            <img id="previewImg" alt="Aperçu de l'image">
-                            <video id="cam" autoplay playsinline muted hidden></video>
-                            <button id="captureBtn" class="capture-button hidden" title="Prendre une photo"><i class="fas fa-camera"></i></button>
-                        </div>
-                        <div id="ai-response-text" class="ai-response-text">
-                            <p data-translate="ai_welcome">Bonjour ! Posez-moi une question sur vos cultures ou envoyez-moi une photo.</p>
-                        </div>
-                         <div id="ai-spinner" class="spinner mx-auto hidden"></div>
+                <h2 class="section-title" data-translate="account_title">Mon Compte</h2>
+                <div class="max-w-xl mx-auto control-card mt-12">
+                    <div id="auth-section">
+                        <h3 class="text-2xl font-bold mb-6 text-brand-blue-500" data-translate="auth_login_title">Se connecter</h3>
+                        <form id="login-form">
+                            <div class="mb-4">
+                                <input type="text" id="login-username" class="form-input" placeholder="Nom d'utilisateur" required>
+                            </div>
+                            <div class="mb-6">
+                                <input type="password" id="login-password" class="form-input" placeholder="Mot de passe" required>
+                            </div>
+                            <button type="submit" class="button w-full" data-translate="auth_login_btn">Se connecter</button>
+                        </form>
+                        <p class="mt-4 text-text-300" data-translate="auth_register_prompt">Pas encore de compte ? <a href="#" id="show-register" class="text-brand-green-400 font-bold">Créer un compte</a></p>
                     </div>
-                    
-                    <div class="progress-bar-container my-2 hidden" id="progress-container"><div class="progress-bar" id="progressBar"></div></div>
 
-                    <form id="ai-input-form" class="ai-input-form">
-                        <label for="fileInput" class="ai-action-button" title="Téléverser une image">
-                            <i class="fas fa-paperclip"></i>
-                        </label>
-                        <input id="fileInput" type="file" class="hidden" accept="image/*" />
-                        
-                        <button type="button" id="webcamBtn" class="ai-action-button" title="Utiliser la caméra">
-                            <i class="fas fa-camera"></i>
-                        </button>
-                        
-                        <textarea id="text-input" class="form-input flex-grow" rows="1" placeholder="Posez votre question ici..."></textarea>
-                        
-                        <button type="submit" class="button">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                     <p class="text-sm mt-4 text-text-500" data-translate="privacyNote">Confidentialité garantie : Toute l'analyse est effectuée sur votre appareil.</p>
+                    <div id="register-section" class="hidden">
+                        <h3 class="text-2xl font-bold mb-6 text-brand-green-400" data-translate="auth_register_title">Créer un compte</h3>
+                        <form id="register-form">
+                            <div class="mb-4">
+                                <input type="text" id="register-username" class="form-input" placeholder="Nom d'utilisateur" required>
+                            </div>
+                            <div class="mb-4">
+                                <input type="password" id="register-password" class="form-input" placeholder="Mot de passe" required>
+                            </div>
+                            <button type="submit" class="button w-full" data-translate="auth_register_btn">Créer le compte</button>
+                        </form>
+                        <p class="mt-4 text-text-300" data-translate="auth_login_prompt">Déjà un compte ? <a href="#" id="show-login" class="text-brand-blue-500 font-bold">Se connecter</a></p>
+                    </div>
+
+                    <div id="user-dashboard" class="hidden text-left">
+                        <h3 id="welcome-message" class="text-2xl font-bold mb-4"></h3>
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold text-brand-blue-500 mb-2" data-translate="products_section_title">Mes Produits</h4>
+                            <form id="add-product-form" class="flex flex-col md:flex-row gap-4">
+                                <input type="text" id="product-name" class="form-input flex-grow" placeholder="Nom du produit" required>
+                                <input type="number" id="product-quantity" class="form-input w-24" placeholder="Qté" required>
+                                <button type="submit" class="button" data-translate="add_product_btn">Ajouter</button>
+                            </form>
+                            <ul id="product-list" class="list-disc list-inside mt-4 text-text-300"></ul>
+                        </div>
+                        <button id="logout-btn" class="button button--glass" data-translate="logout_btn">Se déconnecter</button>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -98,12 +108,6 @@
     <footer class="text-center py-8 border-t border-border-soft">
         <p data-translate="footer_copyright">&copy; 2025 FarmLink. Tous droits réservés.</p>
     </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.21.0/dist/tf-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@4.21.0/dist/tf-converter.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@4.21.0/dist/tf-backend-webgl.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna@1.7.1/dist/qna.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
     
     <script src="script.js"></script>
 </body>

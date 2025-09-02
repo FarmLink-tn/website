@@ -6,11 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
             nav_how_it_works: "Comment ça marche",
             nav_solutions: "Nos Solutions",
             nav_ai_advisor: "✨ Conseiller IA",
+            nav_account: "Mon Compte",
             nav_get_quote: "Obtenir un devis",
             nav_about_mobile: "À propos",
             nav_how_it_works_mobile: "Comment ça marche",
             nav_solutions_mobile: "Nos Solutions",
             nav_ai_advisor_mobile: "✨ Conseiller IA",
+            nav_account_mobile: "Mon Compte",
             nav_get_quote_mobile: "Obtenir un devis",
             hero_title: "Du traditionnel au smart - connectez votre ferme à l'avenir.",
             hero_subtitle: "Solutions de modernisation abordables pour une agriculture plus efficace.",
@@ -67,6 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
             contact_phone: "Numéro de téléphone",
             contact_message: "Message",
             contact_send: "<i class='fas fa-paper-plane mr-2'></i> Envoyer le Message",
+            account_title: "Mon Compte",
+            auth_login_title: "Se connecter",
+            auth_login_btn: "Se connecter",
+            auth_register_prompt: "Pas encore de compte ? <a href='#' id='show-register' class='text-brand-green-400 font-bold'>Créer un compte</a>",
+            auth_register_title: "Créer un compte",
+            auth_register_btn: "Créer le compte",
+            auth_login_prompt: "Déjà un compte ? <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>Se connecter</a>",
+            products_section_title: "Mes Produits",
+            add_product_btn: "Ajouter",
+            logout_btn: "Se déconnecter",
             context_agricole: `
                 ### SUJET: AGRICULTURE EN TUNISIE ###
                 L'agriculture en Tunisie fait face à des défis comme la sécheresse et la salinité des sols. Les cultures principales sont les olives, les céréales, les dattes et les agrumes. La bonne gestion de l'eau est cruciale.
@@ -86,11 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
             nav_how_it_works: "How It Works",
             nav_solutions: "Solutions",
             nav_ai_advisor: "✨ AI Advisor",
+            nav_account: "My Account",
             nav_get_quote: "Get a Quote",
             nav_about_mobile: "About",
             nav_how_it_works_mobile: "How It Works",
             nav_solutions_mobile: "Solutions",
             nav_ai_advisor_mobile: "✨ AI Advisor",
+            nav_account_mobile: "My Account",
             nav_get_quote_mobile: "Get a Quote",
             hero_title: "From traditional to smart – connect your farm to the future.",
             hero_subtitle: "Affordable retrofit solutions for more efficient farming.",
@@ -147,6 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
             contact_phone: "Phone Number",
             contact_message: "Message",
             contact_send: "<i class='fas fa-paper-plane mr-2'></i> Send Message",
+            account_title: "My Account",
+            auth_login_title: "Log In",
+            auth_login_btn: "Log In",
+            auth_register_prompt: "Don't have an account yet? <a href='#' id='show-register' class='text-brand-green-400 font-bold'>Create an account</a>",
+            auth_register_title: "Create an Account",
+            auth_register_btn: "Create Account",
+            auth_login_prompt: "Already have an account? <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>Log In</a>",
+            products_section_title: "My Products",
+            add_product_btn: "Add",
+            logout_btn: "Log Out",
             context_agricole: `
                 ### SUBJECT: AGRICULTURE IN TUNISIA ###
                 Agriculture in Tunisia faces challenges like drought and soil salinity. Main crops include olives, cereals, dates, and citrus fruits. Good water management is crucial.
@@ -162,11 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
             nav_how_it_works: "كيف نعمل",
             nav_solutions: "حلولنا",
             nav_ai_advisor: "✨ المستشار الذكي",
+            nav_account: "حسابي",
             nav_get_quote: "اطلب عرض سعر",
             nav_about_mobile: "نبذة عنا",
             nav_how_it_works_mobile: "كيف نعمل",
             nav_solutions_mobile: "حلولنا",
             nav_ai_advisor_mobile: "✨ المستشار الذكي",
+            nav_account_mobile: "حسابي",
             nav_get_quote_mobile: "اطلب عرض سعر",
             hero_title: "من الزراعة التقليدية إلى الذكية – اربط مزرعتك بالمستقبل.",
             hero_subtitle: "حلول تحديث بأسعار معقولة لزراعة أكثر كفاءة.",
@@ -223,6 +249,16 @@ document.addEventListener('DOMContentLoaded', () => {
             contact_phone: "رقم الهاتف",
             contact_message: "الرسالة",
             contact_send: "<i class='fas fa-paper-plane ml-2'></i> إرسال الرسالة",
+            account_title: "حسابي",
+            auth_login_title: "تسجيل الدخول",
+            auth_login_btn: "تسجيل الدخول",
+            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='#' id='show-register' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
+            auth_register_title: "إنشاء حساب",
+            auth_register_btn: "إنشاء الحساب",
+            auth_login_prompt: "لديك حساب بالفعل؟ <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
+            products_section_title: "منتجاتي",
+            add_product_btn: "أضف",
+            logout_btn: "تسجيل الخروج",
             context_agricole: `
                 ### الموضوع: الزراعة في تونس ###
                 تواجه الزراعة في تونس تحديات مثل الجفاف وملوحة التربة. المحاصيل الرئيسية تشمل الزيتون والحبوب والتمور والحمضيات. الإدارة الجيدة للمياه أمر بالغ الأهمية.
@@ -248,6 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIconLight = document.getElementById('theme-icon-light');
     const themeIconDark = document.getElementById('theme-icon-dark');
+    const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+    const ctaButtons = document.querySelectorAll('.button, .cta-button');
 
     const applyLanguage = (lang) => {
         currentLang = lang;
@@ -468,16 +506,131 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        webcamBtn.addEventListener('click', toggleCam);
-        captureBtn.addEventListener('click', captureImageFromCam);
+        if(webcamBtn) webcamBtn.addEventListener('click', toggleCam);
+        if(captureBtn) captureBtn.addEventListener('click', captureImageFromCam);
 
-        textInput.addEventListener('input', () => {
+        if(textInput) textInput.addEventListener('input', () => {
             textInput.style.height = 'auto';
             textInput.style.height = textInput.scrollHeight + 'px';
         });
 
-        preloadModels();
+        if (document.getElementById('ai-advisor')) {
+            preloadModels();
+        }
     }
+
+    // --- NOUVELLE LOGIQUE POUR LA PAGE 'ACCOUNT.HTML' ---
+    if (document.getElementById('account')) {
+        console.log("Script for account page is running."); // Ligne de débogage
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegisterBtn = document.getElementById('show-register');
+        const showLoginBtn = document.getElementById('show-login');
+        const authSection = document.getElementById('auth-section');
+        const registerSection = document.getElementById('register-section');
+        const userDashboard = document.getElementById('user-dashboard');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const addProductForm = document.getElementById('add-product-form');
+        const productList = document.getElementById('product-list');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Gère le passage entre les formulaires de connexion et d'inscription
+        if (showRegisterBtn) showRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log("Creating an account button clicked."); // Ligne de débogage
+            authSection.classList.add('hidden');
+            registerSection.classList.remove('hidden');
+        });
+
+        if (showLoginBtn) showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authSection.classList.remove('hidden');
+            registerSection.classList.add('hidden');
+        });
+
+        // Gère la soumission du formulaire d'inscription
+        if (registerForm) registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            localStorage.setItem('user', JSON.stringify({ username, password }));
+            alert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
+            authSection.classList.remove('hidden');
+            registerSection.classList.add('hidden');
+        });
+
+        // Gère la soumission du formulaire de connexion
+        if (loginForm) loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedUser && storedUser.username === username && storedUser.password === password) {
+                localStorage.setItem('loggedInUser', username);
+                checkAuth();
+            } else {
+                alert('Nom d\'utilisateur ou mot de passe incorrect.');
+            }
+        });
+
+        // Gère la soumission du formulaire d'ajout de produit
+        if (addProductForm) addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const productName = document.getElementById('product-name').value;
+            const productQuantity = document.getElementById('product-quantity').value;
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                const userProducts = JSON.parse(localStorage.getItem(`products_${loggedInUser}`)) || [];
+                userProducts.push({ name: productName, quantity: productQuantity });
+                localStorage.setItem(`products_${loggedInUser}`, JSON.stringify(userProducts));
+                displayProducts();
+                addProductForm.reset();
+            }
+        });
+
+        // Gère la déconnexion
+        if (logoutBtn) logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('loggedInUser');
+            checkAuth();
+        });
+
+        // Affiche la liste des produits de l'utilisateur
+        const displayProducts = () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (!productList) return;
+            productList.innerHTML = '';
+            if (loggedInUser) {
+                const userProducts = JSON.parse(localStorage.getItem(`products_${loggedInUser}`)) || [];
+                if (userProducts.length > 0) {
+                    userProducts.forEach(product => {
+                        const li = document.createElement('li');
+                        li.textContent = `${product.name}: ${product.quantity}`;
+                        productList.appendChild(li);
+                    });
+                } else {
+                    productList.innerHTML = `<li class="text-text-500">Aucun produit ajouté.</li>`;
+                }
+            }
+        };
+
+        // Vérifie l'état de l'authentification au chargement de la page
+        const checkAuth = () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                authSection.classList.add('hidden');
+                registerSection.classList.add('hidden');
+                userDashboard.classList.remove('hidden');
+                welcomeMessage.textContent = `Bienvenue, ${loggedInUser}!`;
+                displayProducts();
+            } else {
+                authSection.classList.remove('hidden');
+                registerSection.classList.add('hidden');
+                userDashboard.classList.add('hidden');
+            }
+        };
+        checkAuth();
+    }
+
 
     const savedLang = localStorage.getItem('language') || 'fr';
     if (languageSwitcher) languageSwitcher.value = savedLang;

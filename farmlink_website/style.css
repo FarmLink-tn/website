@@ -23,9 +23,10 @@
   --surface-800: rgba(18, 28, 48, 0.72); /* verre principal */
   --surface-700: rgba(18, 28, 48, 0.55); /* verre léger */
 
+  /* AMÉLIORATION: Couleurs de texte plus vives pour un meilleur contraste */
   --text-100: #e6f0ff;  /* texte principal */
-  --text-300: #c7d2e5;  /* texte secondaire fort */
-  --text-500: #91a0ba;  /* texte atténué */
+  --text-300: #d1d9e9;  /* texte secondaire fort (plus clair) */
+  --text-500: #a8b5d1;  /* texte atténué (plus clair) */
   --text-inverse: #0b1220;
 
   /* Bordures / ombres */
@@ -185,6 +186,11 @@ header {
 #mobile-menu a { color: var(--text-100); border-radius: 10px; }
 #mobile-menu a:hover { background: rgba(255,255,255,0.06); }
 
+/* CORRECTION POUR L'ARABE (RTL) */
+[dir="rtl"] .space-x-8 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+}
+
 /* ============================
    🎯 Boutons
    ============================ */
@@ -338,17 +344,31 @@ body:not(.dark) .testimonial-card {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .ai-results-container {
-  background: rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.2);
   border: 1px solid var(--border-soft);
   border-radius: 14px;
   padding: 1rem;
   min-height: 250px;
+  text-align: left;
+}
+#image-preview-wrapper {
+    width: 100%;
+    max-height: 300px;
+    margin-bottom: 1rem;
+    position: relative;
+}
+#image-preview-wrapper img, #image-preview-wrapper video {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
 }
 .ai-response-text { width: 100%; line-height: 1.6; color: var(--text-300); }
 
 .ai-input-form {
   display: flex; align-items: center; gap: .75rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.2);
   padding: .5rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-soft);
@@ -363,6 +383,9 @@ body:not(.dark) .testimonial-card {
   cursor: pointer; font-size: 1.2rem; width: 40px; height: 40px;
   border-radius: 50%;
   transition: color var(--speed-fast), background var(--speed-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .ai-action-button:hover {
   color: var(--text-100);
