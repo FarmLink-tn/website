@@ -1,7 +1,7 @@
 <?php
 return [
-    'host' => 'localhost',
-    'dbname' => 'my_database',
-    'user' => 'my_user',
-    'password' => 'my_password',
+    'host' => getenv('DB_HOST') ?: '',
+    'dbname' => getenv('DB_NAME') ?: '',
+    'user' => getenv('DB_USER') ?: '',
+    'password' => getenv('DB_PASSWORD') ?: '',
 ];
