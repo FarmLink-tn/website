@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Sensitive files
+server/config.php
+
+# Logs
+*.log
+logs/
