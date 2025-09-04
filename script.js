@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('/server/ai.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question, provider })
+                    body: JSON.stringify({ prompt: question, provider })
                 });
                 const data = await response.json();
                 if (data && data.answer) {
