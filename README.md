@@ -1,4 +1,6 @@
 
+=======
+
 # FarmLink Website
 
 This repository contains the static files for the FarmLink website. All public pages are served from the project root.
@@ -16,7 +18,7 @@ This repository contains the static files for the FarmLink website. All public p
 - `server/` – PHP backend scripts
 
 Obsolete files from the previous `farmlink_website/` directory have been removed.
-========
+
 # website
 
 ## Configuration
@@ -29,6 +31,7 @@ This project reads database connection details from environment variables:
 - `DB_PASSWORD` – Database password
 
 Ensure these are set in your environment before running the application.
+
 
 
 ## AI Provider Fallback
