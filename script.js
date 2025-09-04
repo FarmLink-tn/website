@@ -640,10 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        csrfFetch('/server/auth.php?action=check')
-
-        fetch('/server/auth.php?action=check', { method: 'GET' })
-
+        csrfFetch('/server/auth.php?action=check', { method: 'GET' })
             .then(res => res.json())
             .then(data => {
                 csrfToken = data.csrfToken;
