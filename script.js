@@ -649,6 +649,26 @@ document.addEventListener('DOMContentLoaded', () => {
         checkAuth();
     }
 
+    // Gère la soumission du formulaire de contact
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            fetch('/server/contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || (data.success ? 'Message envoyé avec succès!' : 'Une erreur est survenue.'));
+                if (data.success) contactForm.reset();
+            })
+            .catch(() => {
+                alert('Erreur réseau.');
+            });
+        });
+    }
 
     const savedLang = localStorage.getItem('language') || 'fr';
     if (languageSwitcher) languageSwitcher.value = savedLang;
