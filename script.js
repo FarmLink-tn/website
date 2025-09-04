@@ -548,14 +548,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const registerForm = document.getElementById('register-form');
         const authSection = document.getElementById('auth-section');
         const registerSection = document.getElementById('register-section');
-        const userDashboard = document.getElementById('user-dashboard');
-        const welcomeMessage = document.getElementById('welcome-message');
-        const addProductForm = document.getElementById('add-product-form');
-        const productList = document.getElementById('product-list');
-        const logoutBtn = document.getElementById('logout-btn');
         const loginMessage = document.getElementById('login-message');
         const registerMessage = document.getElementById('register-message');
-        let currentUser = null;
 
         // Gère la soumission du formulaire d'inscription
         if (registerForm) registerForm.addEventListener('submit', (e) => {
@@ -586,9 +580,20 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    if (registerMessage) registerMessage.textContent = 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.';
-                    if (authSection) authSection.classList.remove('hidden');
-                    if (registerSection) registerSection.classList.add('hidden');
+                    // Auto-login after registration then redirect to profile
+                    fetch('/server/auth.php?action=login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(res => res.json())
+                    .then(loginData => {
+                        if (loginData.success) {
+                            window.location.href = 'profile.html';
+                        } else {
+                            if (registerMessage) registerMessage.textContent = 'Compte créé, mais connexion impossible.';
+                        }
+                    });
                 } else {
                     if (registerMessage) registerMessage.textContent = data.message || 'Erreur lors de la création du compte.';
                 }
@@ -611,9 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    currentUser = data.username;
-                    if (loginMessage) loginMessage.textContent = '';
-                    checkAuth();
+                    window.location.href = 'profile.html';
                 } else {
                     if (loginMessage) loginMessage.textContent = data.message || "Nom d'utilisateur ou mot de passe incorrect.";
                 }
@@ -622,6 +625,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (loginMessage) loginMessage.textContent = 'Erreur réseau.';
             });
         });
+
+        fetch('/server/auth.php?action=check')
+            .then(res => res.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    window.location.href = 'profile.html';
+                } else {
+                    if (authSection) authSection.classList.remove('hidden');
+                    if (registerSection) registerSection.classList.remove('hidden');
+                }
+            });
+    }
+=======
 
         // Gère la soumission du formulaire d'ajout de produit
         if (addProductForm) addProductForm.addEventListener('submit', (e) => {
@@ -717,29 +733,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         };
 
-        // Vérifie l'état de l'authentification au chargement de la page
-        const checkAuth = () => {
-            fetch('/server/auth.php?action=check')
-                .then(res => res.json())
+
+    // --- LOGIQUE POUR LA PAGE 'PROFILE.HTML' ---
+    if (document.getElementById('profile')) {
+        const profileForm = document.getElementById('profile-form');
+        const lastNameInput = document.getElementById('profile-last-name');
+        const firstNameInput = document.getElementById('profile-first-name');
+        const emailInput = document.getElementById('profile-email');
+        const phoneInput = document.getElementById('profile-phone');
+        const regionInput = document.getElementById('profile-region');
+        const profileMessage = document.getElementById('profile-message');
+
+        const loadProfile = () => {
+            fetch('/server/user.php')
+                .then(res => {
+                    if (!res.ok) throw new Error('Unauthorized');
+                    return res.json();
+                })
                 .then(data => {
-                    if (data.loggedIn) {
-                        currentUser = data.username;
-                        if (authSection) authSection.classList.add('hidden');
-                        if (registerSection) registerSection.classList.add('hidden');
-                        if (userDashboard) {
-                            userDashboard.classList.remove('hidden');
-                            welcomeMessage.textContent = `Bienvenue, ${currentUser}!`;
-                            displayProducts();
-                        }
-                    } else {
-                        currentUser = null;
-                        if (authSection) authSection.classList.remove('hidden');
-                        if (registerSection) registerSection.classList.remove('hidden');
-                        if (userDashboard) userDashboard.classList.add('hidden');
-                    }
+                    lastNameInput.value = data.last_name || '';
+                    firstNameInput.value = data.first_name || '';
+                    emailInput.value = data.email || '';
+                    phoneInput.value = data.phone || '';
+                    regionInput.value = data.region || '';
+                })
+                .catch(() => {
+                    window.location.href = 'account.html';
                 });
         };
-        checkAuth();
+        loadProfile();
+
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const payload = {
+                last_name: lastNameInput.value.trim(),
+                first_name: firstNameInput.value.trim(),
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                region: regionInput.value.trim()
+            };
+            fetch('/server/user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    profileMessage.textContent = 'Profil mis à jour';
+                    profileMessage.classList.remove('text-red-500');
+                    profileMessage.classList.add('text-green-500');
+                } else {
+                    profileMessage.textContent = data.message || 'Erreur lors de la mise à jour.';
+                    profileMessage.classList.remove('text-green-500');
+                    profileMessage.classList.add('text-red-500');
+                }
+            })
+            .catch(() => {
+                profileMessage.textContent = 'Erreur réseau.';
+                profileMessage.classList.remove('text-green-500');
+                profileMessage.classList.add('text-red-500');
+            });
+        });
     }
 
     // Gère la soumission du formulaire de contact
