@@ -75,6 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
             auth_register_prompt: "Pas encore de compte ? <a href='register.html' class='text-brand-green-400 font-bold'>Créer un compte</a>",
             auth_register_title: "Créer un compte",
             auth_register_btn: "Créer le compte",
+            auth_last_name_placeholder: "Nom",
+            auth_first_name_placeholder: "Prénom",
+            auth_email_placeholder: "Email",
+            auth_phone_placeholder: "Numéro de téléphone",
+            auth_region_placeholder: "Région",
             auth_login_prompt: "Déjà un compte ? <a href='account.html' class='text-brand-blue-500 font-bold'>Se connecter</a>",
             products_section_title: "Mes Produits",
             add_product_btn: "Ajouter",
@@ -167,6 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
             auth_register_prompt: "Don't have an account yet? <a href='register.html' class='text-brand-green-400 font-bold'>Create an account</a>",
             auth_register_title: "Create an Account",
             auth_register_btn: "Create Account",
+            auth_last_name_placeholder: "Last Name",
+            auth_first_name_placeholder: "First Name",
+            auth_email_placeholder: "Email",
+            auth_phone_placeholder: "Phone Number",
+            auth_region_placeholder: "Region",
             auth_login_prompt: "Already have an account? <a href='account.html' class='text-brand-blue-500 font-bold'>Log In</a>",
             products_section_title: "My Products",
             add_product_btn: "Add",
@@ -255,6 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
             auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='register.html' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
             auth_register_title: "إنشاء حساب",
             auth_register_btn: "إنشاء الحساب",
+            auth_last_name_placeholder: "اللقب",
+            auth_first_name_placeholder: "الاسم الأول",
+            auth_email_placeholder: "البريد الإلكتروني",
+            auth_phone_placeholder: "رقم الهاتف",
+            auth_region_placeholder: "المنطقة",
             auth_login_prompt: "لديك حساب بالفعل؟ <a href='account.html' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
             products_section_title: "منتجاتي",
             add_product_btn: "أضف",
@@ -295,6 +310,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const key = el.getAttribute('data-translate');
             if (translations[lang] && translations[lang][key]) {
                 el.innerHTML = translations[lang][key];
+            }
+        });
+        document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-translate-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                el.setAttribute('placeholder', translations[lang][key]);
             }
         });
     };
@@ -539,12 +560,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gère la soumission du formulaire d'inscription
         if (registerForm) registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const username = document.getElementById('register-username').value;
+            const lastName = document.getElementById('register-last-name').value.trim();
+            const firstName = document.getElementById('register-first-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const region = document.getElementById('register-region').value.trim();
+            const username = document.getElementById('register-username').value.trim();
             const password = document.getElementById('register-password').value;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                if (registerMessage) registerMessage.textContent = 'Email invalide.';
+                return;
+            }
+            if (!/^\d{8,}$/.test(phone)) {
+                if (registerMessage) registerMessage.textContent = 'Le numéro de téléphone doit contenir au moins 8 chiffres.';
+                return;
+            }
+
             fetch('/server/auth.php?action=register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password, last_name: lastName, first_name: firstName, email, phone, region })
             })
             .then(res => res.json())
             .then(data => {
