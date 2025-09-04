@@ -626,15 +626,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gère la soumission du formulaire d'ajout de produit
         if (addProductForm) addProductForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const productName = document.getElementById('product-name').value;
-            const productQuantity = document.getElementById('product-quantity').value;
-            if (currentUser) {
-                const userProducts = JSON.parse(localStorage.getItem(`products_${currentUser}`)) || [];
-                userProducts.push({ name: productName, quantity: productQuantity });
-                localStorage.setItem(`products_${currentUser}`, JSON.stringify(userProducts));
+            const data = {
+                name: document.getElementById('product-name').value,
+                quantity: parseInt(document.getElementById('product-quantity').value) || 0,
+                phone: document.getElementById('product-phone').value,
+                ph: parseFloat(document.getElementById('product-ph').value) || null,
+                rain: parseFloat(document.getElementById('product-rain').value) || null,
+                humidity: parseFloat(document.getElementById('product-humidity').value) || null,
+                soil_humidity: parseFloat(document.getElementById('product-soil_humidity').value) || null,
+                light: parseFloat(document.getElementById('product-light').value) || null,
+                valve_open: document.getElementById('product-valve_open').checked ? 1 : 0,
+                valve_angle: parseInt(document.getElementById('product-valve_angle').value) || 0
+            };
+            fetch('/server/products.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
                 displayProducts();
                 addProductForm.reset();
-            }
+            });
         });
 
         // Gère la déconnexion
@@ -646,19 +658,63 @@ document.addEventListener('DOMContentLoaded', () => {
         // Affiche la liste des produits de l'utilisateur
         const displayProducts = () => {
             if (!productList) return;
-            productList.innerHTML = '';
-            if (currentUser) {
-                const userProducts = JSON.parse(localStorage.getItem(`products_${currentUser}`)) || [];
-                if (userProducts.length > 0) {
-                    userProducts.forEach(product => {
-                        const li = document.createElement('li');
-                        li.textContent = `${product.name}: ${product.quantity}`;
-                        productList.appendChild(li);
-                    });
-                } else {
-                    productList.innerHTML = `<li class="text-text-500">Aucun produit ajouté.</li>`;
-                }
-            }
+            fetch('/server/products.php')
+                .then(res => res.json())
+                .then(products => {
+                    productList.innerHTML = '';
+                    if (Array.isArray(products) && products.length > 0) {
+                        products.forEach(prod => {
+                            const tr = document.createElement('tr');
+                            const fields = ['name','quantity','ph','rain','humidity','soil_humidity','light'];
+                            fields.forEach(f => {
+                                const td = document.createElement('td');
+                                td.className = 'px-2';
+                                td.textContent = prod[f] ?? '';
+                                tr.appendChild(td);
+                            });
+
+                            const valveTd = document.createElement('td');
+                            valveTd.className = 'px-2';
+                            const valveBtn = document.createElement('button');
+                            valveBtn.className = 'button button--glass';
+                            valveBtn.textContent = prod.valve_open == 1 ? 'Fermer' : 'Ouvrir';
+                            valveBtn.addEventListener('click', () => {
+                                fetch(`/server/products.php?id=${prod.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ valve_open: prod.valve_open == 1 ? 0 : 1 })
+                                }).then(displayProducts);
+                            });
+                            valveTd.appendChild(valveBtn);
+                            tr.appendChild(valveTd);
+
+                            const angleTd = document.createElement('td');
+                            angleTd.className = 'px-2';
+                            const angleInput = document.createElement('input');
+                            angleInput.type = 'number';
+                            angleInput.value = prod.valve_angle;
+                            angleInput.className = 'form-input w-20';
+                            angleInput.addEventListener('change', () => {
+                                fetch(`/server/products.php?id=${prod.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ valve_angle: parseInt(angleInput.value) || 0 })
+                                }).then(displayProducts);
+                            });
+                            angleTd.appendChild(angleInput);
+                            tr.appendChild(angleTd);
+
+                            productList.appendChild(tr);
+                        });
+                    } else {
+                        const tr = document.createElement('tr');
+                        const td = document.createElement('td');
+                        td.colSpan = 9;
+                        td.textContent = 'Aucun produit ajouté.';
+                        tr.appendChild(td);
+                        productList.appendChild(tr);
+                    }
+                });
         };
 
         // Vérifie l'état de l'authentification au chargement de la page
