@@ -43,9 +43,26 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Optional SMS integration placeholder
 function send_sms($phone, $message) {
     $url = getenv('SMS_API_URL');
-    if (!$url) return;
+    if (!$url) return false;
     $query = http_build_query(['to' => $phone, 'message' => $message]);
-    @file_get_contents("$url?$query");
+    $ch = curl_init("$url?$query");
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 5,
+    ]);
+    $response = curl_exec($ch);
+    if ($response === false) {
+        error_log('SMS API request error: ' . curl_error($ch));
+        curl_close($ch);
+        return false;
+    }
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    if ($status >= 400) {
+        error_log("SMS API responded with HTTP $status: $response");
+        return false;
+    }
+    return true;
 }
 
 function validate_product(array $data): array {
@@ -123,7 +140,9 @@ switch ($method) {
             $data['valve_angle']
         ]);
         if (!empty($input['send_sms'])) {
-            send_sms($input['phone'], 'New order for ' . ($input['name'] ?? 'product'));
+            if (!send_sms($input['phone'], 'New order for ' . ($input['name'] ?? 'product'))) {
+                error_log('Failed to send SMS for product creation');
+            }
         }
         echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
         break;
@@ -164,7 +183,9 @@ switch ($method) {
             $stmt->execute([$userId, $id]);
             $prod = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($prod) {
-                send_sms($prod['phone'], 'Order update for ' . $prod['name']);
+                if (!send_sms($prod['phone'], 'Order update for ' . $prod['name'])) {
+                    error_log('Failed to send SMS for product update');
+                }
             }
         }
         echo json_encode(['success' => true]);
