@@ -836,9 +836,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const savedLang = localStorage.getItem('language') || 'fr';
-    if (languageSwitcher) languageSwitcher.value = savedLang;
-    applyLanguage(savedLang);
     const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     applyTheme(savedTheme);
     if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 50 });
