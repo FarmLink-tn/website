@@ -30,3 +30,8 @@ This project reads database connection details from environment variables:
 
 Ensure these are set in your environment before running the application.
 
+
+## AI Provider Fallback
+
+The `server/ai.php` endpoint attempts to contact the AI provider specified in the request. If the call fails due to a timeout or a 5xx error, it automatically falls back to the other provider. The JSON response includes the provider ultimately used so that clients can display which service handled the request.
+
