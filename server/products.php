@@ -2,10 +2,25 @@
 session_start();
 header('Content-Type: application/json');
 
+// Ensure CSRF token exists
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
     exit;
+}
+
+// Validate CSRF token on non-GET requests
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    $token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (!$token || !hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Invalid CSRF token']);
+        exit;
+    }
 }
 
 $config = require __DIR__ . '/config.php';

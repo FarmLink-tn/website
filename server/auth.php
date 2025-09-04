@@ -2,6 +2,21 @@
 session_start();
 header('Content-Type: application/json');
 
+// Generate a CSRF token for the session if it doesn't exist
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+// Validate CSRF token on all non-GET requests
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    $token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (!$token || !hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Invalid CSRF token']);
+        exit;
+    }
+}
+
 $config = require __DIR__ . '/config.php';
 
 try {
@@ -51,7 +66,7 @@ switch ($action) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare('INSERT INTO users (username, password_hash, last_name, first_name, email, phone, region) VALUES (?, ?, ?, ?, ?, ?, ?)');
         $stmt->execute([$username, $hash, $lastName, $firstName, $email, $phone, $region]);
-        echo json_encode(['success' => true]);
+        echo json_encode(['success' => true, 'csrfToken' => $_SESSION['csrf_token']]);
         break;
 
     case 'login':
@@ -66,7 +81,7 @@ switch ($action) {
         if ($user && password_verify($password, $user['password_hash'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
-            echo json_encode(['success' => true, 'username' => $username]);
+            echo json_encode(['success' => true, 'username' => $username, 'csrfToken' => $_SESSION['csrf_token']]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid credentials']);
         }
@@ -74,9 +89,16 @@ switch ($action) {
 
     case 'check':
         if (isset($_SESSION['username'])) {
-            echo json_encode(['loggedIn' => true, 'username' => $_SESSION['username']]);
+            echo json_encode([
+                'loggedIn' => true,
+                'username' => $_SESSION['username'],
+                'csrfToken' => $_SESSION['csrf_token']
+            ]);
         } else {
-            echo json_encode(['loggedIn' => false]);
+            echo json_encode([
+                'loggedIn' => false,
+                'csrfToken' => $_SESSION['csrf_token']
+            ]);
         }
         break;
 

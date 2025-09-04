@@ -1,3 +1,13 @@
+let csrfToken = null;
+
+function csrfFetch(url, options = {}) {
+    options.headers = options.headers || {};
+    if (options.method && options.method.toUpperCase() !== 'GET') {
+        options.headers['X-CSRF-Token'] = csrfToken;
+    }
+    return fetch(url, options);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- DICTIONNAIRE DE TRADUCTION COMPLET ---
     const translations = {
@@ -540,7 +550,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
+    // Fetch CSRF token for the session
+    csrfFetch('/server/auth.php?action=check')
+        .then(res => res.json())
+        .then(data => {
+            csrfToken = data.csrfToken;
+            document.querySelectorAll('input[name="csrf_token"]').forEach(input => {
+                input.value = csrfToken;
+            });
+        })
+        .catch(() => {});
+
     // --- NOUVELLE LOGIQUE POUR LA PAGE 'ACCOUNT.HTML' ---
     if (document.getElementById('account')) {
         console.log("Script for account page is running."); // Ligne de débogage
@@ -572,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            fetch('/server/auth.php?action=register', {
+            csrfFetch('/server/auth.php?action=register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password, last_name: lastName, first_name: firstName, email, phone, region })
@@ -581,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.success) {
                     // Auto-login after registration then redirect to profile
-                    fetch('/server/auth.php?action=login', {
+                    csrfFetch('/server/auth.php?action=login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, password })
@@ -608,7 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-            fetch('/server/auth.php?action=login', {
+            csrfFetch('/server/auth.php?action=login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -626,9 +646,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        fetch('/server/auth.php?action=check')
+        csrfFetch('/server/auth.php?action=check')
             .then(res => res.json())
             .then(data => {
+                csrfToken = data.csrfToken;
                 if (data.loggedIn) {
                     window.location.href = 'profile.html';
                 } else {
@@ -637,7 +658,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
     }
-=======
 
         // Gère la soumission du formulaire d'ajout de produit
         if (addProductForm) addProductForm.addEventListener('submit', (e) => {
@@ -654,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 valve_open: document.getElementById('product-valve_open').checked ? 1 : 0,
                 valve_angle: parseInt(document.getElementById('product-valve_angle').value) || 0
             };
-            fetch('/server/products.php', {
+            csrfFetch('/server/products.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -667,14 +687,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Gère la déconnexion
         if (logoutBtn) logoutBtn.addEventListener('click', () => {
-            fetch('/server/auth.php?action=logout', { method: 'POST' })
+            csrfFetch('/server/auth.php?action=logout', { method: 'POST' })
                 .then(() => { currentUser = null; checkAuth(); });
         });
 
         // Affiche la liste des produits de l'utilisateur
         const displayProducts = () => {
             if (!productList) return;
-            fetch('/server/products.php')
+            csrfFetch('/server/products.php')
                 .then(res => res.json())
                 .then(products => {
                     productList.innerHTML = '';
@@ -695,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             valveBtn.className = 'button button--glass';
                             valveBtn.textContent = prod.valve_open == 1 ? 'Fermer' : 'Ouvrir';
                             valveBtn.addEventListener('click', () => {
-                                fetch(`/server/products.php?id=${prod.id}`, {
+                                csrfFetch(`/server/products.php?id=${prod.id}`, {
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ valve_open: prod.valve_open == 1 ? 0 : 1 })
@@ -711,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             angleInput.value = prod.valve_angle;
                             angleInput.className = 'form-input w-20';
                             angleInput.addEventListener('change', () => {
-                                fetch(`/server/products.php?id=${prod.id}`, {
+                                csrfFetch(`/server/products.php?id=${prod.id}`, {
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ valve_angle: parseInt(angleInput.value) || 0 })
@@ -745,7 +765,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const profileMessage = document.getElementById('profile-message');
 
         const loadProfile = () => {
-            fetch('/server/user.php')
+            csrfFetch('/server/user.php')
                 .then(res => {
                     if (!res.ok) throw new Error('Unauthorized');
                     return res.json();
@@ -772,7 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: phoneInput.value.trim(),
                 region: regionInput.value.trim()
             };
-            fetch('/server/user.php', {
+            csrfFetch('/server/user.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -803,7 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(contactForm);
-            fetch('/server/contact.php', {
+            csrfFetch('/server/contact.php', {
                 method: 'POST',
                 body: formData
             })
