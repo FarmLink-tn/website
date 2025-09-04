@@ -1,14 +1,30 @@
 <?php
+session_start();
 header('Content-Type: application/json');
+
+// Ensure CSRF token exists
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+// Validate CSRF token on POST requests
+$token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? ($_POST['csrf_token'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    if (!$token || !hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Invalid CSRF token']);
+        exit;
+    }
+}
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$name = trim($_POST['name'] ?? '');
-$email = trim($_POST['email'] ?? '');
-$phone = trim($_POST['phone'] ?? '');
+$name    = trim($_POST['name']    ?? '');
+$email   = trim($_POST['email']   ?? '');
+$phone   = trim($_POST['phone']   ?? '');
 $message = trim($_POST['message'] ?? '');
 
 if (!$name || !$email || !$message || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -25,9 +41,9 @@ if (preg_match('/[\r\n]/', $email)) {
 }
 
 $cleanEmail = filter_var($email, FILTER_SANITIZE_EMAIL);
-$to = 'contact@farmlink.tn';
+$to      = 'contact@farmlink.tn';
 $subject = 'Nouveau message de contact';
-$body = "Nom: $name\nEmail: $cleanEmail\nTéléphone: $phone\nMessage:\n$message";
+$body    = "Nom: $name\nEmail: $cleanEmail\nTéléphone: $phone\nMessage:\n$message";
 
 $mail = new PHPMailer(true); // PHPMailer helps prevent header injection
 
@@ -47,6 +63,6 @@ try {
     }
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'envoi du message.']);
+    echo json_encode(['success' => false, 'message' => "Erreur lors de l'envoi du message."]);
 }
 ?>
