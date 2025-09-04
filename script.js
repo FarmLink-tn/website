@@ -375,7 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const cam = document.getElementById('cam');
         const aiResponseText = document.getElementById('ai-response-text');
         const aiSpinner = document.getElementById('ai-spinner');
-        const providerSelect = document.getElementById('provider-select');
 
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progressBar');
@@ -414,7 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function handleTextAnalysis(question) {
             if (!question.trim()) return;
-            const provider = providerSelect?.value || '';
             showSpinner(true);
             aiResponseText.textContent = '';
             imagePreviewWrapper.classList.add('hidden');
@@ -423,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('/server/ai.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: question, provider })
+                    body: JSON.stringify({ prompt: question })
                 });
                 const data = await response.json();
                 if (data && data.answer) {
