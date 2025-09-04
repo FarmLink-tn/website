@@ -1,4 +1,9 @@
 <?php
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => true,
+    'samesite' => 'Strict',
+]);
 session_start();
 header('Content-Type: application/json');
 
@@ -90,6 +95,7 @@ switch ($action) {
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($user && password_verify($password, $user['password_hash'])) {
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
             echo json_encode(['success' => true, 'username' => $username, 'csrfToken' => $_SESSION['csrf_token']]);
