@@ -318,8 +318,15 @@ document.addEventListener('DOMContentLoaded', () => {
         htmlElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
         document.querySelectorAll('[data-translate]').forEach(el => {
             const key = el.getAttribute('data-translate');
-            if (translations[lang] && translations[lang][key]) {
-                el.innerHTML = translations[lang][key];
+            if (!el.dataset.original) {
+                el.dataset.original = el.innerHTML;
+            }
+            const translation = translations[lang] && translations[lang][key];
+            if (translation) {
+                el.innerHTML = translation;
+            } else {
+                el.innerHTML = el.dataset.original;
+                console.warn(`Missing translation for key '${key}' in language '${lang}'`);
             }
         });
         document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
