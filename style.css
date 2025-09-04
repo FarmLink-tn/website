@@ -348,7 +348,7 @@ body:not(.dark) .testimonial-card {
   border: 1px solid var(--border-soft);
   border-radius: 14px;
   padding: 1rem;
-  min-height: 250px;
+  min-height: 350px;
   text-align: left;
 }
 #image-preview-wrapper {
