@@ -21,25 +21,36 @@ $action = $_GET['action'] ?? '';
 
 // Helper to read JSON body
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
-$username = $input['username'] ?? '';
+$username = trim($input['username'] ?? '');
 $password = $input['password'] ?? '';
+$lastName = trim($input['last_name'] ?? '');
+$firstName = trim($input['first_name'] ?? '');
+$email = trim($input['email'] ?? '');
+$phone = trim($input['phone'] ?? '');
+$region = trim($input['region'] ?? '');
 
 switch ($action) {
     case 'register':
-        if (!$username || !$password) {
+        if (!$username || !$password || !$lastName || !$firstName || !$email || !$phone || !$region) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Missing fields']);
             break;
         }
-        $stmt = $pdo->prepare('SELECT id FROM users WHERE username = ?');
-        $stmt->execute([$username]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^\d{8,}$/', $phone)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Invalid fields']);
+            break;
+        }
+        $stmt = $pdo->prepare('SELECT id FROM users WHERE username = ? OR email = ?');
+        $stmt->execute([$username, $email]);
         if ($stmt->fetch()) {
-            echo json_encode(['success' => false, 'message' => 'Username already exists']);
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Username or email already exists']);
             break;
         }
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (username, password_hash) VALUES (?, ?)');
-        $stmt->execute([$username, $hash]);
+        $stmt = $pdo->prepare('INSERT INTO users (username, password_hash, last_name, first_name, email, phone, region) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$username, $hash, $lastName, $firstName, $email, $phone, $region]);
         echo json_encode(['success' => true]);
         break;
 
