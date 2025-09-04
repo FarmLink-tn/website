@@ -9,6 +9,7 @@ function csrfFetch(url, options = {}) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    AOS.init();
     // --- DICTIONNAIRE DE TRADUCTION COMPLET ---
     const translations = {
         fr: {
@@ -343,8 +344,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const savedLang = localStorage.getItem('language') || 'fr';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     if (languageSwitcher) languageSwitcher.value = savedLang;
     applyLanguage(savedLang);
+    applyTheme(savedTheme);
 
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     document.querySelectorAll('.nav-link').forEach(link => {
@@ -836,8 +839,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    applyTheme(savedTheme);
     try {
         AOS.init({ duration: 800, once: true, offset: 50 });
     } catch (e) {
