@@ -33,6 +33,7 @@ try {
 }
 
 $action = $_GET['action'] ?? '';
+$method = $_SERVER['REQUEST_METHOD'] ?? '';
 
 // Helper to read JSON body
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
@@ -46,6 +47,11 @@ $region = trim($input['region'] ?? '');
 
 switch ($action) {
     case 'register':
+        if ($method !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            break;
+        }
         if (!$username || !$password || !$lastName || !$firstName || !$email || !$phone || !$region) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Missing fields']);
@@ -70,6 +76,11 @@ switch ($action) {
         break;
 
     case 'login':
+        if ($method !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            break;
+        }
         if (!$username || !$password) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Missing fields']);
@@ -88,6 +99,11 @@ switch ($action) {
         break;
 
     case 'check':
+        if ($method !== 'GET') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            break;
+        }
         if (isset($_SESSION['username'])) {
             echo json_encode([
                 'loggedIn' => true,
@@ -103,6 +119,11 @@ switch ($action) {
         break;
 
     case 'logout':
+        if ($method !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            break;
+        }
         session_destroy();
         echo json_encode(['success' => true]);
         break;
