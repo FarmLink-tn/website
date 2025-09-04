@@ -9,6 +9,7 @@ function csrfFetch(url, options = {}) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    AOS.init();
     // --- DICTIONNAIRE DE TRADUCTION COMPLET ---
     const translations = {
         fr: {
