@@ -33,6 +33,42 @@ function send_sms($phone, $message) {
     @file_get_contents("$url?$query");
 }
 
+function validate_product(array $data): array {
+    $errors = [];
+
+    if (array_key_exists('quantity', $data)) {
+        if (filter_var($data['quantity'], FILTER_VALIDATE_INT) === false || $data['quantity'] < 0 || $data['quantity'] > 1000) {
+            $errors[] = 'Quantity must be an integer between 0 and 1000';
+        }
+    }
+
+    if (array_key_exists('valve_angle', $data)) {
+        if (filter_var($data['valve_angle'], FILTER_VALIDATE_INT) === false || $data['valve_angle'] < 0 || $data['valve_angle'] > 180) {
+            $errors[] = 'Valve angle must be an integer between 0 and 180';
+        }
+    }
+
+    $numericFields = [
+        'ph' => [0, 14],
+        'rain' => [0, 100],
+        'humidity' => [0, 100],
+        'soil_humidity' => [0, 100],
+        'light' => [0, 100],
+    ];
+
+    foreach ($numericFields as $field => [$min, $max]) {
+        if (array_key_exists($field, $data)) {
+            if (!is_numeric($data[$field])) {
+                $errors[] = ucfirst(str_replace('_', ' ', $field)) . ' must be numeric';
+            } elseif ($data[$field] < $min || $data[$field] > $max) {
+                $errors[] = ucfirst(str_replace('_', ' ', $field)) . " must be between $min and $max";
+            }
+        }
+    }
+
+    return $errors;
+}
+
 switch ($method) {
     case 'GET':
         $id = $_GET['id'] ?? null;
@@ -50,19 +86,26 @@ switch ($method) {
 
     case 'POST':
         $input = json_decode(file_get_contents('php://input'), true) ?? [];
+        $data = array_merge(['quantity' => 0, 'valve_angle' => 0], $input);
+        $errors = validate_product($data);
+        if ($errors) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => implode('; ', $errors)]);
+            break;
+        }
         $stmt = $pdo->prepare('INSERT INTO products (user_id, name, quantity, phone, ph, rain, humidity, soil_humidity, light, valve_open, valve_angle) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $stmt->execute([
             $userId,
-            $input['name'] ?? '',
-            $input['quantity'] ?? 0,
-            $input['phone'] ?? '',
-            $input['ph'] ?? null,
-            $input['rain'] ?? null,
-            $input['humidity'] ?? null,
-            $input['soil_humidity'] ?? null,
-            $input['light'] ?? null,
-            $input['valve_open'] ?? 0,
-            $input['valve_angle'] ?? 0
+            $data['name'] ?? '',
+            $data['quantity'],
+            $data['phone'] ?? '',
+            $data['ph'] ?? null,
+            $data['rain'] ?? null,
+            $data['humidity'] ?? null,
+            $data['soil_humidity'] ?? null,
+            $data['light'] ?? null,
+            $data['valve_open'] ?? 0,
+            $data['valve_angle']
         ]);
         if (!empty($input['send_sms'])) {
             send_sms($input['phone'], 'New order for ' . ($input['name'] ?? 'product'));
@@ -79,6 +122,12 @@ switch ($method) {
             break;
         }
         $input = json_decode(file_get_contents('php://input'), true) ?? [];
+        $errors = validate_product($input);
+        if ($errors) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => implode('; ', $errors)]);
+            break;
+        }
         $fields = [];
         $params = [];
         foreach (['name','quantity','phone','ph','rain','humidity','soil_humidity','light','valve_open','valve_angle'] as $field) {
