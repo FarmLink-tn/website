@@ -348,7 +348,7 @@ body:not(.dark) .testimonial-card {
   border: 1px solid var(--border-soft);
   border-radius: 14px;
   padding: 1rem;
-  min-height: 250px;
+  min-height: 350px;
   text-align: left;
 }
 #image-preview-wrapper {
@@ -375,7 +375,7 @@ body:not(.dark) .testimonial-card {
 }
 .ai-input-form textarea {
   background: transparent; border: none; resize: none;
-  color: var(--text-100); padding: .5rem; height: 40px; flex: 1;
+  color: var(--text-100); padding: .5rem; flex: 1; min-height: 120px;
 }
 .ai-input-form textarea:focus { outline: none; }
 .ai-action-button {

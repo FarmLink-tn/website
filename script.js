@@ -1,3 +1,13 @@
+let csrfToken = null;
+
+function csrfFetch(url, options = {}) {
+    options.headers = options.headers || {};
+    if (options.method && options.method.toUpperCase() !== 'GET') {
+        options.headers['X-CSRF-Token'] = csrfToken;
+    }
+    return fetch(url, options);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- DICTIONNAIRE DE TRADUCTION COMPLET ---
     const translations = {
@@ -72,10 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "Mon Compte",
             auth_login_title: "Se connecter",
             auth_login_btn: "Se connecter",
-            auth_register_prompt: "Pas encore de compte ? <a href='#' id='show-register' class='text-brand-green-400 font-bold'>Créer un compte</a>",
+            auth_register_prompt: "Pas encore de compte ? <a href='register.html' class='text-brand-green-400 font-bold'>Créer un compte</a>",
             auth_register_title: "Créer un compte",
             auth_register_btn: "Créer le compte",
-            auth_login_prompt: "Déjà un compte ? <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>Se connecter</a>",
+            auth_last_name_placeholder: "Nom",
+            auth_first_name_placeholder: "Prénom",
+            auth_email_placeholder: "Email",
+            auth_phone_placeholder: "Numéro de téléphone",
+            auth_region_placeholder: "Région",
+            auth_login_prompt: "Déjà un compte ? <a href='account.html' class='text-brand-blue-500 font-bold'>Se connecter</a>",
             products_section_title: "Mes Produits",
             add_product_btn: "Ajouter",
             logout_btn: "Se déconnecter",
@@ -164,10 +179,15 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "My Account",
             auth_login_title: "Log In",
             auth_login_btn: "Log In",
-            auth_register_prompt: "Don't have an account yet? <a href='#' id='show-register' class='text-brand-green-400 font-bold'>Create an account</a>",
+            auth_register_prompt: "Don't have an account yet? <a href='register.html' class='text-brand-green-400 font-bold'>Create an account</a>",
             auth_register_title: "Create an Account",
             auth_register_btn: "Create Account",
-            auth_login_prompt: "Already have an account? <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>Log In</a>",
+            auth_last_name_placeholder: "Last Name",
+            auth_first_name_placeholder: "First Name",
+            auth_email_placeholder: "Email",
+            auth_phone_placeholder: "Phone Number",
+            auth_region_placeholder: "Region",
+            auth_login_prompt: "Already have an account? <a href='account.html' class='text-brand-blue-500 font-bold'>Log In</a>",
             products_section_title: "My Products",
             add_product_btn: "Add",
             logout_btn: "Log Out",
@@ -252,10 +272,15 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "حسابي",
             auth_login_title: "تسجيل الدخول",
             auth_login_btn: "تسجيل الدخول",
-            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='#' id='show-register' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
+            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='register.html' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
             auth_register_title: "إنشاء حساب",
             auth_register_btn: "إنشاء الحساب",
-            auth_login_prompt: "لديك حساب بالفعل؟ <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
+            auth_last_name_placeholder: "اللقب",
+            auth_first_name_placeholder: "الاسم الأول",
+            auth_email_placeholder: "البريد الإلكتروني",
+            auth_phone_placeholder: "رقم الهاتف",
+            auth_region_placeholder: "المنطقة",
+            auth_login_prompt: "لديك حساب بالفعل؟ <a href='account.html' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
             products_section_title: "منتجاتي",
             add_product_btn: "أضف",
             logout_btn: "تسجيل الخروج",
@@ -297,6 +322,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.innerHTML = translations[lang][key];
             }
         });
+        document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-translate-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                el.setAttribute('placeholder', translations[lang][key]);
+            }
+        });
     };
 
     const applyTheme = (theme) => {
@@ -330,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LOGIQUE SPÉCIFIQUE À LA PAGE AI-ADVISOR ---
     if (document.getElementById('ai-advisor')) {
-        let models = { qna: null, image: null, ready: false };
+        let models = { image: null, ready: false };
         let stream = null;
 
         const aiInputForm = document.getElementById('ai-input-form');
@@ -363,11 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateProgressBar(10);
             aiResponseText.textContent = "Chargement des modèles IA...";
             try {
-                if (typeof qna !== 'undefined') {
-                    models.qna = await qna.load();
-                    console.log('Modèle IA Texte chargé.');
-                    updateProgressBar(50);
-                }
                 if (typeof mobilenet !== 'undefined') {
                     await tf.setBackend('webgl');
                     models.image = await mobilenet.load({ version: 2, alpha: 1.0 });
@@ -387,25 +413,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function handleTextAnalysis(question) {
             if (!question.trim()) return;
-            if (!models.ready || !models.qna) {
-                aiResponseText.textContent = "Le modèle IA texte n'est pas encore prêt.";
-                return;
-            }
             showSpinner(true);
             aiResponseText.textContent = '';
             imagePreviewWrapper.classList.add('hidden');
 
             try {
-                const context = translations[currentLang].context_agricole;
-                const answers = await models.qna.findAnswers(question, context);
-                if (answers && answers.length > 0) {
-                    const bestAnswer = answers.sort((a, b) => b.score - a.score)[0];
-                    aiResponseText.innerHTML = `<p><strong>Réponse :</strong> ${bestAnswer.text}</p><p class="text-sm mt-2"><em>(Confiance : ${Math.round(bestAnswer.score*100)}%)</em></p>`;
+                const response = await fetch('/server/ai.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: question })
+                });
+                const data = await response.json();
+                if (data && data.answer) {
+                    aiResponseText.textContent = data.answer;
                 } else {
-                    aiResponseText.innerHTML = "<p>Désolé, je n'ai pas trouvé de réponse précise. Essayez de reformuler votre question.</p>";
+                    aiResponseText.textContent = 'Aucune réponse reçue.';
                 }
             } catch (error) {
-                console.error("Erreur QnA:", error);
+                console.error('Erreur IA:', error);
                 aiResponseText.textContent = "Une erreur est survenue lors de l'analyse.";
             } finally {
                 showSpinner(false);
@@ -519,57 +544,70 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
+    // Fetch CSRF token for the session
+    csrfFetch('/server/auth.php?action=check')
+        .then(res => res.json())
+        .then(data => {
+            csrfToken = data.csrfToken;
+            document.querySelectorAll('input[name="csrf_token"]').forEach(input => {
+                input.value = csrfToken;
+            });
+        })
+        .catch(() => {});
+
     // --- NOUVELLE LOGIQUE POUR LA PAGE 'ACCOUNT.HTML' ---
     if (document.getElementById('account')) {
         console.log("Script for account page is running."); // Ligne de débogage
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
-        const showRegisterBtn = document.getElementById('show-register');
-        const showLoginBtn = document.getElementById('show-login');
         const authSection = document.getElementById('auth-section');
         const registerSection = document.getElementById('register-section');
-        const userDashboard = document.getElementById('user-dashboard');
-        const welcomeMessage = document.getElementById('welcome-message');
-        const addProductForm = document.getElementById('add-product-form');
-        const productList = document.getElementById('product-list');
-        const logoutBtn = document.getElementById('logout-btn');
         const loginMessage = document.getElementById('login-message');
         const registerMessage = document.getElementById('register-message');
-        let currentUser = null;
-
-        // Gère le passage entre les formulaires de connexion et d'inscription
-        if (showRegisterBtn) showRegisterBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log("Creating an account button clicked."); // Ligne de débogage
-            authSection.classList.add('hidden');
-            registerSection.classList.remove('hidden');
-            if (loginMessage) loginMessage.textContent = '';
-        });
-
-        if (showLoginBtn) showLoginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            authSection.classList.remove('hidden');
-            registerSection.classList.add('hidden');
-            if (registerMessage) registerMessage.textContent = '';
-        });
 
         // Gère la soumission du formulaire d'inscription
         if (registerForm) registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const username = document.getElementById('register-username').value;
+            const lastName = document.getElementById('register-last-name').value.trim();
+            const firstName = document.getElementById('register-first-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const region = document.getElementById('register-region').value.trim();
+            const username = document.getElementById('register-username').value.trim();
             const password = document.getElementById('register-password').value;
-            fetch('/server/auth.php?action=register', {
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                if (registerMessage) registerMessage.textContent = 'Email invalide.';
+                return;
+            }
+            if (!/^\d{8,}$/.test(phone)) {
+                if (registerMessage) registerMessage.textContent = 'Le numéro de téléphone doit contenir au moins 8 chiffres.';
+                return;
+            }
+
+            csrfFetch('/server/auth.php?action=register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password, last_name: lastName, first_name: firstName, email, phone, region })
             })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    if (registerMessage) registerMessage.textContent = 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.';
-                    authSection.classList.remove('hidden');
-                    registerSection.classList.add('hidden');
+                    // Auto-login after registration then redirect to profile
+                    csrfFetch('/server/auth.php?action=login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(res => res.json())
+                    .then(loginData => {
+                        if (loginData.success) {
+                            window.location.href = 'profile.html';
+                        } else {
+                            if (registerMessage) registerMessage.textContent = 'Compte créé, mais connexion impossible.';
+                        }
+                    });
                 } else {
                     if (registerMessage) registerMessage.textContent = data.message || 'Erreur lors de la création du compte.';
                 }
@@ -584,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-            fetch('/server/auth.php?action=login', {
+            csrfFetch('/server/auth.php?action=login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -592,9 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    currentUser = data.username;
-                    if (loginMessage) loginMessage.textContent = '';
-                    checkAuth();
+                    window.location.href = 'profile.html';
                 } else {
                     if (loginMessage) loginMessage.textContent = data.message || "Nom d'utilisateur ou mot de passe incorrect.";
                 }
@@ -604,67 +640,200 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        csrfFetch('/server/auth.php?action=check')
+
+        fetch('/server/auth.php?action=check', { method: 'GET' })
+
+            .then(res => res.json())
+            .then(data => {
+                csrfToken = data.csrfToken;
+                if (data.loggedIn) {
+                    window.location.href = 'profile.html';
+                } else {
+                    if (authSection) authSection.classList.remove('hidden');
+                    if (registerSection) registerSection.classList.remove('hidden');
+                }
+            });
+    }
+
         // Gère la soumission du formulaire d'ajout de produit
         if (addProductForm) addProductForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const productName = document.getElementById('product-name').value;
-            const productQuantity = document.getElementById('product-quantity').value;
-            if (currentUser) {
-                const userProducts = JSON.parse(localStorage.getItem(`products_${currentUser}`)) || [];
-                userProducts.push({ name: productName, quantity: productQuantity });
-                localStorage.setItem(`products_${currentUser}`, JSON.stringify(userProducts));
+            const data = {
+                name: document.getElementById('product-name').value,
+                quantity: parseInt(document.getElementById('product-quantity').value) || 0,
+                phone: document.getElementById('product-phone').value,
+                ph: parseFloat(document.getElementById('product-ph').value) || null,
+                rain: parseFloat(document.getElementById('product-rain').value) || null,
+                humidity: parseFloat(document.getElementById('product-humidity').value) || null,
+                soil_humidity: parseFloat(document.getElementById('product-soil_humidity').value) || null,
+                light: parseFloat(document.getElementById('product-light').value) || null,
+                valve_open: document.getElementById('product-valve_open').checked ? 1 : 0,
+                valve_angle: parseInt(document.getElementById('product-valve_angle').value) || 0
+            };
+            csrfFetch('/server/products.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
                 displayProducts();
                 addProductForm.reset();
-            }
+            });
         });
 
         // Gère la déconnexion
         if (logoutBtn) logoutBtn.addEventListener('click', () => {
-            fetch('/server/auth.php?action=logout', { method: 'POST' })
+            csrfFetch('/server/auth.php?action=logout', { method: 'POST' })
                 .then(() => { currentUser = null; checkAuth(); });
         });
 
         // Affiche la liste des produits de l'utilisateur
         const displayProducts = () => {
             if (!productList) return;
-            productList.innerHTML = '';
-            if (currentUser) {
-                const userProducts = JSON.parse(localStorage.getItem(`products_${currentUser}`)) || [];
-                if (userProducts.length > 0) {
-                    userProducts.forEach(product => {
-                        const li = document.createElement('li');
-                        li.textContent = `${product.name}: ${product.quantity}`;
-                        productList.appendChild(li);
-                    });
-                } else {
-                    productList.innerHTML = `<li class="text-text-500">Aucun produit ajouté.</li>`;
-                }
-            }
-        };
-
-        // Vérifie l'état de l'authentification au chargement de la page
-        const checkAuth = () => {
-            fetch('/server/auth.php?action=check')
+            csrfFetch('/server/products.php')
                 .then(res => res.json())
-                .then(data => {
-                    if (data.loggedIn) {
-                        currentUser = data.username;
-                        authSection.classList.add('hidden');
-                        registerSection.classList.add('hidden');
-                        userDashboard.classList.remove('hidden');
-                        welcomeMessage.textContent = `Bienvenue, ${currentUser}!`;
-                        displayProducts();
+                .then(products => {
+                    productList.innerHTML = '';
+                    if (Array.isArray(products) && products.length > 0) {
+                        products.forEach(prod => {
+                            const tr = document.createElement('tr');
+                            const fields = ['name','quantity','ph','rain','humidity','soil_humidity','light'];
+                            fields.forEach(f => {
+                                const td = document.createElement('td');
+                                td.className = 'px-2';
+                                td.textContent = prod[f] ?? '';
+                                tr.appendChild(td);
+                            });
+
+                            const valveTd = document.createElement('td');
+                            valveTd.className = 'px-2';
+                            const valveBtn = document.createElement('button');
+                            valveBtn.className = 'button button--glass';
+                            valveBtn.textContent = prod.valve_open == 1 ? 'Fermer' : 'Ouvrir';
+                            valveBtn.addEventListener('click', () => {
+                                csrfFetch(`/server/products.php?id=${prod.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ valve_open: prod.valve_open == 1 ? 0 : 1 })
+                                }).then(displayProducts);
+                            });
+                            valveTd.appendChild(valveBtn);
+                            tr.appendChild(valveTd);
+
+                            const angleTd = document.createElement('td');
+                            angleTd.className = 'px-2';
+                            const angleInput = document.createElement('input');
+                            angleInput.type = 'number';
+                            angleInput.value = prod.valve_angle;
+                            angleInput.className = 'form-input w-20';
+                            angleInput.addEventListener('change', () => {
+                                csrfFetch(`/server/products.php?id=${prod.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ valve_angle: parseInt(angleInput.value) || 0 })
+                                }).then(displayProducts);
+                            });
+                            angleTd.appendChild(angleInput);
+                            tr.appendChild(angleTd);
+
+                            productList.appendChild(tr);
+                        });
                     } else {
-                        currentUser = null;
-                        authSection.classList.remove('hidden');
-                        registerSection.classList.add('hidden');
-                        userDashboard.classList.add('hidden');
+                        const tr = document.createElement('tr');
+                        const td = document.createElement('td');
+                        td.colSpan = 9;
+                        td.textContent = 'Aucun produit ajouté.';
+                        tr.appendChild(td);
+                        productList.appendChild(tr);
                     }
                 });
         };
-        checkAuth();
+
+
+    // --- LOGIQUE POUR LA PAGE 'PROFILE.HTML' ---
+    if (document.getElementById('profile')) {
+        const profileForm = document.getElementById('profile-form');
+        const lastNameInput = document.getElementById('profile-last-name');
+        const firstNameInput = document.getElementById('profile-first-name');
+        const emailInput = document.getElementById('profile-email');
+        const phoneInput = document.getElementById('profile-phone');
+        const regionInput = document.getElementById('profile-region');
+        const profileMessage = document.getElementById('profile-message');
+
+        const loadProfile = () => {
+            csrfFetch('/server/user.php')
+                .then(res => {
+                    if (!res.ok) throw new Error('Unauthorized');
+                    return res.json();
+                })
+                .then(data => {
+                    lastNameInput.value = data.last_name || '';
+                    firstNameInput.value = data.first_name || '';
+                    emailInput.value = data.email || '';
+                    phoneInput.value = data.phone || '';
+                    regionInput.value = data.region || '';
+                })
+                .catch(() => {
+                    window.location.href = 'account.html';
+                });
+        };
+        loadProfile();
+
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const payload = {
+                last_name: lastNameInput.value.trim(),
+                first_name: firstNameInput.value.trim(),
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                region: regionInput.value.trim()
+            };
+            csrfFetch('/server/user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    profileMessage.textContent = 'Profil mis à jour';
+                    profileMessage.classList.remove('text-red-500');
+                    profileMessage.classList.add('text-green-500');
+                } else {
+                    profileMessage.textContent = data.message || 'Erreur lors de la mise à jour.';
+                    profileMessage.classList.remove('text-green-500');
+                    profileMessage.classList.add('text-red-500');
+                }
+            })
+            .catch(() => {
+                profileMessage.textContent = 'Erreur réseau.';
+                profileMessage.classList.remove('text-green-500');
+                profileMessage.classList.add('text-red-500');
+            });
+        });
     }
 
+    // Gère la soumission du formulaire de contact
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            csrfFetch('/server/contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || (data.success ? 'Message envoyé avec succès!' : 'Une erreur est survenue.'));
+                if (data.success) contactForm.reset();
+            })
+            .catch(() => {
+                alert('Erreur réseau.');
+            });
+        });
+    }
 
     const savedLang = localStorage.getItem('language') || 'fr';
     if (languageSwitcher) languageSwitcher.value = savedLang;

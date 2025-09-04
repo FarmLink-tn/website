@@ -1,1 +1,6 @@
+
 server/config.php
+=======
+.env
+vendor/
+
