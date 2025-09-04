@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
-$prompt = $input['prompt'] ?? '';
+$prompt = strip_tags($input['prompt'] ?? '');
 $requested = $input['provider'] ?? 'openai';
 
 $providers = ['openai', 'anthropic'];
@@ -10,6 +10,12 @@ $providers = ['openai', 'anthropic'];
 if (!$prompt) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Missing prompt']);
+    exit;
+}
+
+if (mb_strlen($prompt) > 1000) {
+    http_response_code(413);
+    echo json_encode(['success' => false, 'message' => 'Prompt too long']);
     exit;
 }
 
