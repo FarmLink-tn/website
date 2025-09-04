@@ -291,13 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-             document.addEventListener('DOMContentLoaded', () => {
-             // Mise à jour du dictionnaire de traductions
-             if (typeof updateTranslations === 'function') {
-                 updateTranslations(translations);
-             }
-             translatePage(); // Si la traduction automatique est en place
-         });
 
     // --- SÉLECTEURS D'ÉLÉMENTS ---
    let currentLang = 'fr';
@@ -348,6 +341,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if(themeIconDark) themeIconDark.classList.add('hidden');
         }
     };
+
+    const savedLang = localStorage.getItem('language') || 'fr';
+    if (languageSwitcher) languageSwitcher.value = savedLang;
+    applyLanguage(savedLang);
 
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     document.querySelectorAll('.nav-link').forEach(link => {
