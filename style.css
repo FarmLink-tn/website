@@ -420,3 +420,9 @@ body:not(.dark) .testimonial-card {
 footer {
     background: var(--bg-950);
 }
+
+/* Fallback if AOS fails to initialize */
+[data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}

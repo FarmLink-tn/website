@@ -838,6 +838,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     applyTheme(savedTheme);
-    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 50 });
+    try {
+        AOS.init({ duration: 800, once: true, offset: 50 });
+    } catch (e) {
+        console.error('AOS init failed', e);
+    }
 });
 
