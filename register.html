@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmLink - Mon Compte</title>
+    <title>FarmLink - Créer un compte</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -23,7 +23,7 @@
                 <a href="how-it-works.html" class="nav-link" data-translate="nav_how_it_works">Comment ça marche</a>
                 <a href="solutions.html" class="nav-link" data-translate="nav_solutions">Nos Solutions</a>
                 <a href="ai-advisor.html" class="nav-link" data-translate="nav_ai_advisor">Conseiller IA</a>
-                <a href="account.html" class="nav-link active" data-translate="nav_account">Mon Compte</a>
+                <a href="account.html" class="nav-link" data-translate="nav_account">Mon Compte</a>
                 <a href="contact.html" class="button" data-translate="nav_get_quote">Obtenir un devis</a>
             </div>
             <div class="flex items-center">
@@ -56,37 +56,24 @@
     <main>
         <section id="account" class="py-20">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="section-title" data-translate="account_title">Mon Compte</h2>
+                <h2 class="section-title" data-translate="auth_register_title">Créer un compte</h2>
                 <div class="max-w-xl mx-auto control-card mt-12">
-                    <div id="auth-section">
-                        <h3 class="text-2xl font-bold mb-6 text-brand-blue-500" data-translate="auth_login_title">Se connecter</h3>
-                        <form id="login-form">
+
+                    <div id="register-section">
+                        <h3 class="text-2xl font-bold mb-6 text-brand-green-400" data-translate="auth_register_title">Créer un compte</h3>
+                        <form id="register-form">
                             <div class="mb-4">
-                                <input type="text" id="login-username" class="form-input" placeholder="Nom d'utilisateur" required>
+                                <input type="text" id="register-username" class="form-input" placeholder="Nom d'utilisateur" required>
                             </div>
-                            <div class="mb-6">
-                                <input type="password" id="login-password" class="form-input" placeholder="Mot de passe" required>
+                            <div class="mb-4">
+                                <input type="password" id="register-password" class="form-input" placeholder="Mot de passe" required>
                             </div>
-                            <button type="submit" class="button w-full" data-translate="auth_login_btn">Se connecter</button>
+                            <button type="submit" class="button w-full" data-translate="auth_register_btn">Créer le compte</button>
                         </form>
-                        <p id="login-message" class="mt-2 text-red-500"></p>
-                        <p class="mt-4 text-text-300" data-translate="auth_register_prompt">Pas encore de compte ? <a href="register.html" class="text-brand-green-400 font-bold">Créer un compte</a></p>
+                        <p id="register-message" class="mt-2 text-red-500"></p>
+                        <p class="mt-4 text-text-300" data-translate="auth_login_prompt">Déjà un compte ? <a href="account.html" class="text-brand-blue-500 font-bold">Se connecter</a></p>
                     </div>
 
-
-                    <div id="user-dashboard" class="hidden text-left">
-                        <h3 id="welcome-message" class="text-2xl font-bold mb-4"></h3>
-                        <div class="mb-8">
-                            <h4 class="text-xl font-bold text-brand-blue-500 mb-2" data-translate="products_section_title">Mes Produits</h4>
-                            <form id="add-product-form" class="flex flex-col md:flex-row gap-4">
-                                <input type="text" id="product-name" class="form-input flex-grow" placeholder="Nom du produit" required>
-                                <input type="number" id="product-quantity" class="form-input w-24" placeholder="Qté" required>
-                                <button type="submit" class="button" data-translate="add_product_btn">Ajouter</button>
-                            </form>
-                            <ul id="product-list" class="list-disc list-inside mt-4 text-text-300"></ul>
-                        </div>
-                        <button id="logout-btn" class="button button--glass" data-translate="logout_btn">Se déconnecter</button>
-                    </div>
 
                 </div>
             </div>

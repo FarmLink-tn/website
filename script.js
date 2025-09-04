@@ -72,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "Mon Compte",
             auth_login_title: "Se connecter",
             auth_login_btn: "Se connecter",
-            auth_register_prompt: "Pas encore de compte ? <a href='#' id='show-register' class='text-brand-green-400 font-bold'>Créer un compte</a>",
+            auth_register_prompt: "Pas encore de compte ? <a href='register.html' class='text-brand-green-400 font-bold'>Créer un compte</a>",
             auth_register_title: "Créer un compte",
             auth_register_btn: "Créer le compte",
-            auth_login_prompt: "Déjà un compte ? <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>Se connecter</a>",
+            auth_login_prompt: "Déjà un compte ? <a href='account.html' class='text-brand-blue-500 font-bold'>Se connecter</a>",
             products_section_title: "Mes Produits",
             add_product_btn: "Ajouter",
             logout_btn: "Se déconnecter",
@@ -164,10 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "My Account",
             auth_login_title: "Log In",
             auth_login_btn: "Log In",
-            auth_register_prompt: "Don't have an account yet? <a href='#' id='show-register' class='text-brand-green-400 font-bold'>Create an account</a>",
+            auth_register_prompt: "Don't have an account yet? <a href='register.html' class='text-brand-green-400 font-bold'>Create an account</a>",
             auth_register_title: "Create an Account",
             auth_register_btn: "Create Account",
-            auth_login_prompt: "Already have an account? <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>Log In</a>",
+            auth_login_prompt: "Already have an account? <a href='account.html' class='text-brand-blue-500 font-bold'>Log In</a>",
             products_section_title: "My Products",
             add_product_btn: "Add",
             logout_btn: "Log Out",
@@ -252,10 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "حسابي",
             auth_login_title: "تسجيل الدخول",
             auth_login_btn: "تسجيل الدخول",
-            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='#' id='show-register' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
+            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='register.html' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
             auth_register_title: "إنشاء حساب",
             auth_register_btn: "إنشاء الحساب",
-            auth_login_prompt: "لديك حساب بالفعل؟ <a href='#' id='show-login' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
+            auth_login_prompt: "لديك حساب بالفعل؟ <a href='account.html' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
             products_section_title: "منتجاتي",
             add_product_btn: "أضف",
             logout_btn: "تسجيل الخروج",
@@ -525,8 +525,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Script for account page is running."); // Ligne de débogage
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
-        const showRegisterBtn = document.getElementById('show-register');
-        const showLoginBtn = document.getElementById('show-login');
         const authSection = document.getElementById('auth-section');
         const registerSection = document.getElementById('register-section');
         const userDashboard = document.getElementById('user-dashboard');
@@ -537,22 +535,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginMessage = document.getElementById('login-message');
         const registerMessage = document.getElementById('register-message');
         let currentUser = null;
-
-        // Gère le passage entre les formulaires de connexion et d'inscription
-        if (showRegisterBtn) showRegisterBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log("Creating an account button clicked."); // Ligne de débogage
-            authSection.classList.add('hidden');
-            registerSection.classList.remove('hidden');
-            if (loginMessage) loginMessage.textContent = '';
-        });
-
-        if (showLoginBtn) showLoginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            authSection.classList.remove('hidden');
-            registerSection.classList.add('hidden');
-            if (registerMessage) registerMessage.textContent = '';
-        });
 
         // Gère la soumission du formulaire d'inscription
         if (registerForm) registerForm.addEventListener('submit', (e) => {
@@ -568,8 +550,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.success) {
                     if (registerMessage) registerMessage.textContent = 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.';
-                    authSection.classList.remove('hidden');
-                    registerSection.classList.add('hidden');
+                    if (authSection) authSection.classList.remove('hidden');
+                    if (registerSection) registerSection.classList.add('hidden');
                 } else {
                     if (registerMessage) registerMessage.textContent = data.message || 'Erreur lors de la création du compte.';
                 }
@@ -649,16 +631,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if (data.loggedIn) {
                         currentUser = data.username;
-                        authSection.classList.add('hidden');
-                        registerSection.classList.add('hidden');
-                        userDashboard.classList.remove('hidden');
-                        welcomeMessage.textContent = `Bienvenue, ${currentUser}!`;
-                        displayProducts();
+                        if (authSection) authSection.classList.add('hidden');
+                        if (registerSection) registerSection.classList.add('hidden');
+                        if (userDashboard) {
+                            userDashboard.classList.remove('hidden');
+                            welcomeMessage.textContent = `Bienvenue, ${currentUser}!`;
+                            displayProducts();
+                        }
                     } else {
                         currentUser = null;
-                        authSection.classList.remove('hidden');
-                        registerSection.classList.add('hidden');
-                        userDashboard.classList.add('hidden');
+                        if (authSection) authSection.classList.remove('hidden');
+                        if (registerSection) registerSection.classList.remove('hidden');
+                        if (userDashboard) userDashboard.classList.add('hidden');
                     }
                 });
         };
