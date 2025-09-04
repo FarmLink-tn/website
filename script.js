@@ -414,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function handleTextAnalysis(question) {
             if (!question.trim()) return;
-            const provider = providerSelect ? providerSelect.value : '';
+            const provider = providerSelect?.value || '';
             showSpinner(true);
             aiResponseText.textContent = '';
             imagePreviewWrapper.classList.add('hidden');
