@@ -626,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        fetch('/server/auth.php?action=check')
+        fetch('/server/auth.php?action=check', { method: 'GET' })
             .then(res => res.json())
             .then(data => {
                 if (data.loggedIn) {
@@ -637,7 +637,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
     }
-=======
 
         // Gère la soumission du formulaire d'ajout de produit
         if (addProductForm) addProductForm.addEventListener('submit', (e) => {
