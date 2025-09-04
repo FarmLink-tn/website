@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LOGIQUE SPÉCIFIQUE À LA PAGE AI-ADVISOR ---
     if (document.getElementById('ai-advisor')) {
-        let models = { qna: null, image: null, ready: false };
+        let models = { image: null, ready: false };
         let stream = null;
 
         const aiInputForm = document.getElementById('ai-input-form');
@@ -375,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cam = document.getElementById('cam');
         const aiResponseText = document.getElementById('ai-response-text');
         const aiSpinner = document.getElementById('ai-spinner');
+        const providerSelect = document.getElementById('provider-select');
 
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progressBar');
@@ -394,11 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateProgressBar(10);
             aiResponseText.textContent = "Chargement des modèles IA...";
             try {
-                if (typeof qna !== 'undefined') {
-                    models.qna = await qna.load();
-                    console.log('Modèle IA Texte chargé.');
-                    updateProgressBar(50);
-                }
                 if (typeof mobilenet !== 'undefined') {
                     await tf.setBackend('webgl');
                     models.image = await mobilenet.load({ version: 2, alpha: 1.0 });
@@ -418,25 +414,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function handleTextAnalysis(question) {
             if (!question.trim()) return;
-            if (!models.ready || !models.qna) {
-                aiResponseText.textContent = "Le modèle IA texte n'est pas encore prêt.";
-                return;
-            }
+            const provider = providerSelect ? providerSelect.value : '';
             showSpinner(true);
             aiResponseText.textContent = '';
             imagePreviewWrapper.classList.add('hidden');
 
             try {
-                const context = translations[currentLang].context_agricole;
-                const answers = await models.qna.findAnswers(question, context);
-                if (answers && answers.length > 0) {
-                    const bestAnswer = answers.sort((a, b) => b.score - a.score)[0];
-                    aiResponseText.innerHTML = `<p><strong>Réponse :</strong> ${bestAnswer.text}</p><p class="text-sm mt-2"><em>(Confiance : ${Math.round(bestAnswer.score*100)}%)</em></p>`;
+                const response = await fetch('/server/ai.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question, provider })
+                });
+                const data = await response.json();
+                if (data && data.answer) {
+                    aiResponseText.textContent = data.answer;
                 } else {
-                    aiResponseText.innerHTML = "<p>Désolé, je n'ai pas trouvé de réponse précise. Essayez de reformuler votre question.</p>";
+                    aiResponseText.textContent = 'Aucune réponse reçue.';
                 }
             } catch (error) {
-                console.error("Erreur QnA:", error);
+                console.error('Erreur IA:', error);
                 aiResponseText.textContent = "Une erreur est survenue lors de l'analyse.";
             } finally {
                 showSpinner(false);
