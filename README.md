@@ -1,16 +1,6 @@
-## FarmLink Website Monorepo
+# FarmLink Website Monorepo
 
 This repository hosts the FarmLink marketing site, dashboards, and backend APIs. The actively maintained dynamic application lives in [`agrimate-website/`](agrimate-website/), but we also keep a small compatibility layer at the repository root so existing deployments (or long lived branches) that expect assets like `script.js` or `server/auth.php` continue to merge cleanly.
-codex/transform-to-fully-dynamic-website-zc2hd8
-
-## Repository layout
-
-- `agrimate-website/` – full dynamic PHP application that powers every public page, the authenticated IoT dashboard, the AI advisor, and the administration console. Static `.html` twins are kept next to their `.php` counterparts for quick previews without a PHP runtime.
-- `script.js`, `server/auth.php` – thin passthrough copies of their counterparts in `agrimate-website/` to avoid merge conflicts with branches that still reference the legacy root structure. Update the files inside `agrimate-website/` and mirror changes here to keep them in sync.
-- `image/`, `style.css`, `aos.css`, etc. – when the dynamic site is used in-place these assets should be served from inside `agrimate-website/`. If you spin the application out into its own repository, move the assets alongside it or update the asset paths accordingly.
-
-## Using the dynamic site
-=======
 
 ## Repository layout
 
@@ -37,7 +27,6 @@ This repository contains the dynamic files for the FarmLink website. All public 
 - `script.js`, `style.css` – client-side assets
 - `server/` – PHP backend scripts
 ## main
-
 
 To work exclusively with the dynamic application:
 
