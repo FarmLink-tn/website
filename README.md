@@ -3,16 +3,18 @@
 
 # FarmLink Website
 
-This repository contains the static files for the FarmLink website. All public pages are served from the project root.
+This repository contains the dynamic files for the FarmLink website. All public pages are now rendered through PHP in the project root.
 
 ## Structure
-- `index.html` – landing page
-- `about.html` – about FarmLink
-- `how-it-works.html` – explanation of our process
-- `solutions.html` – overview of available solutions
-- `ai-advisor.html` – access to the AI advisor
-- `account.html` – user account page
-- `contact.html` – contact form
+- `index.php` – landing page
+- `about.php` – about FarmLink
+- `how-it-works.php` – explanation of our process
+- `solutions.php` – overview of available solutions
+- `ai-advisor.php` – access to the AI advisor
+- `account.php` / `register.php` – authentication flows
+- `profile.php` – authenticated IoT dashboard
+- `admin.php` – administration console (requires admin role)
+- `contact.php` – contact form
 - `image/` – shared images
 - `script.js`, `style.css` – client-side assets
 - `server/` – PHP backend scripts
