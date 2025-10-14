@@ -1,6 +1,7 @@
-# FarmLink Website Monorepo
+## FarmLink Website Monorepo
 
 This repository hosts the FarmLink marketing site, dashboards, and backend APIs. The actively maintained dynamic application lives in [`agrimate-website/`](agrimate-website/), but we also keep a small compatibility layer at the repository root so existing deployments (or long lived branches) that expect assets like `script.js` or `server/auth.php` continue to merge cleanly.
+codex/transform-to-fully-dynamic-website-zc2hd8
 
 ## Repository layout
 
@@ -9,6 +10,34 @@ This repository hosts the FarmLink marketing site, dashboards, and backend APIs.
 - `image/`, `style.css`, `aos.css`, etc. – when the dynamic site is used in-place these assets should be served from inside `agrimate-website/`. If you spin the application out into its own repository, move the assets alongside it or update the asset paths accordingly.
 
 ## Using the dynamic site
+=======
+
+## Repository layout
+
+codex/transform-to-fully-dynamic-website-iy4522
+- `agrimate-website/` – full dynamic PHP application that powers every public page, the authenticated IoT dashboard, the AI advisor, and the administration console. Static `.html` twins are kept next to their `.php` counterparts for quick previews without a PHP runtime.
+- `script.js`, `server/auth.php` – thin passthrough copies of their counterparts in `agrimate-website/` to avoid merge conflicts with branches that still reference the legacy root structure. Update the files inside `agrimate-website/` and mirror changes here to keep them in sync.
+- `image/`, `style.css`, `aos.css`, etc. – when the dynamic site is used in-place these assets should be served from inside `agrimate-website/`. If you spin the application out into its own repository, move the assets alongside it or update the asset paths accordingly.
+
+## Using the dynamic site
+=======
+This repository contains the dynamic files for the FarmLink website. All public pages are now rendered through PHP in the project root.
+
+## Structure
+- `index.php` – landing page
+- `about.php` – about FarmLink
+- `how-it-works.php` – explanation of our process
+- `solutions.php` – overview of available solutions
+- `ai-advisor.php` – access to the AI advisor
+- `account.php` / `register.php` – authentication flows
+- `profile.php` – authenticated IoT dashboard
+- `admin.php` – administration console (requires admin role)
+- `contact.php` – contact form
+- `image/` – shared images
+- `script.js`, `style.css` – client-side assets
+- `server/` – PHP backend scripts
+## main
+
 
 To work exclusively with the dynamic application:
 
