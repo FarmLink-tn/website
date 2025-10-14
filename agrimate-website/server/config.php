@@ -1,10 +1,15 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoload = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoload)) {
+    require_once $autoload;
+}
 
 // Load environment variables from the .env file if present
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->safeLoad();
+if (class_exists(Dotenv\Dotenv::class)) {
+    $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+    $dotenv->safeLoad();
+}
 
 return [
     'host' => getenv('DB_HOST') ?: '',
