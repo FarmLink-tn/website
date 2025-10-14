@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "Mon Compte",
             auth_login_title: "Se connecter",
             auth_login_btn: "Se connecter",
-            auth_register_prompt: "Pas encore de compte ? <a href='register.html' class='text-brand-green-400 font-bold'>Créer un compte</a>",
+            auth_register_prompt: "Pas encore de compte ? <a href='register.php' class='text-brand-green-400 font-bold'>Créer un compte</a>",
             auth_register_title: "Créer un compte",
             auth_register_btn: "Créer le compte",
             auth_last_name_placeholder: "Nom",
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             auth_email_placeholder: "Email",
             auth_phone_placeholder: "Numéro de téléphone",
             auth_region_placeholder: "Région",
-            auth_login_prompt: "Déjà un compte ? <a href='account.html' class='text-brand-blue-500 font-bold'>Se connecter</a>",
+            auth_login_prompt: "Déjà un compte ? <a href='account.php' class='text-brand-blue-500 font-bold'>Se connecter</a>",
             products_section_title: "Mes Produits",
             add_product_btn: "Ajouter",
             logout_btn: "Se déconnecter",
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "My Account",
             auth_login_title: "Log In",
             auth_login_btn: "Log In",
-            auth_register_prompt: "Don't have an account yet? <a href='register.html' class='text-brand-green-400 font-bold'>Create an account</a>",
+            auth_register_prompt: "Don't have an account yet? <a href='register.php' class='text-brand-green-400 font-bold'>Create an account</a>",
             auth_register_title: "Create an Account",
             auth_register_btn: "Create Account",
             auth_last_name_placeholder: "Last Name",
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             auth_email_placeholder: "Email",
             auth_phone_placeholder: "Phone Number",
             auth_region_placeholder: "Region",
-            auth_login_prompt: "Already have an account? <a href='account.html' class='text-brand-blue-500 font-bold'>Log In</a>",
+            auth_login_prompt: "Already have an account? <a href='account.php' class='text-brand-blue-500 font-bold'>Log In</a>",
             products_section_title: "My Products",
             add_product_btn: "Add",
             logout_btn: "Log Out",
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
             account_title: "حسابي",
             auth_login_title: "تسجيل الدخول",
             auth_login_btn: "تسجيل الدخول",
-            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='register.html' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
+            auth_register_prompt: "لا يوجد لديك حساب بعد؟ <a href='register.php' class='text-brand-green-400 font-bold'>إنشاء حساب</a>",
             auth_register_title: "إنشاء حساب",
             auth_register_btn: "إنشاء الحساب",
             auth_last_name_placeholder: "اللقب",
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             auth_email_placeholder: "البريد الإلكتروني",
             auth_phone_placeholder: "رقم الهاتف",
             auth_region_placeholder: "المنطقة",
-            auth_login_prompt: "لديك حساب بالفعل؟ <a href='account.html' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
+            auth_login_prompt: "لديك حساب بالفعل؟ <a href='account.php' class='text-brand-blue-500 font-bold'>تسجيل الدخول</a>",
             products_section_title: "منتجاتي",
             add_product_btn: "أضف",
             logout_btn: "تسجيل الخروج",
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyLanguage(savedLang);
     applyTheme(savedTheme);
 
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const currentPage = window.location.pathname.split("/").pop() || "index.php";
     document.querySelectorAll('.nav-link').forEach(link => {
         if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
@@ -564,13 +564,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- NOUVELLE LOGIQUE POUR LA PAGE 'ACCOUNT.HTML' ---
     if (document.getElementById('account')) {
-        console.log("Script for account page is running."); // Ligne de débogage
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const authSection = document.getElementById('auth-section');
         const registerSection = document.getElementById('register-section');
         const loginMessage = document.getElementById('login-message');
         const registerMessage = document.getElementById('register-message');
+        const addProductForm = document.getElementById('add-product-form');
+        const productList = document.getElementById('product-list');
+        const logoutBtn = document.getElementById('logout-btn');
 
         // Gère la soumission du formulaire d'inscription
         if (registerForm) registerForm.addEventListener('submit', (e) => {
@@ -610,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(res => res.json())
                     .then(loginData => {
                         if (loginData.success) {
-                            window.location.href = 'profile.html';
+                            window.location.href = '/profile.php';
                         } else {
                             if (registerMessage) registerMessage.textContent = 'Compte créé, mais connexion impossible.';
                         }
@@ -637,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'profile.html';
+                    window.location.href = '/profile.php';
                 } else {
                     if (loginMessage) loginMessage.textContent = data.message || "Nom d'utilisateur ou mot de passe incorrect.";
                 }
@@ -652,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 csrfToken = data.csrfToken;
                 if (data.loggedIn) {
-                    window.location.href = 'profile.html';
+                    window.location.href = '/profile.php';
                 } else {
                     if (authSection) authSection.classList.remove('hidden');
                     if (registerSection) registerSection.classList.remove('hidden');
@@ -689,7 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gère la déconnexion
         if (logoutBtn) logoutBtn.addEventListener('click', () => {
             csrfFetch('/server/auth.php?action=logout', { method: 'POST' })
-                .then(() => { currentUser = null; checkAuth(); });
+                .then(() => { window.location.href = '/account.php'; });
         });
 
         // Affiche la liste des produits de l'utilisateur
@@ -755,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
 
-    // --- LOGIQUE POUR LA PAGE 'PROFILE.HTML' ---
+    // --- LOGIQUE POUR LA PAGE 'PROFILE.PHP' ---
     if (document.getElementById('profile')) {
         const profileForm = document.getElementById('profile-form');
         const lastNameInput = document.getElementById('profile-last-name');
@@ -764,6 +766,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const phoneInput = document.getElementById('profile-phone');
         const regionInput = document.getElementById('profile-region');
         const profileMessage = document.getElementById('profile-message');
+        const dashboardProductList = document.getElementById('dashboard-product-list');
+        const refreshProductsBtn = document.getElementById('refresh-products');
+        const metricActiveModules = document.getElementById('metric-active-modules');
+        const metricAvgHumidity = document.getElementById('metric-avg-humidity');
+        const metricOpenValves = document.getElementById('metric-open-valves');
+        const dashboardLogoutBtn = document.getElementById('logout-btn');
 
         const loadProfile = () => {
             csrfFetch('/server/user.php')
@@ -779,10 +787,117 @@ document.addEventListener('DOMContentLoaded', () => {
                     regionInput.value = data.region || '';
                 })
                 .catch(() => {
-                    window.location.href = 'account.html';
+                    window.location.href = '/account.php';
                 });
         };
+        const loadDashboardProducts = () => {
+            if (!dashboardProductList) return;
+            csrfFetch('/server/products.php')
+                .then(res => res.json())
+                .then(products => {
+                    dashboardProductList.innerHTML = '';
+                    const list = Array.isArray(products) ? products : [];
+
+                    if (metricActiveModules) metricActiveModules.textContent = list.length.toString();
+                    if (metricAvgHumidity) {
+                        const humidityValues = list
+                            .map(p => parseFloat(p.humidity))
+                            .filter(value => !Number.isNaN(value));
+                        const average = humidityValues.length
+                            ? humidityValues.reduce((acc, value) => acc + value, 0) / humidityValues.length
+                            : 0;
+                        metricAvgHumidity.textContent = `${average.toFixed(1)}%`;
+                    }
+                    if (metricOpenValves) {
+                        metricOpenValves.textContent = list.filter(p => Number(p.valve_open) === 1).length.toString();
+                    }
+
+                    if (!list.length) {
+                        const emptyRow = document.createElement('tr');
+                        const emptyCell = document.createElement('td');
+                        emptyCell.colSpan = 10;
+                        emptyCell.textContent = 'Aucun module IoT configuré pour le moment.';
+                        emptyRow.appendChild(emptyCell);
+                        dashboardProductList.appendChild(emptyRow);
+                        return;
+                    }
+
+                    list.forEach(prod => {
+                        const tr = document.createElement('tr');
+                        const fields = ['name','quantity','ph','rain','humidity','soil_humidity','light'];
+                        fields.forEach(field => {
+                            const td = document.createElement('td');
+                            td.className = 'px-2 py-2';
+                            td.textContent = prod[field] ?? '';
+                            tr.appendChild(td);
+                        });
+
+                        const valveTd = document.createElement('td');
+                        valveTd.className = 'px-2 py-2';
+                        const valveBtn = document.createElement('button');
+                        valveBtn.className = 'button button--glass text-sm';
+                        valveBtn.textContent = Number(prod.valve_open) === 1 ? 'Fermer' : 'Ouvrir';
+                        valveBtn.addEventListener('click', () => {
+                            csrfFetch(`/server/products.php?id=${prod.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ valve_open: Number(prod.valve_open) === 1 ? 0 : 1 })
+                            }).then(loadDashboardProducts);
+                        });
+                        valveTd.appendChild(valveBtn);
+                        tr.appendChild(valveTd);
+
+                        const angleTd = document.createElement('td');
+                        angleTd.className = 'px-2 py-2';
+                        const angleInput = document.createElement('input');
+                        angleInput.type = 'number';
+                        angleInput.value = prod.valve_angle ?? 0;
+                        angleInput.className = 'form-input w-20';
+                        angleInput.addEventListener('change', () => {
+                            csrfFetch(`/server/products.php?id=${prod.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ valve_angle: parseInt(angleInput.value, 10) || 0 })
+                            }).then(loadDashboardProducts);
+                        });
+                        angleTd.appendChild(angleInput);
+                        tr.appendChild(angleTd);
+
+                        const actionTd = document.createElement('td');
+                        actionTd.className = 'px-2 py-2';
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'button button--glass text-sm';
+                        deleteBtn.textContent = 'Supprimer';
+                        deleteBtn.addEventListener('click', () => {
+                            if (!confirm('Supprimer ce module ?')) return;
+                            csrfFetch(`/server/products.php?id=${prod.id}`, {
+                                method: 'DELETE'
+                            }).then(loadDashboardProducts);
+                        });
+                        actionTd.appendChild(deleteBtn);
+                        tr.appendChild(actionTd);
+
+                        dashboardProductList.appendChild(tr);
+                    });
+                });
+        };
+
         loadProfile();
+        loadDashboardProducts();
+
+        if (refreshProductsBtn) {
+            refreshProductsBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                loadDashboardProducts();
+            });
+        }
+
+        if (dashboardLogoutBtn) {
+            dashboardLogoutBtn.addEventListener('click', () => {
+                csrfFetch('/server/auth.php?action=logout', { method: 'POST' })
+                    .then(() => { window.location.href = '/account.php'; });
+            });
+        }
 
         profileForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -816,6 +931,102 @@ document.addEventListener('DOMContentLoaded', () => {
                 profileMessage.classList.add('text-red-500');
             });
         });
+    }
+
+    if (document.getElementById('admin-dashboard')) {
+        const statUsers = document.getElementById('stat-total-users');
+        const statProducts = document.getElementById('stat-total-products');
+        const statOpenValves = document.getElementById('stat-open-valves');
+        const userList = document.getElementById('admin-user-list');
+        const productList = document.getElementById('admin-product-list');
+        const refreshUsersBtn = document.getElementById('refresh-users');
+        const refreshProductsBtn = document.getElementById('refresh-admin-products');
+
+        const renderUsers = (users = []) => {
+            if (!userList) return;
+            userList.innerHTML = '';
+            if (!users.length) {
+                const emptyRow = document.createElement('tr');
+                const emptyCell = document.createElement('td');
+                emptyCell.colSpan = 5;
+                emptyCell.textContent = 'Aucun utilisateur enregistré.';
+                emptyRow.appendChild(emptyCell);
+                userList.appendChild(emptyRow);
+                return;
+            }
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                ['last_name','first_name','email','region','role'].forEach(key => {
+                    const td = document.createElement('td');
+                    td.className = 'px-2 py-2';
+                    td.textContent = user[key] ?? '';
+                    tr.appendChild(td);
+                });
+                userList.appendChild(tr);
+            });
+        };
+
+        const renderAdminProducts = (products = []) => {
+            if (!productList) return;
+            productList.innerHTML = '';
+            if (!products.length) {
+                const emptyRow = document.createElement('tr');
+                const emptyCell = document.createElement('td');
+                emptyCell.colSpan = 5;
+                emptyCell.textContent = 'Aucun module enregistré.';
+                emptyRow.appendChild(emptyCell);
+                productList.appendChild(emptyRow);
+                return;
+            }
+            products.forEach(prod => {
+                const tr = document.createElement('tr');
+                const values = [prod.username, prod.name, prod.quantity, prod.humidity ?? '-', Number(prod.valve_open) === 1 ? 'Ouverte' : 'Fermée'];
+                values.forEach(value => {
+                    const td = document.createElement('td');
+                    td.className = 'px-2 py-2';
+                    td.textContent = value ?? '';
+                    tr.appendChild(td);
+                });
+                productList.appendChild(tr);
+            });
+        };
+
+        const fetchStats = () => {
+            csrfFetch('/server/admin.php?action=stats')
+                .then(res => res.json())
+                .then(response => {
+                    if (!response.success) return;
+                    const data = response.data || {};
+                    if (statUsers) statUsers.textContent = (data.users ?? 0).toString();
+                    if (statProducts) statProducts.textContent = (data.products ?? 0).toString();
+                    if (statOpenValves) statOpenValves.textContent = (data.openValves ?? 0).toString();
+                });
+        };
+
+        const fetchUsers = () => {
+            csrfFetch('/server/admin.php?action=users')
+                .then(res => res.json())
+                .then(response => {
+                    if (!response.success) return;
+                    renderUsers(response.data || []);
+                });
+        };
+
+        const fetchProducts = () => {
+            csrfFetch('/server/admin.php?action=products')
+                .then(res => res.json())
+                .then(response => {
+                    if (!response.success) return;
+                    renderAdminProducts(response.data || []);
+                });
+        };
+
+        if (refreshUsersBtn) refreshUsersBtn.addEventListener('click', () => fetchUsers());
+        if (refreshProductsBtn) refreshProductsBtn.addEventListener('click', () => fetchProducts());
+
+        fetchStats();
+        fetchUsers();
+        fetchProducts();
     }
 
     // Gère la soumission du formulaire de contact
