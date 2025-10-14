@@ -17,10 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     }
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// Load dependencies if available
+$autoload = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoload)) {
+    require_once $autoload;
+}
 
 $name    = trim($_POST['name']    ?? '');
 $email   = trim($_POST['email']   ?? '');
@@ -45,23 +46,42 @@ $to      = 'contact@farmlink.tn';
 $subject = 'Nouveau message de contact';
 $body    = "Nom: $name\nEmail: $cleanEmail\nTéléphone: $phone\nMessage:\n$message";
 
-$mail = new PHPMailer(true); // PHPMailer helps prevent header injection
+$mailerAvailable = class_exists(\PHPMailer\PHPMailer\PHPMailer::class);
 
-try {
-    $mail->setFrom('noreply@farmlink.tn', 'FarmLink');
-    $mail->addAddress($to);
-    $mail->addReplyTo($cleanEmail);
+if ($mailerAvailable) {
+    $mail = new \PHPMailer\PHPMailer\PHPMailer(true); // PHPMailer helps prevent header injection
 
-    $mail->Subject = $subject;
-    $mail->Body    = $body;
+    try {
+        $mail->setFrom('noreply@farmlink.tn', 'FarmLink');
+        $mail->addAddress($to);
+        $mail->addReplyTo($cleanEmail);
 
-    if ($mail->send()) {
-        echo json_encode(['success' => true, 'message' => 'Message envoyé avec succès.']);
-    } else {
+        $mail->Subject = $subject;
+        $mail->Body    = $body;
+
+        if ($mail->send()) {
+            echo json_encode(['success' => true, 'message' => 'Message envoyé avec succès.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => "Échec de l'envoi du message."]);
+        }
+    } catch (\Throwable $e) {
         http_response_code(500);
-        echo json_encode(['success' => false, 'message' => "Échec de l'envoi du message."]);
+        echo json_encode(['success' => false, 'message' => "Erreur lors de l'envoi du message."]);
     }
-} catch (Exception $e) {
+    exit;
+}
+
+// Fallback to the native mail() function when PHPMailer is unavailable
+$headers = [
+    'From: noreply@farmlink.tn',
+    'Reply-To: ' . $cleanEmail,
+    'Content-Type: text/plain; charset=UTF-8',
+];
+
+if (mail($to, $subject, $body, implode("\r\n", $headers))) {
+    echo json_encode(['success' => true, 'message' => 'Message envoyé avec succès.']);
+} else {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => "Erreur lors de l'envoi du message."]);
 }
