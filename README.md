@@ -38,6 +38,17 @@ git init
 
 You can then add a remote and push, or copy the directory into a fresh repository. Remember to move or vendor the root-level compatibility files if your deployment still references them.
 
+## Email delivery configuration
+
+Both `server/contact.php` and `agrimate-website/server/contact.php` now share the same mailer so a merge will not introduce conflicts. Configure delivery with the following optional environment variables:
+
+- `MAIL_TO_ADDRESS` – Override the destination mailbox (defaults to `contact@farmlink.tn`).
+- `MAIL_FROM_ADDRESS` / `MAIL_FROM_NAME` – Customize the sender identity used in both PHPMailer and the native fallback.
+- `MAIL_ENVELOPE_FROM` – Sets the return-path envelope when PHP's `mail()` transport is used.
+- `MAIL_SMTP_HOST`, `MAIL_SMTP_PORT`, `MAIL_SMTP_USERNAME`, `MAIL_SMTP_PASSWORD`, `MAIL_SMTP_SECURE` – Provide these to send via authenticated SMTP when PHPMailer is available.
+
+When Composer dependencies (and therefore PHPMailer) are missing, the code falls back to PHP's native `mail()` function with the same headers and an explicit envelope sender to satisfy hosts that require domain-authenticated mail.
+
 ## AI provider fallback
 
 The `server/ai.php` endpoint attempts to contact the AI provider specified in the request. If the call fails because of a timeout or a 5xx response, it automatically falls back to the other provider. The JSON response includes the provider that ultimately served the request so clients can display which service handled the analysis.
