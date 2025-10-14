@@ -75,8 +75,8 @@ switch ($action) {
             break;
         }
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (username, password_hash, last_name, first_name, email, phone, region) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$username, $hash, $lastName, $firstName, $email, $phone, $region]);
+        $stmt = $pdo->prepare('INSERT INTO users (username, password_hash, last_name, first_name, email, phone, region, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$username, $hash, $lastName, $firstName, $email, $phone, $region, 'user']);
         echo json_encode(['success' => true, 'csrfToken' => $_SESSION['csrf_token']]);
         break;
 
@@ -91,14 +91,20 @@ switch ($action) {
             echo json_encode(['success' => false, 'message' => 'Missing fields']);
             break;
         }
-        $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE username = ?');
+        $stmt = $pdo->prepare('SELECT id, password_hash, role FROM users WHERE username = ?');
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($user && password_verify($password, $user['password_hash'])) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
-            echo json_encode(['success' => true, 'username' => $username, 'csrfToken' => $_SESSION['csrf_token']]);
+            $_SESSION['role'] = $user['role'] ?? 'user';
+            echo json_encode([
+                'success' => true,
+                'username' => $username,
+                'role' => $_SESSION['role'],
+                'csrfToken' => $_SESSION['csrf_token']
+            ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid credentials']);
         }
@@ -114,6 +120,7 @@ switch ($action) {
             echo json_encode([
                 'loggedIn' => true,
                 'username' => $_SESSION['username'],
+                'role' => $_SESSION['role'] ?? 'user',
                 'csrfToken' => $_SESSION['csrf_token']
             ]);
         } else {
