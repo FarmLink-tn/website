@@ -1,40 +1,59 @@
+# FarmLink Website Monorepo
 
-=======
-
-# FarmLink Website
-
-This repository contains the static files for the FarmLink website. All public pages are served from the project root.
+This repository contains the FarmLink marketing experience, authenticated IoT dashboard, AI advisor, and supporting PHP APIs. The original static pages remain at the repository root so legacy deployments can continue to merge safely, while the actively maintained dynamic site lives in [`agrimate-website/`](agrimate-website/).
 
 ## Structure
-- `index.html` – landing page
-- `about.html` – about FarmLink
-- `how-it-works.html` – explanation of our process
-- `solutions.html` – overview of available solutions
-- `ai-advisor.html` – access to the AI advisor
-- `account.html` – user account page
-- `contact.html` – contact form
-- `image/` – shared images
-- `script.js`, `style.css` – client-side assets
-- `server/` – PHP backend scripts
 
-Obsolete files from the previous `farmlink_website/` directory have been removed.
+- `index.html`, `about.html`, `how-it-works.html`, `solutions.html`, `ai-advisor.html`, `account.html`, `contact.html` – static marketing entry points preserved for lightweight previews.
+- `script.js`, `style.css`, `image/`, etc. – shared frontend assets that legacy branches still expect at the root.
+- `server/` – thin compatibility PHP endpoints. They now defer to the dynamic application when it is present, only falling back to their bundled logic when the shared files are missing.
+- `agrimate-website/` – full dynamic PHP project. Each page has a `.php` entry point backed by shared includes, with `.html` twins available for quick static previews.
 
-# website
+## Working with the dynamic site
 
-## Configuration
+To run the full application with routing handled by PHP:
 
-This project reads database connection details from environment variables:
+```bash
+cd agrimate-website
+php -S localhost:8000
+```
+
+This starts PHP's built-in web server with the document root set to the dynamic project. Visit <http://localhost:8000> and open pages like `index.php`, `about.php`, or `solutions.php` directly.
+
+The backend expects the following environment variables:
 
 - `DB_HOST` – Database host
 - `DB_NAME` – Database name
 - `DB_USER` – Database user
 - `DB_PASSWORD` – Database password
 
-Ensure these are set in your environment before running the application.
+## Email delivery configuration
 
+`agrimate-website/server/contact_handler.php` contains the contact form controller that both entry points use. The dynamic endpoint (`agrimate-website/server/contact.php`) simply loads the shared handler, while the root-level compatibility endpoint (`server/contact.php`) loads the same handler or a legacy-compatible shim when the dynamic project is missing. Configure delivery with optional environment variables:
 
+- `MAIL_TO_ADDRESS` – Destination mailbox (defaults to `contact@farmlink.tn`).
+- `MAIL_FROM_ADDRESS` / `MAIL_FROM_NAME` – Sender identity for PHPMailer and the native fallback.
+- `MAIL_ENVELOPE_FROM` – Return-path envelope when PHP's `mail()` transport is used.
+- `MAIL_SMTP_HOST`, `MAIL_SMTP_PORT`, `MAIL_SMTP_USERNAME`, `MAIL_SMTP_PASSWORD`, `MAIL_SMTP_SECURE` – Enable authenticated SMTP when PHPMailer is available.
 
-## AI Provider Fallback
+When Composer dependencies (and therefore PHPMailer) are missing, the code automatically falls back to PHP's native `mail()` function with the same headers and sanitized envelope handling.
 
-The `server/ai.php` endpoint attempts to contact the AI provider specified in the request. If the call fails due to a timeout or a 5xx error, it automatically falls back to the other provider. The JSON response includes the provider ultimately used so that clients can display which service handled the request.
+## Merge conflict handling
 
+Because the root compatibility endpoints now funnel through the shared handler/loader functions, there is only one authoritative implementation of the contact controller and configuration bootstrap. Git therefore has far fewer opportunities to surface conflicts during merges. If you do see divergences, resolve them in the shared files under `agrimate-website/server/` and keep the root shims pointing at those sources. The same pattern applies to configuration: `server/config.php` loads `agrimate-website/server/config_loader.php` when available (or a minimal legacy loader otherwise) and simply calls `agrimate_load_config()`, so any credential or loader changes should land in the shared location first.
+
+## Spinning the site into a standalone repository
+
+If you need to promote the dynamic website into its own Git project without losing history:
+
+```bash
+cd agrimate-website
+rm -rf .git
+git init
+```
+
+You can then add a remote and push, or copy the directory into a fresh repository. Remember to move or vendor the root-level compatibility files if your deployment still references them.
+
+## AI provider fallback
+
+The `server/ai.php` endpoint attempts to contact the AI provider specified in the request. If the call fails because of a timeout or a 5xx response, it automatically falls back to the other provider. The JSON response includes the provider that ultimately served the request so clients can display which service handled the analysis.

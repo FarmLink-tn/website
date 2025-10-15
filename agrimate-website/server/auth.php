@@ -1,7 +1,7 @@
 <?php
 session_set_cookie_params([
     'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    'secure' => true,
     'samesite' => 'Strict',
 ]);
 session_start();
@@ -22,6 +22,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     }
 }
 
+$config = require __DIR__ . '/config.php';
+
+try {
+    $pdo = new PDO(
+        "mysql:host={$config['host']};dbname={$config['dbname']};charset=utf8mb4",
+        $config['user'],
+        $config['password'],
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
+    exit;
+}
+
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'] ?? '';
 
@@ -35,120 +50,11 @@ $email = trim($input['email'] ?? '');
 $phone = trim($input['phone'] ?? '');
 $region = trim($input['region'] ?? '');
 
-function getPdo(): PDO
-{
-    static $pdo = null;
-
-    if ($pdo instanceof PDO) {
-        return $pdo;
-    }
-
-    $config = loadDatabaseConfig();
-
-    if (empty($config['host']) || empty($config['dbname']) || empty($config['user'])) {
-        throw new RuntimeException('Database not configured');
-    }
-
-    try {
-        $pdo = new PDO(
-            "mysql:host={$config['host']};dbname={$config['dbname']};charset=utf8mb4",
-            $config['user'],
-            $config['password'],
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
-    } catch (PDOException $e) {
-        throw new RuntimeException('Database connection failed', 0, $e);
-    }
-
-    return $pdo;
-}
-
-function loadDatabaseConfig(): array
-{
-    static $config = null;
-
-    if (is_array($config)) {
-        return $config;
-    }
-
-    loadEnvFallback();
-
-    $config = [
-        'host' => getenv('DB_HOST') ?: '',
-        'dbname' => getenv('DB_NAME') ?: '',
-        'user' => getenv('DB_USER') ?: '',
-        'password' => getenv('DB_PASSWORD') ?: '',
-    ];
-
-    $configPath = __DIR__ . '/config.php';
-    if (file_exists($configPath)) {
-        $fileConfig = require $configPath;
-        if (is_array($fileConfig)) {
-            $config = array_merge($config, array_filter($fileConfig, static fn($value) => $value !== null && $value !== ''));
-        }
-    }
-
-    return $config;
-}
-
-function loadEnvFallback(): void
-{
-    static $loaded = false;
-
-    if ($loaded) {
-        return;
-    }
-
-    $loaded = true;
-
-    $envPath = dirname(__DIR__) . '/.env';
-    if (!file_exists($envPath)) {
-        return;
-    }
-
-    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    if ($lines === false) {
-        return;
-    }
-
-    foreach ($lines as $line) {
-        $line = trim($line);
-        if ($line === '' || $line[0] === '#') {
-            continue;
-        }
-
-        if (strpos($line, '=') === false) {
-            continue;
-        }
-
-        [$name, $value] = explode('=', $line, 2);
-        $name = trim($name);
-        $value = trim($value);
-
-        if ($name === '') {
-            continue;
-        }
-
-        if (!array_key_exists($name, $_ENV) && getenv($name) === false) {
-            putenv($name . '=' . $value);
-            $_ENV[$name] = $value;
-            $_SERVER[$name] = $value;
-        }
-    }
-}
-
 switch ($action) {
     case 'register':
         if ($method !== 'POST') {
             http_response_code(405);
             echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
-            break;
-        }
-        try {
-            $pdo = getPdo();
-        } catch (RuntimeException $e) {
-            http_response_code(503);
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
             break;
         }
         if (!$username || !$password || !$lastName || !$firstName || !$email || !$phone || !$region) {
@@ -178,13 +84,6 @@ switch ($action) {
         if ($method !== 'POST') {
             http_response_code(405);
             echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
-            break;
-        }
-        try {
-            $pdo = getPdo();
-        } catch (RuntimeException $e) {
-            http_response_code(503);
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
             break;
         }
         if (!$username || !$password) {

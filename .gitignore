@@ -1,6 +1,6 @@
-
-server/config.php
-=======
 .env
+agrimate-website/.env
 vendor/
-
+agrimate-website/vendor/
+server/config.local.php
+agrimate-website/server/config.local.php
