@@ -62,4 +62,3 @@ if (!function_exists('agrimate_handle_contact_request')) {
         ]);
     }
 }
-

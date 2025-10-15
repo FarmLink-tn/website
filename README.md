@@ -6,7 +6,8 @@ This repository contains the FarmLink marketing experience, authenticated IoT da
 
 - `index.html`, `about.html`, `how-it-works.html`, `solutions.html`, `ai-advisor.html`, `account.html`, `contact.html` – static marketing entry points preserved for lightweight previews.
 - `script.js`, `style.css`, `image/`, etc. – shared frontend assets that legacy branches still expect at the root.
-- `server/` – thin compatibility PHP endpoints. They now defer to the dynamic application when it is present, only falling back to their bundled logic when the shared files are missing.
+- `server/` – thin compatibility PHP endpoints that include the shared logic under `server/shared/`.
+- `server/shared/` – canonical configuration and contact handlers used by both project layouts.
 - `agrimate-website/` – full dynamic PHP project. Each page has a `.php` entry point backed by shared includes, with `.html` twins available for quick static previews.
 
 ## Working with the dynamic site
@@ -29,7 +30,7 @@ The backend expects the following environment variables:
 
 ## Email delivery configuration
 
-`agrimate-website/server/contact_handler.php` contains the contact form controller that both entry points use. The dynamic endpoint (`agrimate-website/server/contact.php`) simply loads the shared handler, while the root-level compatibility endpoint (`server/contact.php`) loads the same handler or a legacy-compatible shim when the dynamic project is missing. Configure delivery with optional environment variables:
+`server/shared/contact_handler.php` contains the contact form controller that both entry points use. The dynamic endpoint (`agrimate-website/server/contact.php`) simply loads the shared handler, while the root-level compatibility endpoint (`server/contact.php`) requires the same file. Configure delivery with optional environment variables:
 
 - `MAIL_TO_ADDRESS` – Destination mailbox (defaults to `contact@farmlink.tn`).
 - `MAIL_FROM_ADDRESS` / `MAIL_FROM_NAME` – Sender identity for PHPMailer and the native fallback.
@@ -40,7 +41,7 @@ When Composer dependencies (and therefore PHPMailer) are missing, the code autom
 
 ## Merge conflict handling
 
-Because the root compatibility endpoints now funnel through the shared handler/loader functions, there is only one authoritative implementation of the contact controller and configuration bootstrap. Git therefore has far fewer opportunities to surface conflicts during merges. If you do see divergences, resolve them in the shared files under `agrimate-website/server/` and keep the root shims pointing at those sources. The same pattern applies to configuration: `server/config.php` loads `agrimate-website/server/config_loader.php` when available (or a minimal legacy loader otherwise) and simply calls `agrimate_load_config()`, so any credential or loader changes should land in the shared location first.
+Because both project layouts now funnel through the shared handler/loader functions in `server/shared/`, there is only one authoritative implementation of the contact controller and configuration bootstrap. Git therefore has far fewer opportunities to surface conflicts during merges. If you do see divergences, resolve them in the shared files and keep the shims pointing at those sources. The same pattern applies to configuration: `server/config.php` and `agrimate-website/server/config.php` both require the shared loader and call `agrimate_load_config()`, so any credential or loader changes should land in the shared location first.
 
 ## Spinning the site into a standalone repository
 

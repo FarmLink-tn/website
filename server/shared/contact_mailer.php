@@ -3,92 +3,19 @@
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-if (!function_exists('agrimate_bootstrap_contact_environment')) {
-    function agrimate_bootstrap_contact_environment(): void
-    {
-        static $bootstrapped = false;
-
-        if ($bootstrapped) {
-            return;
-        }
-
-        $bootstrapped = true;
-
-        $autoloadCandidates = [
-            __DIR__ . '/../vendor/autoload.php',
-            dirname(__DIR__, 2) . '/vendor/autoload.php',
-        ];
-
-        foreach ($autoloadCandidates as $autoload) {
-            if (is_file($autoload)) {
-                require_once $autoload;
-                break;
-            }
-        }
-
-        $envFiles = [
-            dirname(__DIR__) . '/.env',
-            dirname(__DIR__, 2) . '/.env',
-        ];
-
-        $envLoaded = false;
-        if (class_exists(Dotenv\Dotenv::class)) {
-            foreach ($envFiles as $envFile) {
-                if (!is_file($envFile)) {
-                    continue;
-                }
-
-                $dotenv = Dotenv\Dotenv::createImmutable(dirname($envFile), basename($envFile));
-                $dotenv->safeLoad();
-                $envLoaded = true;
-                break;
-            }
-        }
-
-        if ($envLoaded) {
-            return;
-        }
-
-        foreach ($envFiles as $envFile) {
-            if (!is_file($envFile)) {
-                continue;
-            }
-
-            $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            if ($lines === false) {
-                continue;
-            }
-
-            foreach ($lines as $line) {
-                $line = trim($line);
-                if ($line === '' || str_starts_with($line, '#')) {
-                    continue;
-                }
-
-                if (!str_contains($line, '=')) {
-                    continue;
-                }
-
-                [$key, $value] = array_map('trim', explode('=', $line, 2));
-                if ($key === '' || getenv($key) !== false) {
-                    continue;
-                }
-
-                $value = trim($value, "\"' ");
-                putenv("{$key}={$value}");
-                $_ENV[$key] = $value;
-                $_SERVER[$key] = $_SERVER[$key] ?? $value;
-            }
-
-            break;
-        }
-    }
-}
+require_once __DIR__ . '/bootstrap.php';
 
 if (!function_exists('agrimate_send_contact_mail')) {
+    /**
+     * Sends the contact payload using PHPMailer when available or PHP's mail() fallback otherwise.
+     *
+     * @param array{name?: string, email?: string, phone?: string, message?: string} $payload
+     *
+     * @return array{success: bool, status: int, message: string}
+     */
     function agrimate_send_contact_mail(array $payload): array
     {
-        agrimate_bootstrap_contact_environment();
+        agrimate_shared_bootstrap_environment();
 
         $name    = $payload['name'] ?? '';
         $email   = $payload['email'] ?? '';
@@ -173,11 +100,9 @@ if (!function_exists('agrimate_send_contact_mail')) {
             }
         }
 
-        if ($extraParams) {
-            $sent = mail($to, $subject, $body, $messageHeaders, $extraParams);
-        } else {
-            $sent = mail($to, $subject, $body, $messageHeaders);
-        }
+        $sent = $extraParams
+            ? mail($to, $subject, $body, $messageHeaders, $extraParams)
+            : mail($to, $subject, $body, $messageHeaders);
 
         if ($sent) {
             return [
@@ -214,4 +139,3 @@ if (!function_exists('agrimate_format_address')) {
         return sprintf('%s <%s>', $trimmedName, $email);
     }
 }
-

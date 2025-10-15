@@ -1,9 +1,8 @@
+agrimate-website/server/config.php merge=ours
 agrimate-website/server/contact.php merge=ours
-agrimate-website/server/contact_handler.php merge=ours
-agrimate-website/server/contact_mailer.php merge=ours
-agrimate-website/server/config_loader.php merge=ours
-server/contact.php merge=ours
-server/contact_handler_legacy.php merge=ours
-server/contact_mailer_legacy.php merge=ours
 server/config.php merge=ours
-server/config_loader_legacy.php merge=ours
+server/contact.php merge=ours
+server/shared/bootstrap.php merge=ours
+server/shared/config_loader.php merge=ours
+server/shared/contact_handler.php merge=ours
+server/shared/contact_mailer.php merge=ours
