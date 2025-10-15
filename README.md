@@ -38,6 +38,19 @@ Both `server/contact.php` and `agrimate-website/server/contact.php` load the sha
 
 When Composer dependencies (and therefore PHPMailer) are missing, the code automatically falls back to PHP's native `mail()` function with the same headers and sanitized envelope handling.
 
+## Merge conflict handling
+
+The files that power configuration loading and contact email delivery are shared between the legacy root endpoints and the dynamic application. They tend to change together in this branch, so a [.gitattributes](.gitattributes) policy forces Git to keep this branch's versions during merges. This prevents repeated manual resolutions for:
+
+- `agrimate-website/server/contact.php`
+- `agrimate-website/server/contact_mailer.php`
+- `agrimate-website/server/config_loader.php`
+- `server/contact.php`
+- `server/contact_mailer_legacy.php`
+- `server/config.php`
+
+If the base branch evolves those files independently, pull the latest main branch, reconcile the differences locally, and update the list so future merges stay clean.
+
 ## Spinning the site into a standalone repository
 
 If you need to promote the dynamic website into its own Git project without losing history:
