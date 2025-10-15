@@ -1,4 +1,10 @@
 <?php
+$sharedEndpoint = __DIR__ . '/../agrimate-website/server/contact.php';
+if (is_file($sharedEndpoint)) {
+    require $sharedEndpoint;
+    return;
+}
+
 session_start();
 header('Content-Type: application/json; charset=UTF-8');
 

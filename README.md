@@ -6,7 +6,7 @@ This repository contains the FarmLink marketing experience, authenticated IoT da
 
 - `index.html`, `about.html`, `how-it-works.html`, `solutions.html`, `ai-advisor.html`, `account.html`, `contact.html` – static marketing entry points preserved for lightweight previews.
 - `script.js`, `style.css`, `image/`, etc. – shared frontend assets that legacy branches still expect at the root.
-- `server/` – compatibility PHP endpoints that proxy into the dynamic application so older deployments can keep working without merge conflicts.
+- `server/` – thin compatibility PHP endpoints. They now defer to the dynamic application when it is present, only falling back to their bundled logic when the shared files are missing.
 - `agrimate-website/` – full dynamic PHP project. Each page has a `.php` entry point backed by shared includes, with `.html` twins available for quick static previews.
 
 ## Working with the dynamic site
@@ -29,7 +29,7 @@ The backend expects the following environment variables:
 
 ## Email delivery configuration
 
-Both `server/contact.php` and `agrimate-website/server/contact.php` load the shared mailer so fixes automatically apply in both locations. Configure delivery with optional environment variables:
+`agrimate-website/server/contact.php` handles the live contact form logic. The root-level `server/contact.php` simply requires that file so merges no longer produce duplicate implementations; if the dynamic site is absent it falls back to a local copy bundled with the legacy structure. Configure delivery with optional environment variables:
 
 - `MAIL_TO_ADDRESS` – Destination mailbox (defaults to `contact@farmlink.tn`).
 - `MAIL_FROM_ADDRESS` / `MAIL_FROM_NAME` – Sender identity for PHPMailer and the native fallback.
@@ -40,16 +40,7 @@ When Composer dependencies (and therefore PHPMailer) are missing, the code autom
 
 ## Merge conflict handling
 
-The files that power configuration loading and contact email delivery are shared between the legacy root endpoints and the dynamic application. They tend to change together in this branch, so a [.gitattributes](.gitattributes) policy forces Git to keep this branch's versions during merges. This prevents repeated manual resolutions for:
-
-- `agrimate-website/server/contact.php`
-- `agrimate-website/server/contact_mailer.php`
-- `agrimate-website/server/config_loader.php`
-- `server/contact.php`
-- `server/contact_mailer_legacy.php`
-- `server/config.php`
-
-If the base branch evolves those files independently, pull the latest main branch, reconcile the differences locally, and update the list so future merges stay clean.
+Because the root compatibility endpoints now require the dynamic equivalents, there is only one authoritative implementation of the contact handler and configuration bootstrap. Git therefore has far fewer opportunities to surface conflicts during merges. If you do see divergences, resolve them in the dynamic files under `agrimate-website/server/` and then keep the root shims pointing at those shared sources. The same pattern applies to configuration: `server/config.php` simply returns the value from `agrimate-website/server/config.php` when it exists, so any credential or loader changes should land in the shared location first.
 
 ## Spinning the site into a standalone repository
 

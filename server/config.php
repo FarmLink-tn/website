@@ -1,4 +1,8 @@
 <?php
+$sharedConfig = __DIR__ . '/../agrimate-website/server/config.php';
+if (is_file($sharedConfig)) {
+    return require $sharedConfig;
+}
 
 $sharedLoader = __DIR__ . '/../agrimate-website/server/config_loader.php';
 if (is_file($sharedLoader)) {
